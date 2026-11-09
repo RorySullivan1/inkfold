@@ -2,7 +2,7 @@
 status: in-progress
 started: 2026-11-09
 branch: claude/integrate-claude-assets-pyhermes-d4spzb
-pr:
+pr: 481
 
 ## Goals
 - Roadmap epic 0.4: the first public release, of `inkfold` on PyPI, through trusted publishing
