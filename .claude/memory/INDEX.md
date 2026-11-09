@@ -4,11 +4,11 @@
 - inkfold (pyHermes until v0.4.0, octavo until v0.4.1) builds **documents** onto **media** (`email`,
   `document`, `brochure`, `deck`) from the shared `inkfold/builder` kit; exporters: `delivery`+`gmail`+`outlook`,
   and `pdf`. Rationale: CLAUDE.md, `media.md`. Repository: RorySullivan1/inkfold.
-- **Shipped through PR #480**; no issues open. #219 DOCX and #300 PPTX closed as not planned. #288 is the
+- **Shipped through PR #481**; no issues open. #219 DOCX and #300 PPTX closed as not planned. #288 is the
   owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
 - **The roadmap is live** in `.meta/roadmap/` (5 stages), surfaced each session by `roadmap_status`. Shipped:
-  v0.2.0 charter (#477), v0.3.0 reference reports (#478), v0.4.0 and v0.4.1 renames to inkfold (#479, #480).
-  Cursor v0.5.0, the first PyPI release. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
+  v0.2.0 charter (#477), v0.3.0 reference reports (#478), v0.4.0 and v0.4.1 renames to inkfold (#479, #480),
+  v0.5.0 first PyPI release (#481). Cursor v0.6.0, the report definition and run CLI. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
 
 ## Decisions        (append-only; supersede, never delete)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
@@ -41,8 +41,6 @@
   accepted inkfold as a pending publisher first; the repository is RorySullivan1/inkfold. v0.4.1** — `.meta/roadmap/`
 
 ## Threads          (open items; remove when closed)
-- **`inkfold` is registered on PyPI as a pending trusted publisher** (owner RorySullivan1, repo inkfold,
-  workflow release.yml, environment pypi); v0.5.0 must match it. It reserves nothing until the first publish.
 - **The first outside user is not yet named** (a colleague or team); needed before Gate 1 — `.meta/roadmap/INDEX.md`.
 - **#394's ruling (justify on paper only) was taken under a goal**; the owner may widen it.
 - **#400's ruling: `skip_first` is opt-in, not the default under an `EmptyCover`** (goal-taken; `media.md`).
@@ -78,3 +76,5 @@
 - [2026-11-09] inkfold-rename — v0.4.1: PyPI prohibited octavo; renamed to inkfold, guard hardened, v0.5.0's
   publisher pinned; review no must-fix, goal-auditor PASS; PR #480 — sessions/2026-11-09-0900-inkfold-rename.md
 - [2026-11-09] inkfold-rename — PR #480 merged; v0.4.1 marked shipped.
+- [2026-11-09] first-release — tag v0.5.0 at 9f47571 published inkfold 0.5.0 to PyPI, all jobs green; v0.5.0 marked
+  shipped, cursor v0.6.0 — sessions/2026-11-09-0314-first-release.md
