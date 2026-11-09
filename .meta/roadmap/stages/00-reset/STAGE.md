@@ -4,7 +4,7 @@
 new feature work. Four epics; every later stage depends on them.
 
 **Versions:** v0.2.0 (0.1 scope charter, shipped in PR #477), v0.3.0 (0.2 reference reports
-and benchmark, shipped in PR #478), v0.4.0 (0.3 rename to octavo, shipped in PR #479), v0.4.1 (0.3 rename to inkfold), v0.5.0 (0.4 first public
+and benchmark, shipped in PR #478), v0.4.0 (0.3 rename to octavo, shipped in PR #479), v0.4.1 (0.3 rename to inkfold, shipped in PR #480), v0.5.0 (0.4 first public
 release).
 
 **Milestone (stage exit):** the charter is merged, the three reference reports are named with

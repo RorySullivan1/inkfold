@@ -172,7 +172,8 @@ pictures, very long text, or many large tables.
          2.9 KB  (document head)
    ```
 
-   `python -m qa.preview drafts/weekly.py:build --lint` prints the same report. From Python,
+   From a clone of the repository, `python -m qa.preview drafts/weekly.py:build --lint`
+   prints the same report. From Python,
    the same report comes from the email itself:
 
    ```python
@@ -204,8 +205,8 @@ the steps above.
 **Likely cause:** that is expected for attached pictures. They travel inside the message,
 and a bare `.html` file has no message around it.
 
-**Fix:** open the `.eml` file ([Check and send](06-check-and-send.md)), or run
-`python -m qa.preview … --screenshot`, which puts them in place.
+**Fix:** open the `.eml` file ([Check and send](06-check-and-send.md)), or, from a clone of
+the repository, run `python -m qa.preview … --screenshot`, which puts them in place.
 
 ### My pictures do not show in Outlook
 
@@ -280,12 +281,12 @@ works from any folder. Only the screenshots need the repository folder and
 **Likely cause:** you are on a Mac or Linux, you use the new Outlook, or the
 `[outlook-desktop]` extra is not installed.
 
-**Fix:** install the extra with `pip install -e ".[outlook-desktop]"` on Windows with
+**Fix:** install the extra with `pip install "inkfold[outlook-desktop]"` on Windows with
 classic Outlook. Otherwise save the message with `save_eml` or send it through Microsoft 365.
 
 ### I get "Rendering a PDF needs WeasyPrint" or "could not load a system library"
 
-**Fix:** install the extra from the repository folder with `pip install -e ".[pdf]"`, then
+**Fix:** install the extra with `pip install "inkfold[pdf]"`, then
 the system libraries listed in [Reports and PDFs](07-reports-and-pdfs.md).
 
 ### I get "is not in this document's asset manifest" when printing

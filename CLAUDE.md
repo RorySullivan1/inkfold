@@ -57,6 +57,11 @@ jobs. `[dev]` alone must stay free of every extra: each extra's tests skip rathe
 that is what proves each is optional. `all-extras` installs them all and fails on any skip that
 names one, so no extra-gated test can run nowhere (#239, `qa-harness.md`).
 
+**A release is a version tag.** Pushing `vX.Y.Z` runs `release.yml`, which builds and checks
+both artefacts and publishes them to PyPI by trusted publishing, with no token anywhere. The
+tag must name `pyproject.toml`'s version, and `CHANGELOG.md` must hold that version's entry;
+`tests/test_release.py` pins the workflow to the publisher PyPI trusts (`working-in-the-code.md`).
+
 **To eyeball a change, run `preview`.** A screenshot is the only thing that catches a
 layout regression; see standing rule 3.
 

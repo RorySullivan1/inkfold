@@ -398,6 +398,15 @@ earlier check passed on a tree that would have shipped wrong.
   public and shows only when the name is registered, so the owner registers a candidate as a
   pending trusted publisher before a rename, as `inkfold` was. `tests/test_distribution.py`
   fails if either former name reappears outside the memory's history and the roadmap's record.
+- **inkfold is published by trusted publishing (roadmap v0.5.0).** PyPI's publisher for
+  `inkfold` names the owner `RorySullivan1`, the repository `inkfold`, the workflow file
+  `release.yml` and the environment `pypi`, and an upload from anything else is refused, so
+  `tests/test_release.py` holds all four, and that only the `publish` job can mint a token. The
+  workflow runs on a `v*` tag alone and fails unless the tag names `pyproject.toml`'s version.
+  It reruns the wheel job's artefact checks and renders from each artefact before uploading.
+  The policy is in the README: semver, a deprecated public name survives at least two minor
+  releases and 90 days, and `CHANGELOG.md` (Keep a Changelog) records each release. The README
+  is the PyPI project page, so its links are absolute; a test fails on a relative one.
 - **`svc` was a shim, and #255 removed it before any release shipped it.** #248 kept
   `svc/__init__.py` for one release: it warned once with a `DeprecationWarning` and put a
   meta-path finder in front that resolved `svc.X` to the module the real root's `X` already is.

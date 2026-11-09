@@ -5,15 +5,12 @@ about five minutes.
 
 ## Install
 
-You need Python 3.11 or newer. inkfold is not on PyPI, so install it from a copy of the
-repository:
+You need Python 3.11 or newer. Make a virtual environment and install inkfold from PyPI:
 
 ```bash
-git clone https://github.com/RorySullivan1/inkfold.git
-cd inkfold
 python -m venv .venv
 source .venv/bin/activate        # on Windows: .venv\Scripts\activate
-pip install -e .
+pip install inkfold
 ```
 
 That is all an email needs. Some features need an **extra**, which is an optional add-on
@@ -21,10 +18,10 @@ you install the same way:
 
 | To… | Install |
 |---|---|
-| Turn a pandas DataFrame into a table | `pip install -e ".[data]"` |
-| Turn a matplotlib chart into an image | `pip install -e ".[charts]"` |
-| Print a PDF | `pip install -e ".[pdf]"` (also needs Pango, see [Reports and PDFs](07-reports-and-pdfs.md)) |
-| Take screenshots of your email | `pip install -e ".[qa]"`, then `playwright install chromium` |
+| Turn a pandas DataFrame into a table | `pip install "inkfold[data]"` |
+| Turn a matplotlib chart into an image | `pip install "inkfold[charts]"` |
+| Print a PDF | `pip install "inkfold[pdf]"` (also needs Pango, see [Reports and PDFs](07-reports-and-pdfs.md)) |
+| Take screenshots of your email | From a clone of the repository, `pip install -e ".[qa]"`, then `playwright install chromium` |
 
 ## Build your first email
 

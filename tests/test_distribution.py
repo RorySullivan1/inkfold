@@ -124,8 +124,12 @@ def test_nothing_in_the_repository_imports_the_retired_name():
 OLD_NAME = "py" + "hermes"
 OLD_NAMES = (OLD_NAME, "oct" + "avo")
 
-#: Files that are history in full: the memory's session logs and archive, and a dated review ledger.
-HISTORY = (".claude/memory/sessions/", ".claude/skills/claim-grounding/reviews/ledger.jsonl")
+#: Files that are history in full: the session logs, a dated review ledger, and the changelog.
+HISTORY = (
+    ".claude/memory/sessions/",
+    ".claude/skills/claim-grounding/reviews/ledger.jsonl",
+    "CHANGELOG.md",
+)
 
 #: The cards that record a rename, wherever they sit.
 RENAME_CARDS = ("# version: v0.4.0\n", "# version: v0.4.1\n")

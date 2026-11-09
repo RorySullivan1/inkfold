@@ -1,21 +1,23 @@
-# version: v0.4.1
+# version: v0.5.0
 status: in-progress
 started: 2026-11-09
 branch: claude/integrate-claude-assets-pyhermes-d4spzb
-pr: https://github.com/RorySullivan1/inkfold/pull/480
+pr: 481
 
 ## Goals
-- Roadmap epic 0.3, completed: rename the project again, from `octavo` to **inkfold** (owner's
-  decision, 2026-11-09). PyPI refused `octavo` as a prohibited project name when the owner
-  registered the pending publisher, so v0.4.0's name cannot be published. PyPI accepted
-  `inkfold` as a pending trusted publisher, and the repository is renamed to
-  `RorySullivan1/inkfold`.
-- Rename the distribution, the import root (`octavo` to `inkfold`), the `OCTAVO_*` environment
-  variables and every reference and repository link, as v0.4.0 did, keeping history as it was.
+- Roadmap epic 0.4: the first public release, of `inkfold` on PyPI, through trusted publishing
+  (owner's decision, 2026-10-29): a GitHub Actions workflow publishes on a version tag, with no
+  token stored anywhere.
+- A versioning and deprecation policy, and a changelog.
 
 ## Objectives / acceptance
-- The wheel's only top-level package is `inkfold`, and `import inkfold` renders an email from it
-  in a clean venv.
-- Neither former name remains outside history, enforced by `tests/test_distribution.py`.
-- Every golden is byte-identical unless a name is rendered.
-- The full suite, ruff, ruff format and mypy pass; the prose baseline does not grow.
+- A workflow builds the wheel and sdist, runs the existing artefact checks, and publishes on a
+  version tag through PyPI's trusted publishing (`id-token: write`); no secret is configured.
+- The workflow matches the pending trusted publisher the owner registered on PyPI on 2026-11-09:
+  project `inkfold`, owner `RorySullivan1`, repository `inkfold`, workflow file `release.yml`,
+  environment `pypi`. A mismatch in any one fails the upload.
+- `pip install inkfold` from PyPI in a clean venv renders an email.
+- The library ships under MIT, and the README states that the render service and any hosted
+  product are licensed separately (open core).
+- `CHANGELOG.md` exists in Keep a Changelog form, and the deprecation policy says how long a
+  public name survives once deprecated.

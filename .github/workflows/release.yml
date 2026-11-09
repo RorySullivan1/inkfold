@@ -1,0 +1,150 @@
+name: Release
+
+# Publishes inkfold to PyPI when a version tag is pushed (roadmap v0.5.0).
+# Trusted publishing: PyPI trusts this file, in this repository, running in the
+# `pypi` environment, so no token is stored anywhere. The file name, the
+# environment and the repository are what the publisher was registered with;
+# renaming any one makes the upload fail. tests/test_release.py holds them.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # the whole history, so the tag can be checked against main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: The tagged commit is on main
+        run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+
+      - name: The tag names the version in pyproject.toml
+        run: |
+          python - <<'PY'
+          import os
+          import tomllib
+
+          with open("pyproject.toml", "rb") as f:
+              version = tomllib.load(f)["project"]["version"]
+          tag = os.environ["GITHUB_REF_NAME"]
+          assert tag == f"v{version}", f"tag {tag} does not name version {version}"
+          print(f"OK: {tag} releases inkfold {version}")
+          PY
+
+      - name: The release's own tests pass
+        # The publisher, the changelog entry for this version, the README's
+        # policy and the old-name guard. CI ran the full suite on main.
+        run: |
+          pip install -e ".[dev]"
+          pytest tests/test_release.py tests/test_distribution.py
+
+      - name: Build the wheel and the sdist
+        run: |
+          pip install build twine
+          python -m build
+
+      - name: Check the metadata
+        run: twine check --strict dist/*
+
+      - name: Check the built artefacts
+        # The same check CI's wheel job runs: py.typed in the wheel, the
+        # library alone in the sdist, one import root.
+        run: python -m qa.distribution dist
+
+      - name: Render an email from each artefact, in a clean venv
+        run: |
+          for artefact in dist/*.whl dist/*.tar.gz; do
+          echo "== $artefact"
+          rm -rf /tmp/env /tmp/draft
+          python -m venv /tmp/env
+          /tmp/env/bin/pip install "$artefact"
+          mkdir -p /tmp/draft && cd /tmp/draft
+          cat > draft.py <<'PY'
+          from inkfold.builder import EmailBuilder, FullWidth, TextBlock
+
+
+          def build():
+              return (
+                  EmailBuilder()
+                  .metadata({"email_subject": "Release", "firm_name": "CI", "campaign_name": "release"})
+                  .section(FullWidth(TextBlock("<p>Rendered from the release artefact.</p>")))
+              )
+          PY
+          /tmp/env/bin/python -m inkfold.check draft.py:build --out out
+          grep -q "Rendered from the release artefact." out/draft-build.html
+          cd "$GITHUB_WORKSPACE"
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/inkfold/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  verify:
+    # The release's last acceptance check: install what PyPI now serves, by
+    # name, into a clean venv, and render an email from it. PyPI's index can
+    # lag an upload by a minute or two, so the install retries.
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install from PyPI and render, from the wheel and from the sdist
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          for form in wheel sdist; do
+          echo "== $form"
+          rm -rf /tmp/env /tmp/draft
+          python -m venv /tmp/env
+          flag=""; [ "$form" = sdist ] && flag="--no-binary inkfold"
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            /tmp/env/bin/pip install --no-cache-dir $flag "inkfold==$version" && break
+            [ "$attempt" = 10 ] && exit 1
+            sleep 30
+          done
+          /tmp/env/bin/python -c "from importlib.metadata import version; assert version('inkfold') == '$version'"
+          mkdir -p /tmp/draft && cd /tmp/draft
+          cat > draft.py <<'PY'
+          from inkfold.builder import EmailBuilder, FullWidth, TextBlock
+
+
+          def build():
+              return (
+                  EmailBuilder()
+                  .metadata({"email_subject": "Release", "firm_name": "CI", "campaign_name": "release"})
+                  .section(FullWidth(TextBlock("<p>Installed from PyPI.</p>")))
+              )
+          PY
+          /tmp/env/bin/python -m inkfold.check draft.py:build --out out
+          grep -q "Installed from PyPI." out/draft-build.html
+          cd "$GITHUB_WORKSPACE"
+          done
