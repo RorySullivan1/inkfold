@@ -75,6 +75,12 @@ class TestTheWorkflow:
         ):
             assert step in build, step
 
+    def test_the_release_is_verified_from_pypi_after_the_upload(self):
+        verify = _jobs()["verify"]
+        assert "needs: publish" in verify and "id-token" not in verify
+        assert 'pip install --no-cache-dir $flag "inkfold==$version"' in verify
+        assert "python -m inkfold.check draft.py:build" in verify
+
 
 class TestTheMetadata:
     def test_the_project_and_repository_are_the_publishers(self):

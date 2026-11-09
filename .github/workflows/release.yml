@@ -106,3 +106,45 @@ jobs:
           path: dist/
 
       - uses: pypa/gh-action-pypi-publish@release/v1
+
+  verify:
+    # The release's last acceptance check: install what PyPI now serves, by
+    # name, into a clean venv, and render an email from it. PyPI's index can
+    # lag an upload by a minute or two, so the install retries.
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install from PyPI and render, from the wheel and from the sdist
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          for form in wheel sdist; do
+          echo "== $form"
+          rm -rf /tmp/env /tmp/draft
+          python -m venv /tmp/env
+          flag=""; [ "$form" = sdist ] && flag="--no-binary inkfold"
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            /tmp/env/bin/pip install --no-cache-dir $flag "inkfold==$version" && break
+            [ "$attempt" = 10 ] && exit 1
+            sleep 30
+          done
+          /tmp/env/bin/python -c "from importlib.metadata import version; assert version('inkfold') == '$version'"
+          mkdir -p /tmp/draft && cd /tmp/draft
+          cat > draft.py <<'PY'
+          from inkfold.builder import EmailBuilder, FullWidth, TextBlock
+
+
+          def build():
+              return (
+                  EmailBuilder()
+                  .metadata({"email_subject": "Release", "firm_name": "CI", "campaign_name": "release"})
+                  .section(FullWidth(TextBlock("<p>Installed from PyPI.</p>")))
+              )
+          PY
+          /tmp/env/bin/python -m inkfold.check draft.py:build --out out
+          grep -q "Installed from PyPI." out/draft-build.html
+          cd "$GITHUB_WORKSPACE"
+          done
