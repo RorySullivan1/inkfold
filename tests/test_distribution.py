@@ -8,6 +8,7 @@ build small stand-ins so each check is proven to fail without a build backend.
 from __future__ import annotations
 
 import io
+import re
 import tarfile
 import zipfile
 from pathlib import Path
@@ -123,12 +124,15 @@ def test_nothing_in_the_repository_imports_the_retired_name():
 OLD_NAME = "py" + "hermes"
 OLD_NAMES = (OLD_NAME, "oct" + "avo")
 
-#: Files that are history in full: the memory's session logs and archive, a dated review ledger,
-#: and `.meta/version` while it holds the rename's own card.
-HISTORY = (
-    ".claude/memory/sessions/",
-    ".claude/skills/claim-grounding/reviews/ledger.jsonl",
-    ".meta/version",
+#: Files that are history in full: the memory's session logs and archive, and a dated review ledger.
+HISTORY = (".claude/memory/sessions/", ".claude/skills/claim-grounding/reviews/ledger.jsonl")
+
+#: The cards that record a rename, wherever they sit.
+RENAME_CARDS = ("# version: v0.4.0\n", "# version: v0.4.1\n")
+
+#: An old name as code: an import, a module path or an environment variable, never history.
+CODE = re.compile(
+    rf"(?i)\b(?:{'|'.join(OLD_NAMES)})(?:[./]|_[A-Z])|import (?:{'|'.join(OLD_NAMES)})"
 )
 
 #: The one name that stays: the session branch that built the roadmap.
@@ -154,12 +158,13 @@ def _current_lines(name: str, text: str) -> list[tuple[int, str]]:
             if section != "Decisions" and "| shipped" not in line:
                 current.append((n, line))
         lines = current
-    if name.startswith(".meta/roadmap/stages/") and (
-        "status: shipped" in text or name.endswith(("/v0.4.0.md", "/v0.4.1.md"))
-    ):
+    shipped = re.search(r"^status: shipped$", text, re.MULTILINE)
+    if name.startswith(".meta/") and (shipped or text.startswith(RENAME_CARDS)):
         return []  # a shipped card, or a rename's own, is a record
-    if name.startswith((".claude/memory/", ".meta/")):  # a line about the rename may name both
-        lines = [(n, line) for n, line in lines if "inkfold" not in line.lower()]
+    if name.startswith((".claude/memory/", ".meta/")):  # a rename line may name both, not as code
+        lines = [
+            (n, line) for n, line in lines if "inkfold" not in line.lower() or CODE.search(line)
+        ]
     return lines
 
 

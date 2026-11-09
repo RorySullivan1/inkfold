@@ -41,7 +41,7 @@ One version is one roadmap epic and ships as one PR; the epic number from the do
 | v0.22.0–v0.28.0 | 03 | 3.1–3.7 Schema, render API, MCP, number grounding (7 epics) | planned (sketch) |
 | separate product | 04 | 4.1–4.5 Hosted API, authoring app, approvals (5 epics) | conditional |
 
-## Decisions (owner, 2026-10-27; revised 2026-10-28 and 2026-10-29)
+## Decisions (owner, 2026-10-27; revised 2026-10-28, 2026-10-29, 2026-10-30 and 2026-11-09)
 - **Reference reports: stand-ins for now** (revised 2026-10-28). `daily-note` is
   `examples/daily-investment-note`, `research-report` is `examples/quarterly-review`, and
   `product-brochure` is the `tri_fold_letter` fixture; all three are replaced by real reports
@@ -57,6 +57,7 @@ One version is one roadmap epic and ships as one PR; the epic number from the do
   `RorySullivan1/inkfold`. The rename is v0.4.1.
 - **Repository: renamed to octavo** (2026-10-30). The owner renames it on GitHub, which redirects the
   old URLs; every link in the repository points at `RorySullivan1/octavo` from v0.4.0.
+  (Superseded 2026-11-09: the repository is `RorySullivan1/inkfold`.)
 - **Publishing: trusted publishing** (2026-10-29), from a GitHub Actions workflow on a version tag.
 - **Content model: the core package**, Python-only, no extra.
 - **2.1 spike: may start before v0.8.0 lands**, alongside the end of Stage 01.

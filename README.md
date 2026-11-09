@@ -252,7 +252,8 @@ a report renders as its sections alone.
 
 Requires Python 3.11+. Not published to PyPI — install from a clone. The distribution and the
 import are both `inkfold` (`from inkfold.builder import EmailBuilder`). Code written against
-the old `svc` import needs its imports changed; nothing else moved:
+an earlier name needs its imports changed, and any environment variable set under an earlier
+prefix renamed to `INKFOLD_`; nothing else moved:
 
 ```bash
 pip install -e ".[dev]"     # editable, plus pytest / ruff / mypy

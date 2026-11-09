@@ -35,7 +35,7 @@
 - [2026-10-29] **The project becomes octavo: `pyhermes` is Allegro's Hermes client on PyPI and as an import.
   The rename is v0.4.0, the first release v0.5.0 by trusted publishing; later versions moved up one** — `.meta/roadmap/`
 - [2026-10-30] **The GitHub repository is renamed to octavo too** (owner); the repository's links point there
-  from v0.4.0 — `.meta/roadmap/INDEX.md`
+  from v0.4.0; superseded 2026-11-09 by inkfold — `.meta/roadmap/INDEX.md`
 - [2026-11-09] **The project becomes inkfold: PyPI prohibits octavo as a project name (a hidden list), and
   accepted inkfold as a pending publisher first; the repository is RorySullivan1/inkfold. v0.4.1** — `.meta/roadmap/`
 
