@@ -18,9 +18,9 @@ from __future__ import annotations
 
 import re
 
-from octavo.builder import DataTable, FullWidth, TemplateEngine
-from octavo.builder.email import Email
-from octavo.builder.models import TableRow
+from inkfold.builder import DataTable, FullWidth, TemplateEngine
+from inkfold.builder.email import Email
+from inkfold.builder.models import TableRow
 from qa.lint import SOURCES, lint_html
 
 FACTS = {"email_subject": "Subject", "firm_name": "Hermes", "campaign_name": "Review"}

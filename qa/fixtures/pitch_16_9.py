@@ -17,7 +17,7 @@ from functools import partial
 from pathlib import Path
 from typing import Any
 
-from octavo.builder import (
+from inkfold.builder import (
     BarList,
     CardGroup,
     ChartBlock,
@@ -30,10 +30,10 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.formats import pct
-from octavo.builder.images import EmailImage
-from octavo.builder.models import KpiItem, TableRow
-from octavo.deck import SLIDE_16_9, ClosingSlide, Deck, Slide, TitleSlide
+from inkfold.builder.formats import pct
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import KpiItem, TableRow
+from inkfold.deck import SLIDE_16_9, ClosingSlide, Deck, Slide, TitleSlide
 
 from . import _paged
 from ._png import solid_png

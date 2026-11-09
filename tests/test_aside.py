@@ -11,11 +11,11 @@ import importlib.util
 
 import pytest
 
-from octavo.builder import Aside, Callout, Email, FullWidth, ImageBlock, TextBlock
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.images import EmailImage
-from octavo.document import PagedDocument
-from octavo.pdf import available as pdf_available
+from inkfold.builder import Aside, Callout, Email, FullWidth, ImageBlock, TextBlock
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.images import EmailImage
+from inkfold.document import PagedDocument
+from inkfold.pdf import available as pdf_available
 from qa.fixtures import a4_wide_appendix, all_brochure_fixtures, all_paged_fixtures
 from qa.fixtures._png import solid_png
 
@@ -98,8 +98,8 @@ class TestInAnEmail:
 
 
 def _engine():
-    from octavo.builder.engine import TemplateEngine
-    from octavo.email import EMAIL_MEDIUM
+    from inkfold.builder.engine import TemplateEngine
+    from inkfold.email import EMAIL_MEDIUM
 
     return TemplateEngine().bound(medium=EMAIL_MEDIUM)
 
@@ -162,7 +162,7 @@ class TestTheProseWrapsRoundIt:
     def test_in_a_paged_column(self):
         import pypdfium2
 
-        from octavo.pdf import render_pdf
+        from inkfold.pdf import render_pdf
 
         document = all_paged_fixtures()["a4_wide_appendix"]()
         sheet = next(
@@ -176,8 +176,8 @@ class TestTheProseWrapsRoundIt:
     def test_inside_a_brochure_panels_fixed_box(self):
         import pypdfium2
 
-        from octavo.brochure import overflowing_panels
-        from octavo.pdf import render_pdf
+        from inkfold.brochure import overflowing_panels
+        from inkfold.pdf import render_pdf
 
         brochure = all_brochure_fixtures()["tri_fold_letter"]()
         assert overflowing_panels(brochure) == []

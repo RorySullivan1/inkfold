@@ -12,13 +12,13 @@ import re
 
 import pytest
 
-from octavo.brochure import Brochure, Panel
-from octavo.builder import Callout, DataTable, EmailBuilder, FullWidth, TextBlock
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.models import TableRow
-from octavo.builder.theming import DEFAULT_THEME, Theme
-from octavo.deck import Deck
-from octavo.document import EmptyBackMatter, EmptyCover, PagedDocument
+from inkfold.brochure import Brochure, Panel
+from inkfold.builder import Callout, DataTable, EmailBuilder, FullWidth, TextBlock
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.models import TableRow
+from inkfold.builder.theming import DEFAULT_THEME, Theme
+from inkfold.deck import Deck
+from inkfold.document import EmptyBackMatter, EmptyCover, PagedDocument
 from qa.fixtures import _paged
 
 INK, LEMON, NAVY = "#111111", "#F2D94E", "#1B3A5C"

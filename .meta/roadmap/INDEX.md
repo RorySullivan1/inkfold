@@ -1,4 +1,4 @@
-# Development Map — octavo
+# Development Map — inkfold
 
 > Auto-surfaced at session start. Keep to ~one screen; detail lives in `stages/`.
 > The cursor (`←`) is the next version to build. Statuses: planned · in-progress · shipped.
@@ -14,7 +14,7 @@ switching medium in one change, through a library, an API, or a model as the aut
 ## Stages
 Gate N is stage N's milestone; each is passed by the reference reports in `reference/`.
 
-0. **Reset** — fix what the project is for and what it is judged against. *Milestone: charter merged, three reference reports named, installable from PyPI as `octavo`.*
+0. **Reset** — fix what the project is for and what it is judged against. *Milestone: charter merged, three reference reports named, installable from PyPI as `inkfold`.*
 1. **Email mastery and repeatable reports** — a report you re-run; the best email a Python library produces. *Milestone: an outside user runs a weekly note unchanged for four weeks.*
 2. **The research content model** — say what the research is; a layout per medium decides where it goes. *Milestone: each reference report is one `Note`, rendered to email, report and brochure with no rebuilt tree.*
 3. **The access point: schema, API and AI** — a note and its data in, checked documents out; every number from data. *Milestone: a model-authored note passes with every number traced; one outside client.*
@@ -28,7 +28,8 @@ One version is one roadmap epic and ships as one PR; the epic number from the do
 | v0.2.0  | 00 | 0.1 Scope charter: positioning, the freeze rule | shipped (PR #477) |
 | v0.3.0  | 00 | 0.2 Reference reports and the speed benchmark | shipped (PR #478) |
 | v0.4.0  | 00 | 0.3 Rename to octavo: distribution and import root | shipped (PR #479) |
-| v0.5.0  | 00 | 0.4 First public release on PyPI, by trusted publishing | planned ← cursor |
+| v0.4.1  | 00 | 0.3 Rename to inkfold: PyPI prohibits octavo | in-progress ← cursor |
+| v0.5.0  | 00 | 0.4 First public release on PyPI, by trusted publishing | planned |
 | v0.6.0  | 01 | 1.1 Report definition and the run CLI | planned |
 | v0.7.0  | 01 | 1.2 Data binding and provenance | planned |
 | v0.8.0  | 01 | 1.3 Three house email templates | planned |
@@ -51,6 +52,9 @@ One version is one roadmap epic and ships as one PR; the epic number from the do
 - **DOCX/PPTX: closed until 2.5**, reopened only if a reference report's readers need Word.
 - **Name: octavo** (2026-10-29). `pyhermes` is taken on PyPI and as an import by Allegro's Hermes
   client, so the distribution and import root become `octavo` (v0.4.0) before the first release.
+- **Name: inkfold** (2026-11-09), superseding octavo. PyPI refused `octavo` as a prohibited project
+  name; it accepted `inkfold` as a pending trusted publisher, and the repository is now
+  `RorySullivan1/inkfold`. The rename is v0.4.1.
 - **Repository: renamed to octavo** (2026-10-30). The owner renames it on GitHub, which redirects the
   old URLs; every link in the repository points at `RorySullivan1/octavo` from v0.4.0.
 - **Publishing: trusted publishing** (2026-10-29), from a GitHub Actions workflow on a version tag.

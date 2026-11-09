@@ -17,8 +17,8 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
-from octavo.builder import Email
-from octavo.builder.document import Document
+from inkfold.builder import Email
+from inkfold.builder.document import Document
 
 from . import (
     a4_editorial,

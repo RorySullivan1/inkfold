@@ -14,8 +14,8 @@ import warnings
 
 import pytest
 
-from octavo.brochure import Panel
-from octavo.builder import (
+from inkfold.brochure import Panel
+from inkfold.builder import (
     Email,
     FlowedColumns,
     FourColumn,
@@ -27,9 +27,9 @@ from octavo.builder import (
     TwoColumn,
     ValidationError,
 )
-from octavo.deck import Slide
-from octavo.document import EmptyBackMatter, EmptyCover, Page, PagedDocument
-from octavo.pdf import available, render_pdf
+from inkfold.deck import Slide
+from inkfold.document import EmptyBackMatter, EmptyCover, Page, PagedDocument
+from inkfold.pdf import available, render_pdf
 
 requires_pdf = pytest.mark.skipif(
     not available() or importlib.util.find_spec("pypdfium2") is None,
@@ -207,7 +207,7 @@ class TestOnPaper:
             render_pdf(kept)
 
     def test_the_layout_warns_too(self):
-        from octavo.pdf import page_count
+        from inkfold.pdf import page_count
 
         tall = paper(FullWidth(body("T", 40), title="Too tall", keep_together=True))
         with pytest.warns(PrintQualityWarning):

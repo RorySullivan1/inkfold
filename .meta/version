@@ -1,25 +1,21 @@
-# version: v0.4.0
-status: shipped
-started: 2026-10-30
+# version: v0.4.1
+status: in-progress
+started: 2026-11-09
 branch: claude/integrate-claude-assets-pyhermes-d4spzb
-pr: https://github.com/RorySullivan1/octavo/pull/479
+pr:
 
 ## Goals
-- Roadmap epic 0.3: rename the project to **octavo** (owner's decision, 2026-10-29). The PyPI
-  name `pyhermes` and the import root `pyhermes` both belong to Allegro's Hermes message-broker
-  client (0.7.1), so publishing as-is is impossible and installing both would overwrite one.
-- Rename the distribution and the import root (`pyhermes` to `octavo`) everywhere: the package,
-  templates' resource lookups, tests, `qa/`, examples, drafts, `reference/`, the manual, the
-  README, CLAUDE.md, the rules files and the agents scoped to the package.
-- Keep history readable: session logs, archived decisions and closed issues keep the old name,
-  as #248 did for `svc`.
+- Roadmap epic 0.3, completed: rename the project again, from `octavo` to **inkfold** (owner's
+  decision, 2026-11-09). PyPI refused `octavo` as a prohibited project name when the owner
+  registered the pending publisher, so v0.4.0's name cannot be published. PyPI accepted
+  `inkfold` as a pending trusted publisher, and the repository is renamed to
+  `RorySullivan1/inkfold`.
+- Rename the distribution, the import root (`octavo` to `inkfold`), the `OCTAVO_*` environment
+  variables and every reference and repository link, as v0.4.0 did, keeping history as it was.
 
 ## Objectives / acceptance
-- The wheel's only top-level package is `octavo`, and `import octavo` renders an email from the
-  wheel and the sdist in clean venvs (CI's `wheel` job).
-- No `pyhermes` reference remains outside the memory's session logs and archive, enforced by a
-  test the way `test_distribution.py` holds `svc` out.
-- Every golden is byte-identical unless the name itself is rendered, and any golden diff is
-  shown to be the name alone.
+- The wheel's only top-level package is `inkfold`, and `import inkfold` renders an email from it
+  in a clean venv.
+- Neither former name remains outside history, enforced by `tests/test_distribution.py`.
+- Every golden is byte-identical unless a name is rendered.
 - The full suite, ruff, ruff format and mypy pass; the prose baseline does not grow.
-- The GitHub repository's rename is the owner's call, recorded in the roadmap either way.

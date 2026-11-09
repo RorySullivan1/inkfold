@@ -11,8 +11,8 @@ import re
 
 import pytest
 
-import octavo.builder as builder_api
-from octavo.builder import (
+import inkfold.builder as builder_api
+from inkfold.builder import (
     Banner,
     BannerPalette,
     BoxSurface,
@@ -24,11 +24,11 @@ from octavo.builder import (
     MinimalBanner,
     Rgba,
 )
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.images import EmailImage
-from octavo.builder.models import EmailMetadata
-from octavo.builder.theming import DEFAULT_THEME
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import EmailMetadata
+from inkfold.builder.theming import DEFAULT_THEME
 
 TEMPLATE_DIR = TemplateEngine().template_dir
 
@@ -127,7 +127,7 @@ class TestTheBannerModel:
     """#34: the masthead's presentation is a model of its own, validated early."""
 
     def test_it_is_exported_from_the_package(self):
-        from octavo.builder import Banner as Exported
+        from inkfold.builder import Banner as Exported
 
         assert Exported is Banner
 
@@ -465,7 +465,7 @@ class TestTheTwoTreacherousBlocksLeaveTheBannerAlone:
 
     @staticmethod
     def _skeleton() -> str:
-        from octavo.builder import Email
+        from inkfold.builder import Email
 
         return Email({"email_subject": "s", "firm_name": "f", "campaign_name": "c"}).render()
 
@@ -659,7 +659,7 @@ class TestTheOmittedHeader:
         ``Header`` declares no required slot and ``Footer`` declares one, and
         that is not a lower standard for the header. ``REQUIRED_SLOTS`` is a
         rule about *variants not dropping structure*, never about a caller
-        supplying content — octavo does not require disclaimer language.
+        supplying content — inkfold does not require disclaimer language.
         The header's empty tuple says its whole box is optional; the
         footer's says a footer that renders nothing is a footer that failed.
         """
@@ -673,7 +673,7 @@ class TestEveryRegionVariantHoldsTheContract:
     """
     The shared contract, checked by introspection rather than by a list.
 
-    Every region and variant exported from ``octavo.builder`` goes through this,
+    Every region and variant exported from ``inkfold.builder`` goes through this,
     so a variant added later is covered without anyone remembering to name
     it here — which is what #96 asked for and what a hand-written
     parametrize list cannot promise.
@@ -681,7 +681,7 @@ class TestEveryRegionVariantHoldsTheContract:
 
     @staticmethod
     def _variants() -> list[type]:
-        from octavo.builder import regions as region_api
+        from inkfold.builder import regions as region_api
 
         return [
             obj
@@ -1056,7 +1056,7 @@ class TestTheMinimalBannerVariant:
     """#36: a region abstraction with one implementation is a refactor in a hat."""
 
     def test_it_is_exported_from_the_package(self):
-        from octavo.builder import MinimalBanner as Exported
+        from inkfold.builder import MinimalBanner as Exported
 
         assert Exported is MinimalBanner
 

@@ -1,9 +1,9 @@
 ---
 paths:
-  - "octavo/builder/formats.py"
-  - "octavo/builder/exhibits.py"
-  - "octavo/builder/templates/analysis/legend.html"
-  - "octavo/data/**/*"
+  - "inkfold/builder/formats.py"
+  - "inkfold/builder/exhibits.py"
+  - "inkfold/builder/templates/analysis/legend.html"
+  - "inkfold/data/**/*"
   - "tests/test_formats.py"
   - "tests/test_frames.py"
   - "tests/test_charts.py"
@@ -25,10 +25,10 @@ number  →  format (Python, once)  →  string      →  both projections read 
 
 | Piece | Where | Needs |
 |---|---|---|
-| Formatters (#177) | `octavo/builder/formats.py` | stdlib only |
+| Formatters (#177) | `inkfold/builder/formats.py` | stdlib only |
 | Semantic tone (#178) | `Cell.tone`, `Card.tone`, `tone_of`, `Cell.from_number` | nothing |
-| DataFrame adapter (#179) | `octavo.data.table_from_frame` | `[data]` — pandas |
-| Figure adapter (#180) | `octavo.data.image_from_figure`, `chart_from_figure` | `[charts]` — matplotlib |
+| DataFrame adapter (#179) | `inkfold.data.table_from_frame` | `[data]` — pandas |
+| Figure adapter (#180) | `inkfold.data.image_from_figure`, `chart_from_figure` | `[charts]` — matplotlib |
 
 The tone's own argument lives in `data-table.md`, beside the colour exception it extends.
 
@@ -60,31 +60,31 @@ The tone's own argument lives in `data-table.md`, beside the colour exception it
 - **`compact()` moves up a unit when rounding reaches 1,000.** `999_950` is `1m`, not
   `1,000k`. It drops trailing zeros (`340m`, not `340.0m`), which is the convention for
   magnitudes and not for returns, so `pct` keeps its zeros.
-- **The module imports nothing from `octavo`**, and an AST test holds it to `numbers`, `decimal`
+- **The module imports nothing from `inkfold`**, and an AST test holds it to `numbers`, `decimal`
   and `typing`. It is the floor of the layer, usable without the render path, and it has no
   reason to move a golden.
 
 ### The adapters — a sibling package, and a dependency that runs one way
 
-`octavo/data/` is a sibling of `octavo/pdf/` on the same terms: it imports the builder, the builder
-never imports it, and each backend is imported inside a function, so `import octavo.data` works
-with neither extra installed. **`octavo/math/` (#221) is the third sibling on exactly these
+`inkfold/data/` is a sibling of `inkfold/pdf/` on the same terms: it imports the builder, the builder
+never imports it, and each backend is imported inside a function, so `import inkfold.data` works
+with neither extra installed. **`inkfold/math/` (#221) is the third sibling on exactly these
 terms**: `MathBlock` takes bytes and the `[math]` extra renders them, so the purity tests cover
 it both ways. `math.md` carries its decisions.
 
 - **There is no `DataTable.from_frame` or `ChartBlock.from_figure`.** #179 and #180 asked for
-  both classmethods *and* for a purity test that `octavo/builder` never imports `octavo.data`. The
+  both classmethods *and* for a purity test that `inkfold/builder` never imports `inkfold.data`. The
   two cannot both hold, because a lazy import inside a builder method is still the builder
   importing the adapters. The purity test is what proves the extras optional, so it stayed.
-  The entry points are functions in `octavo.data`, the shape `octavo.pdf.render_pdf(document)`
+  The entry points are functions in `inkfold.data`, the shape `inkfold.pdf.render_pdf(document)`
   already has. Appending the classmethod to `components.py` fails
-  `test_no_core_module_imports_an_optional_backend_or_the_adapters[octavo/builder]` by name.
+  `test_no_core_module_imports_an_optional_backend_or_the_adapters[inkfold/builder]` by name.
 - **Two extras, not one.** `[data]` is pandas and `[charts]` is matplotlib. A table author
   should not install a plotting library, and a test asserts neither extra carries the
   other's backend.
 - **A missing backend is a `DataError`; a frame of the wrong shape is a `ValidationError`.**
-  `octavo.data.BackendMissingError` names the install (`pip install "octavo[data]"`), as
-  `octavo.pdf`'s does. A mapping that names a column the frame lacks, `"auto"` on a text column,
+  `inkfold.data.BackendMissingError` names the install (`pip install "inkfold[data]"`), as
+  `inkfold.pdf`'s does. A mapping that names a column the frame lacks, `"auto"` on a text column,
   a MultiIndex, a repeated column name (#434: `frame[name]` returns a frame, so the column
   silently lost its numeric kind) or an empty frame are data problems, so they raise the builder's own error,
   naming the offending key.
@@ -98,7 +98,7 @@ it both ways. `math.md` carries its decisions.
   2.5 needs Python 3.12+ and this machine's default is 3.11. A 3.13 venv reproduced it
   exactly. The fix took two keys, not one: `follow_imports = "skip"` **is ignored for `.pyi`
   stubs** unless `follow_imports_for_stubs = true` is also set. numpy is listed because it
-  comes in transitively. `octavo/data` types every backend as `Any`, so nothing is lost by
+  comes in transitively. `inkfold/data` types every backend as `Any`, so nothing is lost by
   skipping it.
 
 ### The frame adapter's inferences
@@ -169,7 +169,7 @@ which is the case the README wrote by hand for a yield or the VIX. `change_fmt` 
 `fmt`. The tests cover each sign under each `good`, and that the HTML and the text part print
 the same strings.
 
-**Offered, never applied (#275).** `octavo.data.chart_style(theme, font_theme, *, role)`
+**Offered, never applied (#275).** `inkfold.data.chart_style(theme, font_theme, *, role)`
 returns a `ChartStyle`: a `dict` of matplotlib `rc` settings for `plt.rc_context`, with
 `positive`, `negative`, `series` and, since #387, `tones` (the theme's brand tones by name) as
 attributes, because `rc_context` refuses keys it does not know. The colour settings are listed in `RC_TOKENS`, each with the theme token it reads, and a
@@ -180,7 +180,7 @@ untouched, and nothing changes outside the context.
 
 **The series colours moved to the builder (#337)**, as `theming.SERIES_TOKENS` and
 `chart_colors(theme)`, because a `Legend` names them and the builder may not import the
-`[charts]` layer; `octavo.data.style` re-exports the tokens and builds `series` from the one
+`[charts]` layer; `inkfold.data.style` re-exports the tokens and builds `series` from the one
 function, so the cycle and the key cannot disagree about order. **Since #389 the cycle ends
 in the theme's brand tones**, in declared order and each kept once, so a chart plotted in a
 brand tone is one a key can name by `tone`, `series` or hex. A `series` index is therefore

@@ -13,13 +13,13 @@ import warnings
 
 import pytest
 
-from octavo.brochure import Brochure, Panel
-from octavo.builder import DataTable, Email, EmailBuilder, FullWidth, ImageBlock, TextBlock
-from octavo.builder.exceptions import PrintQualityWarning, SizeError, SizeWarning, ValidationError
-from octavo.builder.images import EmailImage
-from octavo.builder.models import TableRow
-from octavo.config import Config, config_override, get_config, set_config
-from octavo.delivery import Attachment, build_message
+from inkfold.brochure import Brochure, Panel
+from inkfold.builder import DataTable, Email, EmailBuilder, FullWidth, ImageBlock, TextBlock
+from inkfold.builder.exceptions import PrintQualityWarning, SizeError, SizeWarning, ValidationError
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import TableRow
+from inkfold.config import Config, config_override, get_config, set_config
+from inkfold.delivery import Attachment, build_message
 
 #: Small enough that any email fails it; the inline cap may not exceed the limit.
 TINY = Config(size_limit_kb=1, size_warn_kb=1, inline_image_limit_kb=1)

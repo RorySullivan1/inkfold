@@ -14,11 +14,11 @@ import re
 
 import pytest
 
-from octavo.builder import DataTable, FullWidth
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.models import Cell, Column, TableRow
-from octavo.pdf import available as pdf_available
+from inkfold.builder import DataTable, FullWidth
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.models import Cell, Column, TableRow
+from inkfold.pdf import available as pdf_available
 from qa.screenshots import available as browser_available
 
 #: Weights whose shares do not divide evenly, so the rounding is exercised.
@@ -106,14 +106,14 @@ def test_on_paper_the_columns_take_their_shares():
     import numpy as np
     import pypdfium2
 
-    from octavo.document import (
+    from inkfold.document import (
         EmptyBackMatter,
         EmptyCover,
         EmptyRunningFooter,
         EmptyRunningHeader,
         PagedDocument,
     )
-    from octavo.pdf import render_pdf
+    from inkfold.pdf import render_pdf
 
     document = PagedDocument(
         {"firm_name": "F", "campaign_name": "C"},

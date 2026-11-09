@@ -14,12 +14,12 @@ from dataclasses import replace
 
 import pytest
 
-from octavo.builder import FullWidth, TextBlock
-from octavo.builder.email import Email
-from octavo.builder.exceptions import SizeWarning
-from octavo.builder.medium import DEFAULT_MEDIUM, SHIPPED_MEDIA
-from octavo.config import config_override
-from octavo.email import EMAIL_MEDIUM, strip_indentation
+from inkfold.builder import FullWidth, TextBlock
+from inkfold.builder.email import Email
+from inkfold.builder.exceptions import SizeWarning
+from inkfold.builder.medium import DEFAULT_MEDIUM, SHIPPED_MEDIA
+from inkfold.config import config_override
+from inkfold.email import EMAIL_MEDIUM, strip_indentation
 from qa.fixtures import all_fixtures
 from qa.screenshots import VIEWPORTS, _launch, _load_playwright, available, inline_cid_images
 
@@ -62,9 +62,9 @@ class TestTheTransform:
 
 class TestTheEmailMedium:
     def test_it_is_the_only_shipped_medium_that_finishes(self):
-        from octavo.brochure.medium import BROCHURE_MEDIUM
-        from octavo.deck.medium import DECK_MEDIUM
-        from octavo.document.medium import PAGED_MEDIUM
+        from inkfold.brochure.medium import BROCHURE_MEDIUM
+        from inkfold.deck.medium import DECK_MEDIUM
+        from inkfold.document.medium import PAGED_MEDIUM
 
         shipped = (DEFAULT_MEDIUM, EMAIL_MEDIUM, PAGED_MEDIUM, BROCHURE_MEDIUM, DECK_MEDIUM)
         media = {m.name: m for m in shipped}

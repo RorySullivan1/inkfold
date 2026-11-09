@@ -1,12 +1,12 @@
 ---
 paths:
-  - "octavo/builder/glance.py"
-  - "octavo/builder/templates/analysis/trend-arrow.html"
-  - "octavo/builder/templates/analysis/sparkline-bars.html"
-  - "octavo/builder/templates/analysis/sparkline.html"
-  - "octavo/builder/templates/analysis/bar-list.html"
-  - "octavo/builder/templates/analysis/hero-stat.html"
-  - "octavo/builder/templates/analysis/cell-bar.html"
+  - "inkfold/builder/glance.py"
+  - "inkfold/builder/templates/analysis/trend-arrow.html"
+  - "inkfold/builder/templates/analysis/sparkline-bars.html"
+  - "inkfold/builder/templates/analysis/sparkline.html"
+  - "inkfold/builder/templates/analysis/bar-list.html"
+  - "inkfold/builder/templates/analysis/hero-stat.html"
+  - "inkfold/builder/templates/analysis/cell-bar.html"
   - "tests/test_glance.py"
   - "qa/fixtures/_glance.py"
 ---

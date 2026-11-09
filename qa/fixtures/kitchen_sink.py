@@ -21,7 +21,7 @@ from functools import partial
 from pathlib import Path
 from typing import Any
 
-from octavo.builder import (
+from inkfold.builder import (
     AuthorBlock,
     Banner,
     BannerPalette,
@@ -69,17 +69,17 @@ from octavo.builder import (
     Timeline,
     TwoColumn,
 )
-from octavo.builder.engine import TemplateOverlay
-from octavo.builder.enums import (
+from inkfold.builder.engine import TemplateOverlay
+from inkfold.builder.enums import (
     CardOrientation,
     ImageAlign,
     ThreeColumnRatio,
     Tone,
     TwoColumnRatio,
 )
-from octavo.builder.formats import bps, delta, number, pct
-from octavo.builder.images import EmailImage
-from octavo.builder.models import (
+from inkfold.builder.formats import bps, delta, number, pct
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import (
     Card,
     Cell,
     Column,
@@ -284,7 +284,7 @@ def build(
                 highlight=True,
                 content=CardGroup(
                     [
-                        # Figures go through octavo.builder.formats (#177), and each
+                        # Figures go through inkfold.builder.formats (#177), and each
                         # value is coloured by a tone the theme resolves (#178):
                         # the sign where the sign is the claim, stated where not.
                         KpiItem(

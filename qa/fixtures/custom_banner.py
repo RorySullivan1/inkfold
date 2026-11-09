@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import (
+from inkfold.builder import (
     Banner,
     BannerPalette,
     CardGroup,
@@ -27,9 +27,9 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.enums import TwoColumnRatio
-from octavo.builder.images import EmailImage
-from octavo.builder.models import Card, TableRow
+from inkfold.builder.enums import TwoColumnRatio
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import Card, TableRow
 
 from ._png import solid_png
 

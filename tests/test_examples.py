@@ -18,8 +18,8 @@ from pathlib import Path
 
 import pytest
 
-from octavo.data.exceptions import BackendMissingError as _DataMissing
-from octavo.math.exceptions import BackendMissingError as _MathMissing
+from inkfold.data.exceptions import BackendMissingError as _DataMissing
+from inkfold.math.exceptions import BackendMissingError as _MathMissing
 from qa.goldens import difference_report
 
 #: An example that needs an extra skips without it: [charts] or [math] (#233).
@@ -32,7 +32,7 @@ README = REPO_ROOT / "README.md"
 
 def _pdf_available() -> bool:
     """Whether this environment can print. Used to skip, never to fail."""
-    from octavo.pdf import available
+    from inkfold.pdf import available
 
     return available()
 
@@ -156,7 +156,7 @@ class TestTheReadmesHeadlinePrograms:
     """
 
     def test_the_email_quickstart_runs(self):
-        _run(_block_after("# octavo"), "README: quickstart")
+        _run(_block_after("# inkfold"), "README: quickstart")
 
     @pytest.mark.skipif(
         not _pdf_available(),
@@ -232,11 +232,11 @@ class TestTheFactsheetIsTwoSheets:
         assert self.FACTSHEET in EXAMPLES, "the factsheet example has moved or been renamed"
 
     def test_it_lays_out_to_exactly_two_sheets(self):
-        from octavo.pdf import available as pdf_available
+        from inkfold.pdf import available as pdf_available
 
         if not pdf_available():
             pytest.skip('laying a document onto sheets needs the "[pdf]" extra')
-        from octavo.pdf import page_count
+        from inkfold.pdf import page_count
 
         module = _load(self.FACTSHEET)
         try:

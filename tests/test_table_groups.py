@@ -12,10 +12,10 @@ import re
 
 import pytest
 
-from octavo.builder import ColumnGroup, DataTable
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.models import TableRow
+from inkfold.builder import ColumnGroup, DataTable
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.models import TableRow
 from qa.lint import lint_html
 
 GROUPS = [ColumnGroup("Share class"), ColumnGroup("Annualised", 3)]

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import pytest
 
-from octavo.builder import (
+from inkfold.builder import (
     EmailBuilder,
     FlowedColumns,
     FullWidth,
@@ -17,11 +17,11 @@ from octavo.builder import (
     PullQuote,
     TextBlock,
 )
-from octavo.builder.components import _with_drop_cap, descendants
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.images import EmailImage
-from octavo.document import PagedDocument
-from octavo.email import strip_indentation
+from inkfold.builder.components import _with_drop_cap, descendants
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.images import EmailImage
+from inkfold.document import PagedDocument
+from inkfold.email import strip_indentation
 from qa.fixtures import all_brochure_fixtures, all_fixtures, all_paged_fixtures
 from qa.fixtures._png import solid_png
 

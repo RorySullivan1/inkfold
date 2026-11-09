@@ -19,10 +19,10 @@ import inspect
 
 import pytest
 
-import octavo.builder as builder_api
-from octavo.builder.components import Component, DataTable, descendants
-from octavo.builder.models import Cell, Column, EmailMetadata, TableRow
-from octavo.delivery import collect_cid_references
+import inkfold.builder as builder_api
+from inkfold.builder.components import Component, DataTable, descendants
+from inkfold.builder.models import Cell, Column, EmailMetadata, TableRow
+from inkfold.delivery import collect_cid_references
 from qa.fixtures import DEPRECATED_COMPONENTS, all_fixtures
 from qa.fixtures import kitchen_sink as kitchen_sink_module
 from qa.fixtures._png import solid_png
@@ -120,7 +120,7 @@ def _gallery_sections():
 
 def _tables_in_gallery():
     """Every DataTable the gallery builds, with its rows, columns and cells."""
-    from octavo.builder.components import DataTable
+    from inkfold.builder.components import DataTable
 
     for build in all_fixtures().values():
         email = build()
@@ -205,7 +205,7 @@ class TestComponentFieldsAreExercised:
 
     def test_every_math_block_argument_is_exercised(self):
         """#229's fields, read off ``__init__`` as DataTable's are."""
-        from octavo.builder import MathBlock
+        from inkfold.builder import MathBlock
 
         # A block hosted as a TextBlock's figure (#359) counts: it is where wrap means anything.
         blocks = [
@@ -235,7 +235,7 @@ class TestComponentFieldsAreExercised:
     @pytest.mark.parametrize("kind", ["ChartBlock", "DataTable", "ImageBlock", "FigureGrid"])
     def test_every_exhibit_sets_a_qualifier_somewhere(self, kind):
         """#395's field, on each exhibit that takes it, read off the whole tree."""
-        from octavo.builder.components import descendants
+        from inkfold.builder.components import descendants
 
         blocks = [
             block
@@ -251,7 +251,7 @@ class TestComponentFieldsAreExercised:
         field is one the golden cannot pin — the render would not move if
         the default changed underneath it.
         """
-        from octavo.builder.components import CopyAlignment
+        from inkfold.builder.components import CopyAlignment
 
         aligned = [
             component
@@ -375,7 +375,7 @@ class TestComponentFieldsAreExercised:
 class TestKitchenSinkCompleteness:
     @staticmethod
     def _public_components() -> set[str]:
-        """Every public Component subclass exported from octavo.builder."""
+        """Every public Component subclass exported from inkfold.builder."""
         return {
             name
             for name, obj in vars(builder_api).items()
@@ -387,7 +387,7 @@ class TestKitchenSinkCompleteness:
 
     def test_every_public_component_appears(self):
         """
-        Introspected, not hand-listed: a component added to octavo.builder and
+        Introspected, not hand-listed: a component added to inkfold.builder and
         forgotten here fails the suite instead of going unrendered forever.
         """
         source = inspect.getsource(kitchen_sink_module)
@@ -522,8 +522,8 @@ class TestCustomBannerCarriesEveryAxis:
         attached one reaches the manifest and puts a ``cid:`` in both the CSS
         and the VML.
         """
-        from octavo.builder.enums import EmbedStrategy
-        from octavo.builder.images import EmailImage
+        from inkfold.builder.enums import EmbedStrategy
+        from inkfold.builder.images import EmailImage
 
         backdrop = email.banner.background_image_url
         assert isinstance(backdrop, EmailImage)
@@ -576,8 +576,8 @@ class TestThePlacementControlsAreInTheGallery:
         assert {"reverse", False} <= stacks
 
     def test_a_nested_columns_takes_each_value(self):
-        from octavo.builder import Columns
-        from octavo.builder.components import descendants
+        from inkfold.builder import Columns
+        from inkfold.builder.components import descendants
 
         stacks = {
             component.stack
@@ -588,7 +588,7 @@ class TestThePlacementControlsAreInTheGallery:
         assert {"reverse", False} <= stacks
 
     def test_both_visibility_wrappers_are_used(self):
-        from octavo.builder import OnlySections
+        from inkfold.builder import OnlySections
 
         assert any(isinstance(section, OnlySections) for section in _gallery_sections())
 

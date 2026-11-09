@@ -13,8 +13,8 @@ from decimal import ROUND_DOWN, ROUND_HALF_EVEN, Decimal
 
 import pytest
 
-from octavo.builder import formats
-from octavo.builder.formats import bps, compact, delta, displays_zero, money, number, pct
+from inkfold.builder import formats
+from inkfold.builder.formats import bps, compact, delta, displays_zero, money, number, pct
 
 
 @pytest.mark.parametrize(
@@ -267,11 +267,11 @@ def test_it_is_a_pure_module_with_no_builder_imports():
     }
     relative = [n for n in ast.walk(tree) if isinstance(n, ast.ImportFrom) and n.level]
     assert not relative, "formats imports from its own package"
-    assert not any(name.startswith("octavo") for name in imported), imported
+    assert not any(name.startswith("inkfold") for name in imported), imported
     assert imported <= {"__future__", "numbers", "decimal", "typing"}, imported
 
 
 def test_it_is_exported_from_the_package():
-    import octavo.builder
+    import inkfold.builder
 
-    assert octavo.builder.formats is formats
+    assert inkfold.builder.formats is formats

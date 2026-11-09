@@ -2,11 +2,11 @@
 
 import pytest
 
-from octavo.builder import EmailBuilder, Footer, FullWidth, TextBlock
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.images import EmailImage
-from octavo.builder.models import FooterLink, LinkRow
+from inkfold.builder import EmailBuilder, Footer, FullWidth, TextBlock
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import FooterLink, LinkRow
 
 TEMPLATE_DIR = TemplateEngine().template_dir
 
@@ -46,7 +46,7 @@ class TestFooterStructure:
 
         This asserts that a footer told nothing still renders the row built
         from the email's own facts — a statement about resolution, **not** a
-        content mandate. octavo does not require an unsubscribe link or any
+        content mandate. inkfold does not require an unsubscribe link or any
         other content: a caller who supplies their own ``LinkRow`` may drop
         either link, and ``TestTheLinkRow`` says so by name. What the region
         guarantees is that a *variant* will not silently drop the block the
@@ -158,7 +158,7 @@ class TestPresentation:
 class TestMinimalFooterIsGone:
     def test_it_is_no_longer_importable(self):
         with pytest.raises(ImportError):
-            from octavo.builder import MinimalFooter  # noqa: F401
+            from inkfold.builder import MinimalFooter  # noqa: F401
 
 
 class TestTheLinkRow:

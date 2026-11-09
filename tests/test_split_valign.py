@@ -13,7 +13,7 @@ import importlib.util
 
 import pytest
 
-from octavo.builder import (
+from inkfold.builder import (
     Columns,
     Email,
     FourColumn,
@@ -24,10 +24,10 @@ from octavo.builder import (
     TwoColumn,
     ValidationError,
 )
-from octavo.deck import SLIDE_16_9, Deck, Slide
-from octavo.deck.regions import EmptyClosingSlide, EmptyTitleSlide
-from octavo.document import EmptyBackMatter, EmptyCover, Page, PagedDocument
-from octavo.pdf import available
+from inkfold.deck import SLIDE_16_9, Deck, Slide
+from inkfold.deck.regions import EmptyClosingSlide, EmptyTitleSlide
+from inkfold.document import EmptyBackMatter, EmptyCover, Page, PagedDocument
+from inkfold.pdf import available
 
 requires_pdf = pytest.mark.skipif(
     not available() or importlib.util.find_spec("pypdfium2") is None,
@@ -127,7 +127,7 @@ class TestAnEmailRefusesIt:
 class TestOnTheSheet:
     @staticmethod
     def _landed(document) -> dict[str, float]:
-        from octavo.pdf import anchor_tops
+        from inkfold.pdf import anchor_tops
 
         return anchor_tops(document)
 

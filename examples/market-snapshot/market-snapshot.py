@@ -23,7 +23,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import (
+from inkfold.builder import (
     CardGroup,
     ContactBlock,
     Email,
@@ -32,8 +32,8 @@ from octavo.builder import (
     FullWidth,
     TextBlock,
 )
-from octavo.builder.enums import CardOrientation
-from octavo.builder.models import KpiItem
+from inkfold.builder.enums import CardOrientation
+from inkfold.builder.models import KpiItem
 
 # Colour vocabulary is #RRGGBB everywhere — validated at construction time.
 _GAIN = "#4A7C59"

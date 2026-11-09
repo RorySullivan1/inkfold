@@ -13,12 +13,12 @@ import re
 
 import pytest
 
-from octavo.brochure import TRI_FOLD_LETTER, Brochure, Panel
-from octavo.builder import Callout, Columns, EmailBuilder, FullWidth, TextBlock, TwoColumn
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.sizing import LETTER_PORTRAIT
-from octavo.deck import SLIDE_16_9, Deck
-from octavo.document import (
+from inkfold.brochure import TRI_FOLD_LETTER, Brochure, Panel
+from inkfold.builder import Callout, Columns, EmailBuilder, FullWidth, TextBlock, TwoColumn
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.sizing import LETTER_PORTRAIT
+from inkfold.deck import SLIDE_16_9, Deck
+from inkfold.document import (
     EmptyBackMatter,
     EmptyCover,
     Page,
@@ -27,7 +27,7 @@ from octavo.document import (
     RunningHeader,
     paged_medium,
 )
-from octavo.pdf import available, render_pdf
+from inkfold.pdf import available, render_pdf
 from qa.fixtures import _paged, letter_product_brief, pitch_16_9, product_brief_layout
 
 NAVY = "#1B2A3A"
@@ -272,7 +272,7 @@ class TestTheProductBrief:
     """#401."""
 
     def test_its_email_passes_lint(self):
-        from octavo.check.lint import Severity, lint_document
+        from inkfold.check.lint import Severity, lint_document
 
         findings = lint_document(product_brief_layout.build())
         assert not [f for f in findings if f.severity is Severity.ERROR]

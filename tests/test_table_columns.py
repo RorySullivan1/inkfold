@@ -4,7 +4,7 @@ Per-column alignment and kind (#117), the first step of the DataTable epic #116.
 The claim this file exists to hold: **alignment resolves once, and both
 projections read that one resolution.** Before #117 the rule lived as
 ``loop.first`` in the template and was *re-derived* in
-``octavo/builder/textgen.py`` so the two would agree — correct, and impossible
+``inkfold/builder/textgen.py`` so the two would agree — correct, and impossible
 to extend. A test that only checked the HTML would let them drift apart.
 """
 
@@ -14,12 +14,12 @@ import re
 
 import pytest
 
-from octavo.builder import DataTable
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.enums import ColumnAlign, ColumnKind, RowKind
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.models import Cell, Column, TableRow, coerce_cell, coerce_column
-from octavo.builder.textgen import table as text_table
+from inkfold.builder import DataTable
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.enums import ColumnAlign, ColumnKind, RowKind
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.models import Cell, Column, TableRow, coerce_cell, coerce_column
+from inkfold.builder.textgen import table as text_table
 
 TEMPLATE = TemplateEngine().template_dir / "analysis" / "data-table.html"
 

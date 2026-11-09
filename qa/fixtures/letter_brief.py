@@ -11,9 +11,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder.document import Document
-from octavo.builder.sizing import LETTER_PORTRAIT
-from octavo.document import (
+from inkfold.builder.document import Document
+from inkfold.builder.sizing import LETTER_PORTRAIT
+from inkfold.document import (
     EmptyBackMatter,
     EmptyCover,
     PagedDocument,

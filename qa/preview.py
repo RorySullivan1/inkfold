@@ -20,17 +20,17 @@ import webbrowser
 from collections.abc import Callable
 from pathlib import Path
 
-from octavo.builder.document import Document
-from octavo.builder.exceptions import EmailBuilderError, SizeError
-from octavo.check import (
+from inkfold.builder.document import Document
+from inkfold.builder.exceptions import EmailBuilderError, SizeError
+from inkfold.check import (
     Severity,
     format_findings,
     layout_findings,
     lint_html,
     render_for_check,
 )
-from octavo.check.target import TargetError, as_document, load_target
-from octavo.pdf import PdfError
+from inkfold.check.target import TargetError, as_document, load_target
+from inkfold.pdf import PdfError
 
 from .fixtures import (
     all_brochure_fixtures,
@@ -107,7 +107,7 @@ def _from_fixture(name: str) -> Document:
 
 
 def _from_spec(target: str) -> tuple[str, Document]:
-    """``path/to/module.py:callable``, loaded exactly as ``python -m octavo.check`` loads it."""
+    """``path/to/module.py:callable``, loaded exactly as ``python -m inkfold.check`` loads it."""
     return load_target(target)
 
 
@@ -194,7 +194,7 @@ def main(argv: list[str] | None = None) -> int:
     layout_error: PdfError | None = None
     if email.medium.paged:
         try:
-            from octavo.pdf import layout
+            from inkfold.pdf import layout
 
             laid_out = layout(email)
         except PdfError as exc:
@@ -217,7 +217,7 @@ def main(argv: list[str] | None = None) -> int:
         try:
             if laid_out is None:
                 raise layout_error or PdfError("the document was not laid out")
-            from octavo.pdf import page_count, save_layout
+            from inkfold.pdf import page_count, save_layout
 
             pdf_destination = save_layout(laid_out, args.out / f"{name}.pdf")
             size_kb = pdf_destination.stat().st_size / 1024

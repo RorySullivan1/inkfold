@@ -13,12 +13,12 @@ import re
 
 import pytest
 
-from octavo.brochure import BROCHURE_MEDIUM
-from octavo.builder.medium import DEFAULT_MEDIUM
-from octavo.check import render_for_check
-from octavo.deck import DECK_MEDIUM
-from octavo.document import PAGED_MEDIUM, PagedDocument
-from octavo.email import EMAIL_MEDIUM
+from inkfold.brochure import BROCHURE_MEDIUM
+from inkfold.builder.medium import DEFAULT_MEDIUM
+from inkfold.check import render_for_check
+from inkfold.deck import DECK_MEDIUM
+from inkfold.document import PAGED_MEDIUM, PagedDocument
+from inkfold.email import EMAIL_MEDIUM
 from qa.fixtures import (
     all_brochure_fixtures,
     all_deck_fixtures,
@@ -274,7 +274,7 @@ class TestAPagedDocumentIsPhotographedFromItsPdf:
     def test_one_image_per_sheet(self, tmp_path):
         document = all_paged_fixtures()["a4_portrait"]()
         shots, _ = capture_pages({"a4_portrait": document}, tmp_path)
-        from octavo.pdf import page_count
+        from inkfold.pdf import page_count
 
         assert len(shots) == page_count(document)
 

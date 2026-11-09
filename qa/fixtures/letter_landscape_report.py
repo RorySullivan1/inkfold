@@ -13,11 +13,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from octavo.builder import DataTable, FullWidth, ImageBlock, PullQuote, TextBlock
-from octavo.builder.images import EmailImage
-from octavo.builder.models import TableRow
-from octavo.builder.sizing import LETTER_LANDSCAPE
-from octavo.document import (
+from inkfold.builder import DataTable, FullWidth, ImageBlock, PullQuote, TextBlock
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import TableRow
+from inkfold.builder.sizing import LETTER_LANDSCAPE
+from inkfold.document import (
     BackMatter,
     ContentsPage,
     Cover,

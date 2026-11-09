@@ -14,9 +14,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import DataTable, Email, EmailBuilder, FullWidth, HeatScale, TextBlock
-from octavo.builder.formats import pct
-from octavo.builder.models import Cell, Column, ColumnGroup, TableRow
+from inkfold.builder import DataTable, Email, EmailBuilder, FullWidth, HeatScale, TextBlock
+from inkfold.builder.formats import pct
+from inkfold.builder.models import Cell, Column, ColumnGroup, TableRow
 
 #: Gains and losses, as the caller's claim about a figure rather than a
 #: styling choice — the justification that admits #118's colours at all.

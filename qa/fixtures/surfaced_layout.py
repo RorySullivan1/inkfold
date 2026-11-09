@@ -13,7 +13,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from octavo.builder import (
+from inkfold.builder import (
     Button,
     Callout,
     CardGroup,
@@ -27,7 +27,7 @@ from octavo.builder import (
     ThreeColumn,
     TwoColumn,
 )
-from octavo.builder.models import KpiItem, TableRow
+from inkfold.builder.models import KpiItem, TableRow
 
 _YEAR = "2026"
 _NAVY = "#1B2A38"

@@ -18,7 +18,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import (
+from inkfold.builder import (
     DataTable,
     Email,
     EmailBuilder,
@@ -27,8 +27,8 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.images import EmailImage
-from octavo.builder.models import TableRow
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import TableRow
 
 from ._png import solid_png
 

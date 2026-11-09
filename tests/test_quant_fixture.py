@@ -13,9 +13,9 @@ from pathlib import Path
 
 import pytest
 
-from octavo.builder.components import DataTable
-from octavo.builder.sizing import LETTER_PORTRAIT
-from octavo.pdf import available
+from inkfold.builder.components import DataTable
+from inkfold.builder.sizing import LETTER_PORTRAIT
+from inkfold.pdf import available
 from qa.fixtures import all_paged_fixtures
 from qa.fixtures import letter_quant_table as quant
 
@@ -59,7 +59,7 @@ class TestOnPaper:
         import pypdfium2
         import weasyprint
 
-        from octavo.pdf.fetcher import build_fetcher
+        from inkfold.pdf.fetcher import build_fetcher
 
         document = quant.build()
         pdf = pypdfium2.PdfDocument(

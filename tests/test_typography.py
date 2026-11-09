@@ -15,10 +15,10 @@ from pathlib import Path
 
 import pytest
 
-from octavo.builder import DEFAULT_FONTS, FONT_THEMES, MODERN_FONTS, FontStack, FontTheme
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.typography import GENERIC_FAMILIES, resolve_font_theme
+from inkfold.builder import DEFAULT_FONTS, FONT_THEMES, MODERN_FONTS, FontStack, FontTheme
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.typography import GENERIC_FAMILIES, resolve_font_theme
 
 TEMPLATE_DIR = TemplateEngine().template_dir
 
@@ -373,7 +373,7 @@ class TestNoLiteralSurvives:
         The other half of rules 4/5: a literal hiding in a Python default is
         just as unthemeable as one in markup.
         """
-        for path in sorted(Path("octavo").rglob("*.py")):
+        for path in sorted(Path("inkfold").rglob("*.py")):
             if path.name == "typography.py":  # the vocabulary is where they live
                 continue
             source = path.read_text(encoding="utf-8")
@@ -455,7 +455,7 @@ class TestNoLiteralSurvives:
         on it, and no signature in the section tree changed to carry them.
         The binder moved to ``Document`` in #162 — the claim did not.
         """
-        source = (Path("octavo/builder") / "document.py").read_text(encoding="utf-8")
+        source = (Path("inkfold/builder") / "document.py").read_text(encoding="utf-8")
         bind = source[source.index("def _bound_engine(") : source.index("def _body_sections(")]
         assert source.count("self._engine.bound(") == 1
         assert bind.count("bound(") == 1

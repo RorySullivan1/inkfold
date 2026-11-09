@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import (
+from inkfold.builder import (
     CardGroup,
     Email,
     EmailBuilder,
@@ -19,8 +19,8 @@ from octavo.builder import (
     FullWidth,
     TextBlock,
 )
-from octavo.builder.images import EmailImage
-from octavo.builder.models import Card, FooterLink, LinkRow
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import Card, FooterLink, LinkRow
 
 from ._png import solid_png
 

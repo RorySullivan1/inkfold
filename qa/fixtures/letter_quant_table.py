@@ -12,11 +12,11 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from octavo.builder import ColumnGroup, DataTable, FullWidth, HeatScale, TextBlock
-from octavo.builder.formats import pct
-from octavo.builder.models import Cell, Column, TableRow
-from octavo.builder.sizing import LETTER_PORTRAIT
-from octavo.document import (
+from inkfold.builder import ColumnGroup, DataTable, FullWidth, HeatScale, TextBlock
+from inkfold.builder.formats import pct
+from inkfold.builder.models import Cell, Column, TableRow
+from inkfold.builder.sizing import LETTER_PORTRAIT
+from inkfold.document import (
     EmptyBackMatter,
     EmptyContentsPage,
     EmptyCover,

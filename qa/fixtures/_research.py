@@ -11,7 +11,7 @@ numbering agrees across them.
 
 from __future__ import annotations
 
-from octavo.builder import (
+from inkfold.builder import (
     Appendices,
     Aside,
     Bibliography,
@@ -29,8 +29,8 @@ from octavo.builder import (
     Term,
     TextBlock,
 )
-from octavo.builder.images import EmailImage
-from octavo.builder.models import TableRow
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import TableRow
 
 from ._png import solid_png
 

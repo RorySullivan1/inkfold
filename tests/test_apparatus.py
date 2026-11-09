@@ -11,7 +11,7 @@ import re
 
 import pytest
 
-from octavo.builder import (
+from inkfold.builder import (
     CardGroup,
     ChartBlock,
     Contents,
@@ -25,11 +25,11 @@ from octavo.builder import (
     TwoColumn,
     ValidationError,
 )
-from octavo.builder.apparatus import slugify
-from octavo.builder.email import Email
-from octavo.builder.models import Card, Footnote, NumberedItem, TableRow
-from octavo.config import config_override
-from octavo.document import (
+from inkfold.builder.apparatus import slugify
+from inkfold.builder.email import Email
+from inkfold.builder.models import Card, Footnote, NumberedItem, TableRow
+from inkfold.config import config_override
+from inkfold.document import (
     ContentsPage,
     EmptyBackMatter,
     EmptyContentsPage,
@@ -39,7 +39,7 @@ from octavo.document import (
     PagedDocument,
     RunningHeader,
 )
-from octavo.pdf import available, render_pdf
+from inkfold.pdf import available, render_pdf
 from qa.fixtures import all_paged_fixtures
 
 requires_pdf = pytest.mark.skipif(
@@ -534,7 +534,7 @@ class TestCrossReferences:
             email(section()).render()
 
     def test_the_document_facts_and_the_footer_are_checked_too(self):
-        from octavo.builder import Footer
+        from inkfold.builder import Footer
 
         with pytest.raises(ValidationError, match="header_disclaimer links to #nowhere"):
             Email({**FACTS, "header_disclaimer": '<a href="#nowhere">x</a>'}).render()

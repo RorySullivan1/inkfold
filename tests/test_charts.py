@@ -9,19 +9,19 @@ import struct
 
 import pytest
 
-pytest.importorskip("matplotlib", reason='the Figure adapter needs "octavo[charts]"')
+pytest.importorskip("matplotlib", reason='the Figure adapter needs "inkfold[charts]"')
 
 from matplotlib.figure import Figure  # noqa: E402
 
-from octavo.builder import (  # noqa: E402
+from inkfold.builder import (  # noqa: E402
     ChartBlock,
     EmailBuilder,
     FullWidth,
     SizeError,
     ValidationError,
 )
-from octavo.builder.enums import EmbedStrategy  # noqa: E402
-from octavo.data import chart_from_figure, image_from_figure  # noqa: E402
+from inkfold.builder.enums import EmbedStrategy  # noqa: E402
+from inkfold.data import chart_from_figure, image_from_figure  # noqa: E402
 
 
 def _figure(width_inches: float = 6.4, points: int = 3) -> Figure:

@@ -11,7 +11,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from octavo.builder import (
+from inkfold.builder import (
     CardGroup,
     Columns,
     DataTable,
@@ -23,7 +23,7 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.models import KpiItem, TableRow
+from inkfold.builder.models import KpiItem, TableRow
 
 _YEAR = "2026"
 

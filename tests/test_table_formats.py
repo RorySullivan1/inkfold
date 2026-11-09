@@ -12,12 +12,12 @@ from decimal import Decimal
 
 import pytest
 
-from octavo.builder import DataTable
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.enums import ColumnKind, RowKind, Tone
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.formats import bps, pct
-from octavo.builder.models import Cell, Column, TableRow
+from inkfold.builder import DataTable
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.enums import ColumnKind, RowKind, Tone
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.formats import bps, pct
+from inkfold.builder.models import Cell, Column, TableRow
 
 
 def one_year(value: float) -> str:
@@ -158,4 +158,4 @@ def test_the_frame_adapter_formats_nothing_itself():
     # The logic moved onto the column; one path means the two cannot differ.
     import pathlib
 
-    assert "from_number" not in pathlib.Path("octavo/data/frames.py").read_text(encoding="utf-8")
+    assert "from_number" not in pathlib.Path("inkfold/data/frames.py").read_text(encoding="utf-8")

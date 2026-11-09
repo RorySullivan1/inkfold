@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import (
+from inkfold.builder import (
     AuthorBlock,
     CardGroup,
     DataTable,
@@ -23,7 +23,7 @@ from octavo.builder import (
     ThreeColumn,
     TwoColumn,
 )
-from octavo.builder.models import Card, Cell, Column, HeatScale, NumberedItem, TableRow
+from inkfold.builder.models import Card, Cell, Column, HeatScale, NumberedItem, TableRow
 
 
 def build(template_dir: Path | None = None) -> Email:

@@ -12,11 +12,11 @@ import textwrap
 
 import pytest
 
-from octavo.builder import DataTable, FullWidth, ImageBlock, TextBlock
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.images import EmailImage
-from octavo.builder.models import TableRow
-from octavo.deck import (
+from inkfold.builder import DataTable, FullWidth, ImageBlock, TextBlock
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import TableRow
+from inkfold.deck import (
     SLIDE_4_3,
     SLIDE_16_9,
     Deck,
@@ -25,8 +25,8 @@ from octavo.deck import (
     Slide,
     overflowing_slides,
 )
-from octavo.pdf import UnreachableResourceError, available, page_count, render_pdf
-from octavo.pdf.exporter import render_handout
+from inkfold.pdf import UnreachableResourceError, available, page_count, render_pdf
+from inkfold.pdf.exporter import render_handout
 from qa.fixtures import pitch_16_9
 
 pytestmark = pytest.mark.skipif(
@@ -178,7 +178,7 @@ class TestADeckThatCannotBeLaidOutIsAFinding:
 
     @staticmethod
     def _hosted_logo_deck() -> Deck:
-        from octavo.deck import TitleSlide
+        from inkfold.deck import TitleSlide
 
         deck = Deck(FACTS, title_slide=TitleSlide(logo_url="https://example.com/logo.png"))
         return deck.add_slide(_paragraph(), "One")
@@ -194,14 +194,14 @@ class TestADeckThatCannotBeLaidOutIsAFinding:
         assert "https://example.com/logo.png" in findings[0].message
 
     def test_the_check_prints_the_finding_and_exits_with_a_lint_code(self, tmp_path, capsys):
-        from octavo.check.__main__ import EXIT_LINT_ERRORS, main
+        from inkfold.check.__main__ import EXIT_LINT_ERRORS, main
 
         draft = tmp_path / "deck.py"
         draft.write_text(
             textwrap.dedent(
                 """
-                from octavo.builder import FullWidth, TextBlock
-                from octavo.deck import Deck, TitleSlide
+                from inkfold.builder import FullWidth, TextBlock
+                from inkfold.deck import Deck, TitleSlide
 
                 def build():
                     logo = TitleSlide(logo_url="https://example.com/logo.png")
@@ -219,8 +219,8 @@ class TestADeckThatCannotBeLaidOutIsAFinding:
 
         draft = tmp_path / "deck.py"
         draft.write_text(
-            "from octavo.builder import FullWidth, TextBlock\n"
-            "from octavo.deck import Deck, TitleSlide\n\n"
+            "from inkfold.builder import FullWidth, TextBlock\n"
+            "from inkfold.deck import Deck, TitleSlide\n\n"
             "def build():\n"
             '    logo = TitleSlide(logo_url="https://example.com/logo.png")\n'
             '    deck = Deck({"firm_name": "F", "campaign_name": "C"}, title_slide=logo)\n'
@@ -235,15 +235,15 @@ class TestADeckThatCannotBeLaidOutIsAFinding:
 
 class TestTheCheckExitsOnOverflow:
     def test_an_overflowing_deck_exits_1_and_names_the_slide(self, tmp_path, capsys):
-        from octavo.check.__main__ import EXIT_LINT_ERRORS, main
+        from inkfold.check.__main__ import EXIT_LINT_ERRORS, main
 
         draft = tmp_path / "deck.py"
         draft.write_text(
             textwrap.dedent(
                 """
-                from octavo.builder import DataTable, FullWidth
-                from octavo.builder.models import TableRow
-                from octavo.deck import Deck
+                from inkfold.builder import DataTable, FullWidth
+                from inkfold.builder.models import TableRow
+                from inkfold.deck import Deck
 
                 def build():
                     rows = [TableRow([str(n), str(n)]) for n in range(40)]
@@ -257,7 +257,7 @@ class TestTheCheckExitsOnOverflow:
         assert "slide-overflow at slide 2: Full" in capsys.readouterr().out
 
     def test_a_deck_that_fits_exits_0(self, tmp_path):
-        from octavo.check.__main__ import EXIT_OK, main
+        from inkfold.check.__main__ import EXIT_OK, main
 
         draft = tmp_path / "deck.py"
         draft.write_text(

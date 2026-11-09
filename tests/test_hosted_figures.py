@@ -12,8 +12,8 @@ import importlib.util
 
 import pytest
 
-from octavo.brochure import Brochure, Panel
-from octavo.builder import (
+from inkfold.brochure import Brochure, Panel
+from inkfold.builder import (
     Bibliography,
     ChartBlock,
     Contents,
@@ -26,10 +26,10 @@ from octavo.builder import (
     TextBlock,
     ValidationError,
 )
-from octavo.builder.exhibits import LegendEntry
-from octavo.builder.images import EmailImage
-from octavo.document import EmptyBackMatter, EmptyCover, PagedDocument
-from octavo.pdf import available
+from inkfold.builder.exhibits import LegendEntry
+from inkfold.builder.images import EmailImage
+from inkfold.document import EmptyBackMatter, EmptyCover, PagedDocument
+from inkfold.pdf import available
 from qa.fixtures._png import solid_png
 
 requires_pdf = pytest.mark.skipif(
@@ -208,7 +208,7 @@ class TestTheWalkSeesAHostedFigure:
         assert "Premium" not in "".join(title for title, _ in built._exhibit_entries())
 
     def test_a_host_keeps_its_own_notes(self):
-        from octavo.builder.models import Footnote
+        from inkfold.builder.models import Footnote
 
         host = TextBlock("<p>Rates rose.[^1]</p>", notes=[Footnote("Source: BoE.")], figure=chart())
         built = email(FullWidth(host))
@@ -252,7 +252,7 @@ class TestOnTheSheet:
     @staticmethod
     def _beside(document, anchor: str) -> bool:
         """Whether the prose's first line sits level with the figure rather than under it."""
-        from octavo.pdf import anchor_tops
+        from inkfold.pdf import anchor_tops
 
         landed = anchor_tops(document)
         return abs(landed["prose-start"] - landed[anchor]) < 20

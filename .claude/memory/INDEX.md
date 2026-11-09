@@ -1,12 +1,12 @@
 # MEMORY INDEX  ·  keep ≤ ~80 lines, ≤ ~200 chars per line
 
 ## State            (rewrite in place — current truth only, ≤ ~10 lines)
-- octavo (renamed from pyHermes in v0.4.0) builds **documents** onto **media** (`email`, `document`,
-  `brochure`, `deck`) from the shared `octavo/builder` kit; exporters: `delivery`+`gmail`+`outlook`, and `pdf`. Rationale: CLAUDE.md, `media.md`.
+- inkfold (pyHermes until v0.4.0, octavo until v0.4.1) builds **documents** onto **media** (`email`,
+  `document`, `brochure`, `deck`) from the shared `inkfold/builder` kit; exporters: `delivery`+`gmail`+`outlook`, and `pdf`. Rationale: CLAUDE.md, `media.md`.
 - **Shipped through PR #475** (#474); epics #157–#442 all closed, no issues open. #219 DOCX and #300 PPTX
   closed as not planned. #288 is the owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
 - **The roadmap is live** in `.meta/roadmap/` (5 stages, 31 epics), surfaced each session by `roadmap_status`;
-  v0.2.0 shipped (PR #477); v0.3.0 (reference reports, benchmark) shipped (PR #478); v0.4.0 (the rename to octavo) shipped (PR #479); cursor v0.5.0. The owner's six
+  v0.2.0 shipped (PR #477); v0.3.0 (reference reports, benchmark) shipped (PR #478); v0.4.0 (rename to octavo) shipped (PR #479); v0.4.1 (rename to inkfold) in progress. The owner's six
   decisions are taken. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
 
 ## Decisions        (append-only; supersede, never delete)
@@ -36,10 +36,12 @@
   The rename is v0.4.0, the first release v0.5.0 by trusted publishing; later versions moved up one** — `.meta/roadmap/`
 - [2026-10-30] **The GitHub repository is renamed to octavo too** (owner); the repository's links point there
   from v0.4.0 — `.meta/roadmap/INDEX.md`
+- [2026-11-09] **The project becomes inkfold: PyPI prohibits octavo as a project name (a hidden list), and
+  accepted inkfold as a pending publisher first; the repository is RorySullivan1/inkfold. v0.4.1** — `.meta/roadmap/`
 
 ## Threads          (open items; remove when closed)
-- **The owner registers `octavo` on PyPI as a pending trusted publisher** (owner RorySullivan1, repo octavo,
-  workflow release.yml, environment pypi) before v0.5.0's tag; it reserves nothing until the first publish.
+- **`inkfold` is registered on PyPI as a pending trusted publisher** (owner RorySullivan1, repo inkfold,
+  workflow release.yml, environment pypi); v0.5.0 must match it. It reserves nothing until the first publish.
 - **The first outside user is not yet named** (a colleague or team); needed before Gate 1 — `.meta/roadmap/INDEX.md`.
 - **#394's ruling (justify on paper only) was taken under a goal**; the owner may widen it.
 - **#400's ruling: `skip_first` is opt-in, not the default under an `EmptyCover`** (goal-taken; `media.md`).
@@ -51,7 +53,7 @@
 - **The suite runs on Windows since #372** (PR #371); no Windows CI job — the owner's run is the check.
 - **`epic-autoclose` works** (closed #273, #354, #361, #346, #324, #329, #335). Still confirm each epic closed after its merge.
 - **In this container, PDF byte-determinism tests flake** (no HarfBuzz-Subset), and screenshot
-  tests skip unless `OCTAVO_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome`.
+  tests skip unless `INKFOLD_CHROMIUM=/opt/pw-browsers/chromium-1194/chrome-linux/chrome`.
 - **Every issue or PR body is written without angle brackets** — GitHub's sanitizer has
   emptied three.
 - **A closing keyword closes only the issue it names, and this is now proven both ways.**
@@ -71,9 +73,6 @@
 
 ## Log              (append-only pointers)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
-- [2026-10-28] scope-charter — PR #477 merged; v0.2.0 marked shipped in the roadmap and `.meta/version`.
-- [2026-10-29] reference-reports — v0.3.0: `reference/` (three stand-ins), `qa.benchmark` and its baseline;
-  review had no must-fix; goal-auditor PASS; PR #478 — sessions/2026-10-29-0900-reference-reports.md
 - [2026-10-29] reference-reports — PR #478 merged; v0.3.0 marked shipped in the roadmap and `.meta/version`.
 - [2026-10-30] octavo-rename — v0.4.0: package, import root, `OCTAVO_*` and repo links renamed; review fixed the
   manual's checkout folder; goal-auditor PASS after the repo decision; PR #479 — sessions/2026-10-30-0900-octavo-rename.md

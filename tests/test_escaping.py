@@ -15,7 +15,7 @@ fields are *not* (escaping those would break every caller passing markup).
 
 import pytest
 
-from octavo.builder import (
+from inkfold.builder import (
     AuthorBlock,
     CardGroup,
     ChartBlock,
@@ -26,8 +26,8 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.filters import escape_html
-from octavo.builder.models import KpiItem, NumberedItem, TableRow
+from inkfold.builder.filters import escape_html
+from inkfold.builder.models import KpiItem, NumberedItem, TableRow
 
 NASTY = 'S&P "500" <script>alert(1)</script>'
 
@@ -203,7 +203,7 @@ class TestHtmlFieldsStayRaw:
         assert "<em>emphasis</em>" in html
 
     def test_metadata_disclaimers_are_not_escaped(self, valid_metadata, text_block):
-        from octavo.builder import Footer
+        from inkfold.builder import Footer
 
         email = Email(
             metadata=valid_metadata,

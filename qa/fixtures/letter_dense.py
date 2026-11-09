@@ -12,7 +12,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from octavo.builder import (
+from inkfold.builder import (
     CardGroup,
     DataTable,
     FullWidth,
@@ -21,10 +21,10 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.enums import CardOrientation, TwoColumnRatio
-from octavo.builder.models import Column, KpiItem, NumberedItem, TableRow
-from octavo.builder.sizing import LETTER_PORTRAIT
-from octavo.document import (
+from inkfold.builder.enums import CardOrientation, TwoColumnRatio
+from inkfold.builder.models import Column, KpiItem, NumberedItem, TableRow
+from inkfold.builder.sizing import LETTER_PORTRAIT
+from inkfold.document import (
     EmptyBackMatter,
     EmptyContentsPage,
     EmptyCover,

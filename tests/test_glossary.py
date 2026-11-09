@@ -8,10 +8,10 @@ import re
 
 import pytest
 
-from octavo.builder import FullWidth, Glossary, Term, TextBlock, ValidationError
-from octavo.builder.email import Email
-from octavo.check.lint import Severity, lint_document
-from octavo.document import PagedDocument
+from inkfold.builder import FullWidth, Glossary, Term, TextBlock, ValidationError
+from inkfold.builder.email import Email
+from inkfold.check.lint import Severity, lint_document
+from inkfold.document import PagedDocument
 
 FACTS = {"email_subject": "Subject", "firm_name": "Hermes", "campaign_name": "Review"}
 
@@ -114,6 +114,6 @@ class TestRefusals:
 
 
 def _engine():
-    from octavo.builder import TemplateEngine
+    from inkfold.builder import TemplateEngine
 
     return TemplateEngine()

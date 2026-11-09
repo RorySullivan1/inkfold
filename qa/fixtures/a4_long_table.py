@@ -13,11 +13,11 @@ from __future__ import annotations
 import dataclasses
 from pathlib import Path
 
-from octavo.builder import ChartBlock, DataTable, FullWidth, TextBlock
-from octavo.builder.document import Document
-from octavo.builder.images import EmailImage
-from octavo.builder.models import Column, ColumnGroup, TableRow
-from octavo.document import PAGED_MEDIUM, PagedDocument
+from inkfold.builder import ChartBlock, DataTable, FullWidth, TextBlock
+from inkfold.builder.document import Document
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import Column, ColumnGroup, TableRow
+from inkfold.document import PAGED_MEDIUM, PagedDocument
 
 from . import _paged
 from ._png import solid_png

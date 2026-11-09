@@ -5,7 +5,7 @@ holds what is true for every task, and points at the topic file for everything e
 
 ## What this project is
 
-octavo is a framework for research reports: quantitative research goes in as data, exhibits,
+inkfold is a framework for research reports: quantitative research goes in as data, exhibits,
 findings and disclosures, and comes out as an email, a printed report or a folded brochure,
 each checked for the medium it is read on. Today that is one section tree rendered onto each
 medium; [the roadmap](.meta/roadmap/INDEX.md) takes it to a research content model, an API, and
@@ -13,21 +13,21 @@ a model as an author. Python composes Jinja2 templates into a single inline-CSS 
 hard parts are per-medium — surviving Gmail's clipping limit and Outlook's Word engine for an
 email, laying out sheets and margin boxes for a page.
 
-**Scope = build, then send *or* print.** `octavo/builder/` is the shared kit — the section tree,
-the three design axes, the two projections. A **medium** decides the rest: `octavo/email/` the
-four-slot skeleton and the 102 KB check, `octavo/document/` the paged one with its cover,
-contents sheet, running boxes and page breaks, `octavo/brochure/` a sheet folded into panels,
-imposed for the press with bleed and crop marks, `octavo/deck/` one slide to a sheet, between a
+**Scope = build, then send *or* print.** `inkfold/builder/` is the shared kit — the section tree,
+the three design axes, the two projections. A **medium** decides the rest: `inkfold/email/` the
+four-slot skeleton and the 102 KB check, `inkfold/document/` the paged one with its cover,
+contents sheet, running boxes and page breaks, `inkfold/brochure/` a sheet folded into panels,
+imposed for the press with bleed and crop marks, `inkfold/deck/` one slide to a sheet, between a
 title slide and the disclosures, with speaker notes as a third projection. The apparatus a reader navigates by —
 exhibit numbers, footnotes, contents, cross-references, appendix letters, citations — is
 numbered in Python, once, so every projection agrees; only the page number is the print engine's. Three exporters sit
-on one contract — `octavo/delivery/` + `octavo/gmail/` + `octavo/outlook/` for MIME, `octavo/pdf/` for
+on one contract — `inkfold/delivery/` + `inkfold/gmail/` + `inkfold/outlook/` for MIME, `inkfold/pdf/` for
 PDF — and a PDF can ride a message as an attachment, rendered under a screen profile. Each owns its wire format and **never** authentication, so the core still depends on
 Jinja2 alone. Figures arrive as numbers:
-`octavo/builder/formats.py` formats them and `octavo/data/` adapts a DataFrame or a Figure, each
-adapter behind an optional extra. Equations arrive as LaTeX: `octavo/math/` renders them to the
+`inkfold/builder/formats.py` formats them and `inkfold/data/` adapts a DataFrame or a Figure, each
+adapter behind an optional extra. Equations arrive as LaTeX: `inkfold/math/` renders them to the
 image a `MathBlock` takes, behind the `[math]` extra; and a URL arrives as a QR code from
-`octavo/qr/`, the image a `QrCode` takes, behind the sixth extra, `[qr]`.
+`inkfold/qr/`, the image a `QrCode` takes, behind the sixth extra, `[qr]`.
 
 ## Commands
 
@@ -35,7 +35,7 @@ image a `MathBlock` takes, behind the `[math]` extra; and a URL arrives as a QR 
 pip install -e ".[dev]"       # editable install + pytest/ruff/mypy (see Gotchas)
 pytest                        # unit suite — validation, error paths, size limits
 ruff check . && ruff format --check .
-mypy                          # config in pyproject: files = ["octavo", "qa"]
+mypy                          # config in pyproject: files = ["inkfold", "qa"]
 
 pip install -e ".[qa]"        # optional: Playwright + pypdfium2 for screenshots
 pip install -e ".[pdf]"       # optional: WeasyPrint, for PDF (needs Pango/Cairo)
@@ -49,7 +49,7 @@ python -m qa.preview kitchen_sink --lint --screenshot --open   # an email
 python -m qa.preview a4_portrait --lint --screenshot --open    # a paged document + its PDF
 python -m qa.preview tri_fold_letter --lint --screenshot       # a brochure, one image a side
 python -m qa.preview pitch_16_9 --lint --screenshot            # a deck, one image a slide
-python -m octavo.check drafts/weekly.py:build               # the shipped check, from any install
+python -m inkfold.check drafts/weekly.py:build               # the shipped check, from any install
 ```
 
 CI runs the first four on every PR, plus `screenshots`, `pdf`, `data`, `all-extras` and `wheel`
@@ -68,23 +68,23 @@ applies to and loads **only when a matching file is read** — so a session that
 
 | File | Loads when you touch | Holds |
 |---|---|---|
-| `working-in-the-code.md` | any of `octavo/`, `qa/`, `tests/` | The annotated repo map, and the standing rules in full |
-| `builder-architecture.md` | `octavo/builder/**` | The four-layer model, the facts-flow-down ownership rule, the public API, images and the asset manifest, parameters, validation, exceptions, the hard constraints in full |
+| `working-in-the-code.md` | any of `inkfold/`, `qa/`, `tests/` | The annotated repo map, and the standing rules in full |
+| `builder-architecture.md` | `inkfold/builder/**` | The four-layer model, the facts-flow-down ownership rule, the public API, images and the asset manifest, parameters, validation, exceptions, the hard constraints in full |
 | `design-axes.md` | theming / sizing / typography / enums / containers / organising / `templates/**` | Colour, density, typeface and alignment — the three themes plus the axis that deliberately is not one — spacing per object, and the organising objects (#329) |
 | `data-table.md` | `models.py`, `components.py`, `templates/analysis/**` | Columns, cells, row kinds, caption and row headers; groups, units, markers, formats, decimal alignment, scales and bars (#217) |
 | `glance.md` | `glance.py`, the arrow, bar-list, sparkline and hero templates, the cell bar | Data at a glance without images: the trend arrow as a shape, ranked and diverging bars, the sparkline and its limit, the hero figure and `hero_value` (#318) |
 | `disclosure.md` | `components.py`, `templates/analysis/**` + `media/**`, the shared partial | An exhibit's two kinds of fine print: attribution, and the compliance copy beneath it |
-| `data-layer.md` | `formats.py`, `exhibits.py`, `octavo/data/**` | Figures as numbers: the formatters, the two adapters, why the dependency runs one way, and why a legend never styles the plot |
-| `math.md` | `octavo/math/**`, the math tests, `templates/media/math-block.html` | Equations: the component takes bytes and the extra renders them, the fontset and scale, the mathtext subset, the multi-line shim, the theme limitation, the Outlook gap |
+| `data-layer.md` | `formats.py`, `exhibits.py`, `inkfold/data/**` | Figures as numbers: the formatters, the two adapters, why the dependency runs one way, and why a legend never styles the plot |
+| `math.md` | `inkfold/math/**`, the math tests, `templates/media/math-block.html` | Equations: the component takes bytes and the extra renders them, the fontset and scale, the mathtext subset, the multi-line shim, the theme limitation, the Outlook gap |
 | `plain-text.md` | `textgen.py`, `email.py` | The second projection of the section tree |
 | `apparatus.md` | `apparatus.py`, `document.py`, `research.py`, `exhibits.py`, the notes / contents / running-box / bibliography / glossary / figure-grid / source-line templates | Exhibit numbers, footnotes, contents, cross-references, the running section, the list of exhibits, lettered appendices, citations, the glossary, grouped exhibits and a section's source line — Python numbers all but the page |
-| `media.md` | `octavo/email/`, `octavo/document/`, `octavo/pdf/`, `octavo/qr/`, `medium.py`, `document.py`, `templates/document/**` | The medium model, the page, the template fork rule, each medium's regions, the exporter's resource policy, landscape pages, the stamp and the QR code (#340) |
-| `digital-pdf.md` | `octavo/pdf/**`, `octavo/delivery/message.py`, the digital-PDF tests | The `PdfProfile` and its two presets, attachments and the message's size budget, metadata and determinism, the PDF/UA decision with its numbers, and why a screen PDF is not a medium |
-| `brochure.md` | `octavo/brochure/**`, `templates/brochure/**`, the editorial partial | Folds, the panel, imposition, bleed and marks, the editorial primitives and each one's email degradation |
-| `deck.md` | `octavo/deck/**`, `templates/deck/**`, the deck fixtures and tests | The slide against the panel and the page, the bands, numbering and parts, overflow, notes as a third projection, the `presentation` density and its measurements, and why there is no PowerPoint export |
-| `delivery.md` | `octavo/delivery/`, `octavo/gmail/`, `octavo/outlook/` | MIME assembly, the adapter contract, the deliberate non-features, drafts in classic Outlook |
-| `qa-harness.md` | `qa/**`, `tests/**`, `octavo/check/**` | Gallery, goldens, screenshots, lint and the shipped check, the preview CLI |
-| `config.md` | `octavo/config.py` | The one frozen dataclass of tunable numbers |
+| `media.md` | `inkfold/email/`, `inkfold/document/`, `inkfold/pdf/`, `inkfold/qr/`, `medium.py`, `document.py`, `templates/document/**` | The medium model, the page, the template fork rule, each medium's regions, the exporter's resource policy, landscape pages, the stamp and the QR code (#340) |
+| `digital-pdf.md` | `inkfold/pdf/**`, `inkfold/delivery/message.py`, the digital-PDF tests | The `PdfProfile` and its two presets, attachments and the message's size budget, metadata and determinism, the PDF/UA decision with its numbers, and why a screen PDF is not a medium |
+| `brochure.md` | `inkfold/brochure/**`, `templates/brochure/**`, the editorial partial | Folds, the panel, imposition, bleed and marks, the editorial primitives and each one's email degradation |
+| `deck.md` | `inkfold/deck/**`, `templates/deck/**`, the deck fixtures and tests | The slide against the panel and the page, the bands, numbering and parts, overflow, notes as a third projection, the `presentation` density and its measurements, and why there is no PowerPoint export |
+| `delivery.md` | `inkfold/delivery/`, `inkfold/gmail/`, `inkfold/outlook/` | MIME assembly, the adapter contract, the deliberate non-features, drafts in classic Outlook |
+| `qa-harness.md` | `qa/**`, `tests/**`, `inkfold/check/**` | Gallery, goldens, screenshots, lint and the shipped check, the preview CLI |
+| `config.md` | `inkfold/config.py` | The one frozen dataclass of tunable numbers |
 
 Each also carries the post-mortem of the epic that built its area — the reasoning is what
 stops a settled question being reopened, and it belongs beside the code it settled.
@@ -94,7 +94,7 @@ stops a settled question being reopened, and it belongs beside the code it settl
 The rules themselves. `builder-architecture.md` carries why each exists.
 
 - **102 KB Gmail clipping limit — the *email medium's* constraint.**
-  `octavo.email.validate_gmail_size` raises `SizeError` above it and warns above 90 KB, and the
+  `inkfold.email.validate_gmail_size` raises `SizeError` above it and warns above 90 KB, and the
   email medium lists it in `constraints`. The most important runtime check there is; never
   disable it without confirming a non-Gmail channel. Both thresholds come from `Config` at
   check time. A paged document runs no size constraint, because nothing clips a PDF. It
@@ -133,7 +133,7 @@ The rules themselves. `builder-architecture.md` carries why each exists.
 - **A split's `valign` is paper's.** An email refuses a split or `Columns` aligned anything but
   `top` when the section is added, naming the Outlook check that would lift it (`design-axes.md`).
 - **The package never prints.** A soft limit is a `SizeWarning` or `PrintQualityWarning` a host
-  can filter or promote; an AST test holds `octavo/` free of `print` (`config.md`).
+  can filter or promote; an AST test holds `inkfold/` free of `print` (`config.md`).
 - **Colours are `#RRGGBB`**, validated at construction and again in the templates.
 - **Validation runs at construction time, never at render time.** By the time `.render()`
   is called the data shape is already known good. Preserve this when adding a component.
@@ -199,14 +199,15 @@ itself — file purpose, verbose class, limited function, inline-for-traps — i
 ## Gotchas
 
 - **Wheel installs work** (since #10). `templates/` lives inside the package at
-  `octavo/builder/templates/` and ships with the wheel; the engine resolves it via
+  `inkfold/builder/templates/` and ships with the wheel; the engine resolves it via
   `importlib.resources`, so an editable install and a site-packages install agree. A CI job
   builds the wheel and renders an email from a clean venv to keep it that way.
-- **Import path.** `from octavo.builder import …` / `from octavo.builder.models import …`.
-  `octavo/__init__.py` re-exports nothing, and there is no `octavo.models`. The import
+- **Import path.** `from inkfold.builder import …` / `from inkfold.builder.models import …`.
+  `inkfold/__init__.py` re-exports nothing, and there is no `inkfold.models`. The import
   root was `svc` until #248, and its shim is gone since #255: `import svc` fails, and a test in
-  `test_distribution.py` fails if anything in the repo imports it. The project was renamed to
-  `octavo` in roadmap v0.4.0, because its old name belongs to another package on PyPI.
+  `test_distribution.py` fails if anything in the repo imports it. The project was renamed in
+  roadmap v0.4.0, because its first name belongs to another package on PyPI, and again in
+  v0.4.1 to `inkfold`, because PyPI prohibits its second as a project name.
 - **Config has three levels, innermost wins**: a document's or message's `config=`, then a
   context's `config_override`, then `set_config`'s default. An override is per thread or task.
 - **The skeleton is the medium's, and the email one is `templates/base.html`.** The engine
@@ -223,7 +224,7 @@ these rather than improvising:
 
 - **Python work** → `python-development` / `-review` / `-maintenance` / `-deployment` plus
   `coding-standards`. For isolated, summary-returning implementation, the `python-developer`
-  agent is already scoped to `octavo/` and this repo's `pytest`.
+  agent is already scoped to `inkfold/` and this repo's `pytest`.
 - **GitHub** → the `github-*` skills, or the `github-operator` agent; `/epic` and `/issue` file
   templated issues (the templates in `.github/` are byte-copies the `asset_integrity` hook checks).
 - **Media craft** → `outlook-html-specifications` (and the `outlook-html-designer` agent) for the
@@ -249,7 +250,7 @@ these rather than improvising:
   proposing new work: a new medium or layout primitive needs a reference report that asks for it.
 - **The reference reports: [reference/](reference/README.md)**, the three every gate is tested
   against, with `python -m qa.benchmark` measuring each. All three are stand-ins until Gate 1.
-- Tracked in [GitHub issues](https://github.com/RorySullivan1/octavo/issues), as epics
+- Tracked in [GitHub issues](https://github.com/RorySullivan1/inkfold/issues), as epics
   with sub-issues. Complete: **#157** (rescope to media), **#153** (per-exhibit disclosure),
   **#169** (pagination hardening), **#170** (the data layer, #177–#180), **#171** (document
   apparatus, #181–#185), **#172** (the brochure medium, #186–#189), **#193** (the digital PDF, #195–#200),
@@ -260,8 +261,8 @@ these rather than improvising:
   and **#255** removed the `svc` shim it left. **#261** (composition: `Stack`, nested `Columns`,
   ratios as weights and `FourColumn`, #262–#264) is complete. **#265** (section surfaces: a dark
   band whose type stays readable, a section border, `Callout`, `Button` and `Divider`, #266–#269)
-  is complete. **#277** (the author's toolchain: the check ships as `octavo.check`, and
-  `octavo.outlook.desktop` puts a draft into classic Outlook, #278–#279) is complete. **#273**
+  is complete. **#277** (the author's toolchain: the check ships as `inkfold.check`, and
+  `inkfold.outlook.desktop` puts a draft into classic Outlook, #278–#279) is complete. **#273**
   (figures, charts and pictures from data: `from_number`, `chart_style`, the oversize-picture
   warning, #274–#276) is complete. **#282** (a stacked column fills its width on a phone) is fixed.
   **#220** (the long-form research apparatus: a list of exhibits, lettered appendices,
@@ -296,7 +297,7 @@ these rather than improvising:
   **#335** (exhibits that group: `FigureGrid`'s lettered panels in one numbered exhibit, a
   chart's key stated in HTML by `Legend`, and one `source=` line for a whole section, #336–#339)
   is complete.
-  **#259** is fixed: the size report names each body section, and `octavo.check` and
+  **#259** is fixed: the size report names each body section, and `inkfold.check` and
   `preview --lint` report on an email over 102 KB. **#281** is fixed: the README states current
   facts, and a test holds each example's committed `.html` to a fresh render. **#272** is done:
   the manual's *Customise the layout* page covers spacing, house densities, overlays and limits. **#280** is done: the

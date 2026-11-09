@@ -26,10 +26,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import CardGroup, DataTable, FullWidth, TextBlock
-from octavo.builder.enums import CardOrientation
-from octavo.builder.models import KpiItem, TableRow
-from octavo.document import BackMatter, Cover, Page, PagedDocument, RunningFooter, RunningHeader
+from inkfold.builder import CardGroup, DataTable, FullWidth, TextBlock
+from inkfold.builder.enums import CardOrientation
+from inkfold.builder.models import KpiItem, TableRow
+from inkfold.document import BackMatter, Cover, Page, PagedDocument, RunningFooter, RunningHeader
 
 _GAIN = "#4A7C59"
 _LOSS = "#B85450"
@@ -123,11 +123,11 @@ def main() -> None:
     print(f"{html}  ({html.stat().st_size / 1024:.1f} KB)")
 
     try:
-        from octavo.pdf import page_count, save_pdf
+        from inkfold.pdf import page_count, save_pdf
     except ImportError:  # pragma: no cover - the extra is optional by design
         print('pdf skipped: install the extra with `pip install -e ".[pdf]"`')
         return
-    from octavo.pdf import PdfError
+    from inkfold.pdf import PdfError
 
     try:
         pdf = save_pdf(build(), here / "quarterly-review.pdf")

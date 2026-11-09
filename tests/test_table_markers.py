@@ -12,12 +12,12 @@ import re
 
 import pytest
 
-from octavo.builder import DataTable, FullWidth, TextBlock
-from octavo.builder.email import Email
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.models import TableRow
-from octavo.document import PagedDocument
+from inkfold.builder import DataTable, FullWidth, TextBlock
+from inkfold.builder.email import Email
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.models import TableRow
+from inkfold.document import PagedDocument
 
 PAPER_FACTS = {"firm_name": "Hermes", "campaign_name": "Review"}
 FACTS = {"email_subject": "Subject", **PAPER_FACTS}

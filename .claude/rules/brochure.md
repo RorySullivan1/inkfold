@@ -1,8 +1,8 @@
 ---
 paths:
-  - "octavo/brochure/**/*"
-  - "octavo/builder/templates/brochure/**/*"
-  - "octavo/builder/templates/document/editorial.html"
+  - "inkfold/brochure/**/*"
+  - "inkfold/builder/templates/brochure/**/*"
+  - "inkfold/builder/templates/document/editorial.html"
   - "qa/fixtures/tri_fold_letter.py"
   - "qa/fixtures/a4_editorial.py"
   - "tests/test_brochure.py"
@@ -16,7 +16,7 @@ paths:
 needed break discipline and document apparatus on the paged medium that already existed
 (#169, #171). A brochure changes the skeleton, the unit of layout, the page geometry, the
 constraints and the lint rules, while keeping the PDF exporter. That is the profile #157
-defined for a medium, so it is `octavo/brochure/`, beside `octavo/email/` and `octavo/document/`.
+defined for a medium, so it is `inkfold/brochure/`, beside `inkfold/email/` and `inkfold/document/`.
 
 | Module | Holds |
 |---|---|

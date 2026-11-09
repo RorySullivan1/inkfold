@@ -12,13 +12,13 @@ import re
 
 import pytest
 
-from octavo.builder import ChartBlock, DataTable, FullWidth, MathBlock, TextBlock
-from octavo.builder.components import descendants
-from octavo.builder.email import Email
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.images import EmailImage
-from octavo.builder.models import TableRow
+from inkfold.builder import ChartBlock, DataTable, FullWidth, MathBlock, TextBlock
+from inkfold.builder.components import descendants
+from inkfold.builder.email import Email
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import TableRow
 from qa.fixtures import kitchen_sink
 from qa.fixtures._png import solid_png
 
@@ -149,7 +149,7 @@ def test_the_builder_imports_no_optional_backend():
     import ast
     import pathlib
 
-    tree = ast.parse(pathlib.Path("octavo/builder/components.py").read_text(encoding="utf-8"))
+    tree = ast.parse(pathlib.Path("inkfold/builder/components.py").read_text(encoding="utf-8"))
     modules = [
         getattr(node, "module", None) or alias.name
         for node in ast.walk(tree)
@@ -157,7 +157,7 @@ def test_the_builder_imports_no_optional_backend():
         for alias in node.names
     ]
     assert not [
-        m for m in modules if m and (m.startswith("matplotlib") or m.startswith("octavo.math"))
+        m for m in modules if m and (m.startswith("matplotlib") or m.startswith("inkfold.math"))
     ]
 
 

@@ -12,7 +12,7 @@ import importlib.util
 
 import pytest
 
-from octavo.brochure import (
+from inkfold.brochure import (
     BI_FOLD_LETTER,
     TRI_FOLD_LETTER,
     Brochure,
@@ -20,8 +20,8 @@ from octavo.brochure import (
     impose,
     overflowing_panels,
 )
-from octavo.builder import FullWidth, TextBlock
-from octavo.pdf import available, render_pdf
+from inkfold.builder import FullWidth, TextBlock
+from inkfold.pdf import available, render_pdf
 from qa.fixtures import tri_fold_letter
 
 pytestmark = pytest.mark.skipif(

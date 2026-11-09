@@ -30,23 +30,23 @@ def _imports(path: pathlib.Path, *, module_level_only: bool = False) -> set[str]
 
 class TestTheCoreNeverImportsTheAdapters:
     """
-    The one-way dependency: ``octavo.data`` imports the builder, never the reverse.
+    The one-way dependency: ``inkfold.data`` imports the builder, never the reverse.
 
     This is why there is no ``DataTable.from_frame``. A lazy import inside a
-    builder method would still be the builder importing ``octavo.data``, and the
+    builder method would still be the builder importing ``inkfold.data``, and the
     rule would then be enforced nowhere.
     """
 
     @pytest.mark.parametrize(
         "package",
         [
-            "octavo/builder",
-            "octavo/document",
-            "octavo/email",
-            "octavo/brochure",
-            "octavo/deck",
-            "octavo/delivery",
-            "octavo/pdf",
+            "inkfold/builder",
+            "inkfold/document",
+            "inkfold/email",
+            "inkfold/brochure",
+            "inkfold/deck",
+            "inkfold/delivery",
+            "inkfold/pdf",
         ],
     )
     def test_no_core_module_imports_an_optional_backend_or_the_adapters(self, package):
@@ -54,11 +54,11 @@ class TestTheCoreNeverImportsTheAdapters:
             roots = {name.split(".")[0] for name in _imports(path)}
             assert not roots & _OPTIONAL, f"{path} imports {roots & _OPTIONAL}"
             assert not any(
-                name.startswith(("octavo.data", "octavo.math", "octavo.qr"))
+                name.startswith(("inkfold.data", "inkfold.math", "inkfold.qr"))
                 for name in _imports(path)
             ), path
 
-    @pytest.mark.parametrize("package", ["octavo/data", "octavo/math", "octavo/qr"])
+    @pytest.mark.parametrize("package", ["inkfold/data", "inkfold/math", "inkfold/qr"])
     def test_the_adapters_import_their_backends_lazily(self, package):
         for path in sorted(pathlib.Path(package).glob("*.py")):
             roots = {name.split(".")[0] for name in _imports(path, module_level_only=True)}
@@ -80,48 +80,48 @@ class TestAMissingBackendNamesTheInstall:
     def test_the_package_imports_without_any_extra(self, refuse):
         import importlib
 
-        import octavo.data
+        import inkfold.data
 
-        importlib.reload(octavo.data)
+        importlib.reload(inkfold.data)
 
     def test_a_frame_without_pandas_says_install_data(self, refuse):
-        from octavo.data import BackendMissingError, table_from_frame
+        from inkfold.data import BackendMissingError, table_from_frame
 
-        with pytest.raises(BackendMissingError, match=r"octavo\[data\]"):
+        with pytest.raises(BackendMissingError, match=r"inkfold\[data\]"):
             table_from_frame(object())
 
     def test_a_figure_without_matplotlib_says_install_charts(self, refuse):
-        from octavo.data import BackendMissingError, image_from_figure
+        from inkfold.data import BackendMissingError, image_from_figure
 
-        with pytest.raises(BackendMissingError, match=r"octavo\[charts\]"):
+        with pytest.raises(BackendMissingError, match=r"inkfold\[charts\]"):
             image_from_figure(object(), alt="Chart", width=320)
 
     def test_an_equation_without_matplotlib_says_install_math(self, refuse):
         import importlib
 
-        import octavo.math
+        import inkfold.math
 
-        importlib.reload(octavo.math)
-        from octavo.math import BackendMissingError, render_math
+        importlib.reload(inkfold.math)
+        from inkfold.math import BackendMissingError, render_math
 
-        with pytest.raises(BackendMissingError, match=r"octavo\[math\]"):
+        with pytest.raises(BackendMissingError, match=r"inkfold\[math\]"):
             render_math("x", font_px=14, color="#3B3B3B", scale=2, fontset="cm")
-        assert octavo.math.available() is False
+        assert inkfold.math.available() is False
 
     def test_a_qr_code_without_segno_says_install_qr(self, refuse):
         import importlib
 
-        import octavo.qr
+        import inkfold.qr
 
-        importlib.reload(octavo.qr)
-        from octavo.qr import BackendMissingError, qr_code
+        importlib.reload(inkfold.qr)
+        from inkfold.qr import BackendMissingError, qr_code
 
-        with pytest.raises(BackendMissingError, match=r"octavo\[qr\]"):
+        with pytest.raises(BackendMissingError, match=r"inkfold\[qr\]"):
             qr_code("https://example.com/web")
-        assert octavo.qr.available() is False
+        assert inkfold.qr.available() is False
 
     def test_availability_reports_each_backend(self, refuse):
-        from octavo.data import charts_available, frames_available
+        from inkfold.data import charts_available, frames_available
 
         assert frames_available() is False
         assert charts_available() is False

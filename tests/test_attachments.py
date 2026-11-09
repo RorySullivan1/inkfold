@@ -15,12 +15,12 @@ from email import message_from_bytes
 
 import pytest
 
-from octavo.builder import EmailBuilder, FullWidth, ImageBlock
-from octavo.builder.exceptions import SizeWarning
-from octavo.builder.images import EmailImage
-from octavo.config import config_override
-from octavo.delivery import Attachment, MessageError, build_message, save_eml
-from octavo.delivery.message import collect_cid_references, to_wire_bytes
+from inkfold.builder import EmailBuilder, FullWidth, ImageBlock
+from inkfold.builder.exceptions import SizeWarning
+from inkfold.builder.images import EmailImage
+from inkfold.config import config_override
+from inkfold.delivery import Attachment, MessageError, build_message, save_eml
+from inkfold.delivery.message import collect_cid_references, to_wire_bytes
 
 ENVELOPE = {
     "subject": "Quarterly Review",
@@ -96,7 +96,7 @@ class TestAnAttachmentIsValidatedAtConstruction:
     def test_it_is_not_an_image_asset(self, review):
         # A sibling, not the same class: an asset is referenced by cid: and
         # rendered in place, an attachment by nothing and shown as a file.
-        from octavo.builder.images import ImageAsset
+        from inkfold.builder.images import ImageAsset
 
         assert not isinstance(review, ImageAsset)
 
@@ -167,7 +167,7 @@ class TestTheFileSurvivesTheWire:
         assert _by_filename(parsed, "review.pdf").get_payload(decode=True) == PDF_BYTES
 
     def test_the_gmail_adapter_sends_it_unchanged(self, cid_email, review):
-        from octavo.gmail import send_message
+        from inkfold.gmail import send_message
 
         class Recording:
             raw = ""
@@ -183,7 +183,7 @@ class TestTheFileSurvivesTheWire:
         assert _by_filename(parsed, "review.pdf").get_payload(decode=True) == PDF_BYTES
 
     def test_the_outlook_adapter_sends_it_unchanged(self, cid_email, review):
-        from octavo.outlook import send_message
+        from inkfold.outlook import send_message
 
         class Recording:
             encoded = ""
@@ -268,7 +268,7 @@ class TestAPdfAttachment:
     @pytest.fixture(scope="class")
     @classmethod
     def document(cls):
-        from octavo.pdf import available
+        from inkfold.pdf import available
 
         if not available():
             pytest.skip('pdf_attachment renders, and needs the "[pdf]" extra')
@@ -277,7 +277,7 @@ class TestAPdfAttachment:
         return all_paged_fixtures()["a4_portrait"]()
 
     def test_it_is_the_screen_render_by_default(self, document):
-        from octavo.pdf import SCREEN, pdf_attachment, render_pdf
+        from inkfold.pdf import SCREEN, pdf_attachment, render_pdf
 
         attachment = pdf_attachment(document, "review.pdf")
         assert attachment.data == render_pdf(document, SCREEN)
@@ -285,14 +285,14 @@ class TestAPdfAttachment:
         assert attachment.size_hint == ""
 
     def test_under_print_it_names_the_remedy(self, document):
-        from octavo.pdf import PRINT, pdf_attachment, render_pdf
+        from inkfold.pdf import PRINT, pdf_attachment, render_pdf
 
         attachment = pdf_attachment(document, "review.pdf", PRINT)
         assert attachment.data == render_pdf(document, PRINT)
         assert "PRINT" in attachment.size_hint and "SCREEN" in attachment.size_hint
 
     def test_over_budget_a_print_pdf_points_at_screen(self, document, cid_email):
-        from octavo.pdf import PRINT, pdf_attachment
+        from inkfold.pdf import PRINT, pdf_attachment
 
         attachment = pdf_attachment(document, "review.pdf", PRINT)
         with config_override(attachment_limit_kb=8, attachment_warn_kb=4):
@@ -300,8 +300,8 @@ class TestAPdfAttachment:
                 build_message(cid_email, **ENVELOPE, attachments=[attachment])
 
     def test_a_path_is_refused_before_anything_renders(self, document, monkeypatch):
-        import octavo.pdf.attachment as module
-        from octavo.pdf import pdf_attachment
+        import inkfold.pdf.attachment as module
+        from inkfold.pdf import pdf_attachment
 
         monkeypatch.setattr(module, "render_pdf", lambda *a: PDF_BYTES)
         with pytest.raises(MessageError, match="path separator"):

@@ -14,7 +14,7 @@ is fictional.
 
 from __future__ import annotations
 
-from octavo.builder import (
+from inkfold.builder import (
     Callout,
     ChartBlock,
     Column,
@@ -28,10 +28,10 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.exhibits import LegendEntry
-from octavo.builder.images import EmailImage
-from octavo.builder.models import TableRow
-from octavo.builder.theming import DEFAULT_THEME
+from inkfold.builder.exhibits import LegendEntry
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import TableRow
+from inkfold.builder.theming import DEFAULT_THEME
 
 from . import _brief
 from ._png import solid_png

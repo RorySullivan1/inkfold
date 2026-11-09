@@ -8,11 +8,11 @@ from functools import partial
 
 import pytest
 
-from octavo.builder import DEFAULT_THEME, CardGroup, Email, FullWidth
-from octavo.builder.enums import Tone
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.formats import bps, pct
-from octavo.builder.models import Card, KpiItem
+from inkfold.builder import DEFAULT_THEME, CardGroup, Email, FullWidth
+from inkfold.builder.enums import Tone
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.formats import bps, pct
+from inkfold.builder.models import Card, KpiItem
 
 signed_pct = partial(pct, sign=True)
 

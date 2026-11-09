@@ -13,7 +13,7 @@ import pathlib
 
 import pytest
 
-from octavo.pdf import (
+from inkfold.pdf import (
     PDF_VARIANTS,
     PRINT,
     SCREEN,
@@ -89,13 +89,13 @@ class TestThePresets:
 
 class TestTheProfileIsAnExporterFact:
     def test_the_builder_never_imports_it(self):
-        # PdfProfile lives in octavo/pdf: nothing a document is built from may
+        # PdfProfile lives in inkfold/pdf: nothing a document is built from may
         # depend on how one exporter writes it.
-        for path in sorted(pathlib.Path("octavo/builder").rglob("*.py")):
+        for path in sorted(pathlib.Path("inkfold/builder").rglob("*.py")):
             tree = ast.parse(path.read_text(encoding="utf-8"))
             for node in ast.walk(tree):
                 if isinstance(node, ast.ImportFrom) and node.module:
-                    assert not node.module.startswith("octavo.pdf"), path
+                    assert not node.module.startswith("inkfold.pdf"), path
 
 
 @requires_backend

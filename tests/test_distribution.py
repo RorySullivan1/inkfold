@@ -29,7 +29,7 @@ def _wheel(path: Path, names: list[str]) -> Path:
 def _sdist(path: Path, names: list[str]) -> Path:
     with tarfile.open(path, "w:gz") as sdist:
         for name in names:
-            info = tarfile.TarInfo(f"octavo-0.1.0/{name}")
+            info = tarfile.TarInfo(f"inkfold-0.1.0/{name}")
             sdist.addfile(info, io.BytesIO(b""))
     return path
 
@@ -41,7 +41,7 @@ LIBRARY = [
     "PKG-INFO",
     f"{PACKAGE}/__init__.py",
 ]
-WHEEL = [f"{PACKAGE}/__init__.py", f"{PACKAGE}/py.typed", "octavo-0.1.0.dist-info/METADATA"]
+WHEEL = [f"{PACKAGE}/__init__.py", f"{PACKAGE}/py.typed", "inkfold-0.1.0.dist-info/METADATA"]
 
 
 class TestTheWheel:
@@ -118,8 +118,10 @@ def test_nothing_in_the_repository_imports_the_retired_name():
     assert offenders == []
 
 
-#: The project's name before roadmap v0.4.0, spelled so this file does not match itself.
+#: The project's former names (before v0.4.0, and v0.4.0's, which PyPI prohibits), spelled so this
+#: file does not match itself.
 OLD_NAME = "py" + "hermes"
+OLD_NAMES = (OLD_NAME, "oct" + "avo")
 
 #: Files that are history in full: the memory's session logs and archive, a dated review ledger,
 #: and `.meta/version` while it holds the rename's own card.
@@ -144,24 +146,32 @@ def _current_lines(name: str, text: str) -> list[tuple[int, str]]:
             if section in ("State", "Threads"):
                 current.append((n, line))
         lines = current
+    if name == ".meta/roadmap/INDEX.md":
+        # Its dated Decisions and a shipped version's row are records; the rest is the plan.
+        section, current = "", []
+        for n, line in lines:
+            section = line[3:].split()[0] if line.startswith("## ") else section
+            if section != "Decisions" and "| shipped" not in line:
+                current.append((n, line))
+        lines = current
     if name.startswith(".meta/roadmap/stages/") and (
-        "status: shipped" in text or name.endswith("/v0.4.0.md")
+        "status: shipped" in text or name.endswith(("/v0.4.0.md", "/v0.4.1.md"))
     ):
-        return []  # a shipped card, or the rename's own, is a record
+        return []  # a shipped card, or a rename's own, is a record
     if name.startswith((".claude/memory/", ".meta/")):  # a line about the rename may name both
-        lines = [(n, line) for n, line in lines if "octavo" not in line.lower()]
+        lines = [(n, line) for n, line in lines if "inkfold" not in line.lower()]
     return lines
 
 
-def test_the_old_name_survives_only_in_history():
-    """Allegro's Hermes client owns the old name on PyPI and as an import (v0.4.0)."""
+def test_the_old_names_survive_only_in_history():
+    """Allegro's Hermes client owns the first name (v0.4.0); PyPI prohibits the second (v0.4.1)."""
     import re
     import subprocess
 
     listing = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True)
     if listing.returncode != 0:
         pytest.skip("needs a git checkout to list the tracked files")
-    pattern = re.compile(OLD_NAME, re.IGNORECASE)
+    pattern = re.compile("|".join(OLD_NAMES), re.IGNORECASE)
     offenders = []
     for name in filter(None, listing.stdout.decode("utf-8").split("\0")):
         if name.startswith(HISTORY):

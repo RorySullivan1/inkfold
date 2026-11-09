@@ -12,14 +12,14 @@ from decimal import Decimal
 
 import pytest
 
-from octavo.builder import DataTable, FullWidth, HeatScale
-from octavo.builder.email import Email
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.filters import heat_color
-from octavo.builder.formats import pct
-from octavo.builder.models import Cell, Column, TableRow
-from octavo.builder.theming import DEFAULT_THEME, SLATE_THEME
+from inkfold.builder import DataTable, FullWidth, HeatScale
+from inkfold.builder.email import Email
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.filters import heat_color
+from inkfold.builder.formats import pct
+from inkfold.builder.models import Cell, Column, TableRow
+from inkfold.builder.theming import DEFAULT_THEME, SLATE_THEME
 from qa.lint import lint_html
 
 
@@ -174,7 +174,7 @@ class TestTextOnATintStaysLegible:
     """Found in the first raster (#228): a toned figure on its own tint vanished."""
 
     def test_the_filter_picks_the_higher_contrast(self):
-        from octavo.builder.filters import readable_on
+        from inkfold.builder.filters import readable_on
 
         assert readable_on("#B85450", "#3B3B3B", "#FFFFFF") == "#FFFFFF"
         assert readable_on("#F4F6F8", "#3B3B3B", "#FFFFFF") == "#3B3B3B"

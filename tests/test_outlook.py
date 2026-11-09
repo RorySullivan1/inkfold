@@ -15,12 +15,12 @@ import base64
 import pytest
 import requests
 
-from octavo.builder import EmailBuilder, FullWidth, ImageBlock
-from octavo.builder.images import EmailImage
-from octavo.config import config_override
-from octavo.delivery import build_message, save_eml
-from octavo.delivery.exceptions import DeliveryError, TransportError
-from octavo.outlook import (
+from inkfold.builder import EmailBuilder, FullWidth, ImageBlock
+from inkfold.builder.images import EmailImage
+from inkfold.config import config_override
+from inkfold.delivery import build_message, save_eml
+from inkfold.delivery.exceptions import DeliveryError, TransportError
+from inkfold.outlook import (
     ACCEPTED,
     GraphApiError,
     GraphApiTransport,
@@ -28,7 +28,7 @@ from octavo.outlook import (
     retry_after_seconds,
     send_message,
 )
-from octavo.outlook.sender import DEFAULT_TIMEOUT_SECONDS
+from inkfold.outlook.sender import DEFAULT_TIMEOUT_SECONDS
 
 ENVELOPE = {
     "subject": "Weekly Market Wrap",
@@ -177,7 +177,7 @@ class TestGraphApiTransport:
         import ast
         import pathlib
 
-        import octavo.outlook.sender as sender
+        import inkfold.outlook.sender as sender
 
         tree = ast.parse(pathlib.Path(sender.__file__).read_text(encoding="utf-8"))
         imported: list[str] = []

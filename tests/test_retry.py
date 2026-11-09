@@ -9,7 +9,7 @@ anything the caller has not positively classified as worth retrying.
 
 import pytest
 
-from octavo.delivery.retry import retry_with_backoff
+from inkfold.delivery.retry import retry_with_backoff
 
 TRANSIENT = TimeoutError
 PERMANENT = PermissionError

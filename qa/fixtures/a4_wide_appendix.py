@@ -11,9 +11,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import Aside, DataTable, FullWidth, TextBlock
-from octavo.builder.models import TableRow
-from octavo.document import Page, PagedDocument
+from inkfold.builder import Aside, DataTable, FullWidth, TextBlock
+from inkfold.builder.models import TableRow
+from inkfold.document import Page, PagedDocument
 
 from . import _paged
 

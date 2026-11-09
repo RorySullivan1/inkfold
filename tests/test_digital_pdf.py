@@ -15,11 +15,11 @@ import zlib
 
 import pytest
 
-from octavo.builder import ChartBlock, Email, FullWidth, ImageBlock, TextBlock, TwoColumn
-from octavo.builder.enums import TwoColumnRatio
-from octavo.builder.images import EmailImage
-from octavo.document import PagedDocument
-from octavo.pdf import (
+from inkfold.builder import ChartBlock, Email, FullWidth, ImageBlock, TextBlock, TwoColumn
+from inkfold.builder.enums import TwoColumnRatio
+from inkfold.builder.images import EmailImage
+from inkfold.document import PagedDocument
+from inkfold.pdf import (
     PRINT,
     SCREEN,
     TAGGED,
@@ -485,10 +485,10 @@ class TestTheLandscapeReport:
     def test_it_goes_out_as_one_message(self, report, pdf):
         from email import message_from_bytes
 
-        from octavo.builder import EmailBuilder
-        from octavo.delivery import build_message
-        from octavo.delivery.message import to_wire_bytes
-        from octavo.pdf import pdf_attachment
+        from inkfold.builder import EmailBuilder
+        from inkfold.delivery import build_message
+        from inkfold.delivery.message import to_wire_bytes
+        from inkfold.pdf import pdf_attachment
 
         cover = (
             EmailBuilder()

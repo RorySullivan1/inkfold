@@ -8,7 +8,7 @@ context()) fails here rather than only in the full-email integration run.
 
 import pytest
 
-from octavo.builder import (
+from inkfold.builder import (
     AuthorBlock,
     CardGroup,
     ChartBlock,
@@ -17,9 +17,9 @@ from octavo.builder import (
     NumberedList,
     TextBlock,
 )
-from octavo.builder.components import Component
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.models import KpiItem, TableRow
+from inkfold.builder.components import Component
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.models import KpiItem, TableRow
 
 
 class TestCardGroup:
@@ -131,7 +131,7 @@ class TestNumberedList:
             NumberedList(items=[])
 
     def test_propagates_item_validation(self):
-        from octavo.builder.models import NumberedItem
+        from inkfold.builder.models import NumberedItem
 
         with pytest.raises(ValidationError, match="numbered_item.body"):
             NumberedList(items=[NumberedItem(number="01", title="T", body="")])
