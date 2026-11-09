@@ -6,7 +6,7 @@
 - **Shipped through PR #475** (#474); epics #157–#442 all closed, no issues open. #219 DOCX and #300 PPTX
   closed as not planned. #288 is the owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
 - **The roadmap is live** in `.meta/roadmap/` (5 stages, 31 epics), surfaced each session by `roadmap_status`;
-  v0.2.0 shipped (PR #477); v0.3.0 (reference reports, benchmark) shipped (PR #478); v0.4.0 (the rename to octavo) in PR #479; cursor v0.5.0. The owner's six
+  v0.2.0 shipped (PR #477); v0.3.0 (reference reports, benchmark) shipped (PR #478); v0.4.0 (the rename to octavo) shipped (PR #479); cursor v0.5.0. The owner's six
   decisions are taken. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
 
 ## Decisions        (append-only; supersede, never delete)
@@ -38,8 +38,8 @@
   from v0.4.0 — `.meta/roadmap/INDEX.md`
 
 ## Threads          (open items; remove when closed)
-- **The owner renames the GitHub repository to `octavo`** (decided 2026-10-30; links already point there),
-  and reserves `octavo` on PyPI as a pending trusted publisher before v0.5.0's tag.
+- **The owner registers `octavo` on PyPI as a pending trusted publisher** (owner RorySullivan1, repo octavo,
+  workflow release.yml, environment pypi) before v0.5.0's tag; it reserves nothing until the first publish.
 - **The first outside user is not yet named** (a colleague or team); needed before Gate 1 — `.meta/roadmap/INDEX.md`.
 - **#394's ruling (justify on paper only) was taken under a goal**; the owner may widen it.
 - **#400's ruling: `skip_first` is opt-in, not the default under an `EmptyCover`** (goal-taken; `media.md`).
@@ -77,3 +77,4 @@
 - [2026-10-29] reference-reports — PR #478 merged; v0.3.0 marked shipped in the roadmap and `.meta/version`.
 - [2026-10-30] octavo-rename — v0.4.0: package, import root, `OCTAVO_*` and repo links renamed; review fixed the
   manual's checkout folder; goal-auditor PASS after the repo decision; PR #479 — sessions/2026-10-30-0900-octavo-rename.md
+- [2026-11-09] octavo-rename — PR #479 merged and the repository renamed to RorySullivan1/octavo; v0.4.0 shipped.
