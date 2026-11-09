@@ -530,3 +530,4 @@ Decisions and Log entries folded out of `INDEX.md` on 2026-08-29 (#143), verbati
 - [2026-10-28] scope-charter — PR #477 merged; v0.2.0 marked shipped in the roadmap and `.meta/version`.
 - [2026-10-29] reference-reports — v0.3.0: `reference/` (three stand-ins), `qa.benchmark` and its baseline;
   review had no must-fix; goal-auditor PASS; PR #478 — sessions/2026-10-29-0900-reference-reports.md
+- [2026-10-29] reference-reports — PR #478 merged; v0.3.0 marked shipped in the roadmap and `.meta/version`.
