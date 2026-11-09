@@ -47,6 +47,8 @@ class TestTheWorkflow:
         assert trigger.split() == ["push:", "tags:", '["v*"]']
 
     def test_only_the_publish_job_can_mint_a_token_and_it_runs_in_the_environment(self):
+        top = WORKFLOW.read_text(encoding="utf-8").split("\njobs:\n", 1)[0]
+        assert "id-token" not in top  # a workflow-level grant reaches every job
         jobs = _jobs()
         minting = [name for name, block in jobs.items() if "id-token: write" in block]
         assert minting == ["publish"]
@@ -63,7 +65,9 @@ class TestTheWorkflow:
     def test_the_build_runs_the_artefact_checks_and_a_render(self):
         build = _jobs()["build"]
         for step in (
+            'git merge-base --is-ancestor "$GITHUB_SHA" origin/main',
             'GITHUB_REF_NAME"',
+            "pytest tests/test_release.py",
             "python -m build",
             "twine check --strict dist/*",
             "python -m qa.distribution dist",
@@ -103,7 +107,8 @@ class TestTheReadme:
         assert "at least two minor releases and at least 90 days" in readme
 
     def test_every_link_resolves_on_pypi(self):
-        # PyPI renders the README as the project page, where a relative link leads nowhere.
+        # PyPI renders the README as the project page, where a relative link leads nowhere
+        # and a heading has no anchor to jump to.
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        relative = re.findall(r"\]\((?!https?://|mailto:|#)([^)]+)\)", readme)
+        relative = re.findall(r"\]\((?!https?://|mailto:)([^)]+)\)", readme)
         assert relative == []

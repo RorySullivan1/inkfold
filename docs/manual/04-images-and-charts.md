@@ -30,7 +30,8 @@ you send. It exists for quick local previews.
 > **Note:** an attached picture only exists inside the finished message. If you open the
 > `.html` file from `email.save()` in a browser, attached pictures show as broken. That is
 > expected. To see them, open the `.eml` file described in
-> [Check and send](06-check-and-send.md), or use `python -m qa.preview … --screenshot`.
+> [Check and send](06-check-and-send.md), or, from a clone of the repository, use
+> `python -m qa.preview … --screenshot`.
 
 ## How to add a picture
 

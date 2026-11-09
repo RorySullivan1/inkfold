@@ -65,7 +65,8 @@ email.save("output/weekly-wrap.html")   # warns above 90 KB, raises above 102 KB
 
 Swap the product and the section tree renders onto sheets instead. A cover, a folio in the
 margin of every page, a real break before the appendix, and a closing disclosures page (a
-contents sheet, footnotes and cross-references are [below](#numbers-notes-contents-and-references)):
+contents sheet, footnotes and cross-references are
+[below](https://github.com/RorySullivan1/inkfold#numbers-notes-contents-and-references)):
 
 ```python
 from inkfold.builder import FullWidth, TextBlock

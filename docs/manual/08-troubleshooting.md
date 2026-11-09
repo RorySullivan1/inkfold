@@ -172,7 +172,8 @@ pictures, very long text, or many large tables.
          2.9 KB  (document head)
    ```
 
-   `python -m qa.preview drafts/weekly.py:build --lint` prints the same report. From Python,
+   From a clone of the repository, `python -m qa.preview drafts/weekly.py:build --lint`
+   prints the same report. From Python,
    the same report comes from the email itself:
 
    ```python
@@ -204,8 +205,8 @@ the steps above.
 **Likely cause:** that is expected for attached pictures. They travel inside the message,
 and a bare `.html` file has no message around it.
 
-**Fix:** open the `.eml` file ([Check and send](06-check-and-send.md)), or run
-`python -m qa.preview … --screenshot`, which puts them in place.
+**Fix:** open the `.eml` file ([Check and send](06-check-and-send.md)), or, from a clone of
+the repository, run `python -m qa.preview … --screenshot`, which puts them in place.
 
 ### My pictures do not show in Outlook
 

@@ -18,10 +18,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # the whole history, so the tag can be checked against main
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
+
+      - name: The tagged commit is on main
+        run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main
 
       - name: The tag names the version in pyproject.toml
         run: |
@@ -35,6 +40,13 @@ jobs:
           assert tag == f"v{version}", f"tag {tag} does not name version {version}"
           print(f"OK: {tag} releases inkfold {version}")
           PY
+
+      - name: The release's own tests pass
+        # The publisher, the changelog entry for this version, the README's
+        # policy and the old-name guard. CI ran the full suite on main.
+        run: |
+          pip install -e ".[dev]"
+          pytest tests/test_release.py tests/test_distribution.py
 
       - name: Build the wheel and the sdist
         run: |
