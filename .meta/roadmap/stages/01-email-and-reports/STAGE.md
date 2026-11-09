@@ -1,4 +1,4 @@
-# Stage 01 — Email mastery and repeatable reports
+# Stage 01 — Email mastery and repeatable reports  ◀ current stage
 
 **Goal:** turn inkfold from a renderer you write a script against into a report you re-run,
 and make its email the best a Python library produces. Seven epics; 1.4 and 1.5 are the
