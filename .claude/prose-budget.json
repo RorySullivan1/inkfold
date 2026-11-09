@@ -5,7 +5,7 @@
   "attribute": 24,
   "comment_run": 4,
   "include": [
-    "octavo",
+    "inkfold",
     "qa"
   ],
   "baseline": "qa/prose_baseline.json"

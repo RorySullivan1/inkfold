@@ -12,7 +12,7 @@ import re
 
 import pytest
 
-from octavo.builder import (
+from inkfold.builder import (
     Contents,
     DataTable,
     Email,
@@ -20,9 +20,9 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.sizing import A4_LANDSCAPE, A4_PORTRAIT
-from octavo.deck import (
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.sizing import A4_LANDSCAPE, A4_PORTRAIT
+from inkfold.deck import (
     DECK_MEDIUM,
     SLIDE_4_3,
     SLIDE_16_9,
@@ -35,8 +35,8 @@ from octavo.deck import (
     TitleSlide,
     deck_medium,
 )
-from octavo.deck.document import CLOSING_FACTS, TITLE_FACTS
-from octavo.document import Page, PagedDocument
+from inkfold.deck.document import CLOSING_FACTS, TITLE_FACTS
+from inkfold.document import Page, PagedDocument
 from qa.fixtures import all_deck_fixtures, pitch_16_9
 from qa.goldens import artifacts, check_fixture
 from qa.lint import errors, lint_html, rules_for
@@ -82,7 +82,7 @@ class TestTheMedium:
         assert "@page {\n      size: 1280px 720px;\n      margin: 0;" in html
 
     def test_a_continuous_page_is_refused(self):
-        from octavo.builder.sizing import DEFAULT_PAGE
+        from inkfold.builder.sizing import DEFAULT_PAGE
 
         with pytest.raises(ValidationError, match="fixed sheet"):
             Deck(FACTS, page=DEFAULT_PAGE)
@@ -216,7 +216,7 @@ class TestTheDensityIsTheDecks:
                 build()
 
     def test_the_email_switch_does_not_admit_it(self):
-        from octavo.config import Config, config_override
+        from inkfold.config import Config, config_override
 
         with config_override(Config(allow_custom_email_density=True)):
             with pytest.raises(ValidationError, match="deck medium alone"):
@@ -226,7 +226,7 @@ class TestTheDensityIsTheDecks:
         assert Deck({**FACTS, "size_theme": "spacious"}).metadata.size_theme == "spacious"
 
     def test_its_type_is_larger_than_spacious_everywhere_a_reader_reads(self):
-        from octavo.builder.sizing import PRESENTATION_SIZES, SPACIOUS_SIZES
+        from inkfold.builder.sizing import PRESENTATION_SIZES, SPACIOUS_SIZES
 
         for token in ("title", "section", "body", "secondary", "small", "label", "micro"):
             assert getattr(PRESENTATION_SIZES.type, token) > getattr(SPACIOUS_SIZES.type, token)
@@ -261,10 +261,10 @@ class TestTheOpeningAndClosingSlides:
     def test_the_title_slide_reads_the_resolved_keys_never_the_facts(self):
         from pathlib import Path
 
-        import octavo.builder
+        import inkfold.builder
 
         template = (
-            Path(octavo.builder.__file__).parent / "templates/deck/regions/title-slide.html"
+            Path(inkfold.builder.__file__).parent / "templates/deck/regions/title-slide.html"
         ).read_text(encoding="utf-8")
         assert "{{ campaign_name" not in template and "{{ firm_name" not in template
 
@@ -278,7 +278,7 @@ class TestTheOpeningAndClosingSlides:
         assert "Disclosures" not in deck.text()
 
     def test_a_divider_is_set_on_the_dark_ground(self):
-        from octavo.builder.theming import DEFAULT_THEME
+        from inkfold.builder.theming import DEFAULT_THEME
 
         html = _bare().add_divider("Part one", "Why it matters").render()
         divider = html.split('class="sheet slide divider"')[1]
@@ -378,9 +378,9 @@ class TestTheRuleTable:
             assert "slide-overflow" not in rules_for(medium)
 
     def test_without_the_backend_the_check_says_it_could_not_measure(self, monkeypatch):
-        import octavo.pdf.exporter as exporter
-        from octavo.check import layout_findings
-        from octavo.pdf import BackendMissingError
+        import inkfold.pdf.exporter as exporter
+        from inkfold.check import layout_findings
+        from inkfold.pdf import BackendMissingError
 
         def missing():
             raise BackendMissingError("no backend")

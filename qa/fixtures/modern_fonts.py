@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import Email
+from inkfold.builder import Email
 
 from . import kitchen_sink
 

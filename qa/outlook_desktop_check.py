@@ -12,10 +12,10 @@ from __future__ import annotations
 
 import sys
 
-from octavo.builder import FullWidth, ImageBlock
-from octavo.builder.images import EmailImage
-from octavo.delivery import build_message
-from octavo.outlook.desktop import create_draft
+from inkfold.builder import FullWidth, ImageBlock
+from inkfold.builder.images import EmailImage
+from inkfold.delivery import build_message
+from inkfold.outlook.desktop import create_draft
 
 from .fixtures import surfaced_layout
 from .fixtures._png import solid_png

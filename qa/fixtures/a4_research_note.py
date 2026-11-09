@@ -11,8 +11,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder.document import Document
-from octavo.document import (
+from inkfold.builder.document import Document
+from inkfold.document import (
     BackMatter,
     ContentsPage,
     Cover,

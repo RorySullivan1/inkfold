@@ -11,7 +11,7 @@ sections, so each golden pins what its own medium makes of them.
 
 from __future__ import annotations
 
-from octavo.builder import (
+from inkfold.builder import (
     Container,
     EmailImage,
     Event,
@@ -23,8 +23,8 @@ from octavo.builder import (
     Timeline,
     TwoColumn,
 )
-from octavo.builder.formats import pct
-from octavo.builder.models import Cell
+from inkfold.builder.formats import pct
+from inkfold.builder.models import Cell
 
 from ._png import solid_png
 

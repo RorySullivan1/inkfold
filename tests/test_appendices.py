@@ -12,7 +12,7 @@ import re
 
 import pytest
 
-from octavo.builder import (
+from inkfold.builder import (
     Appendices,
     Contents,
     DataTable,
@@ -20,10 +20,10 @@ from octavo.builder import (
     TextBlock,
     ValidationError,
 )
-from octavo.builder.email import Email
-from octavo.builder.models import TableRow
-from octavo.config import Config
-from octavo.document import (
+from inkfold.builder.email import Email
+from inkfold.builder.models import TableRow
+from inkfold.config import Config
+from inkfold.document import (
     ContentsPage,
     EmptyBackMatter,
     EmptyCover,
@@ -32,7 +32,7 @@ from octavo.document import (
     PagedDocument,
     RunningHeader,
 )
-from octavo.pdf import available, render_pdf
+from inkfold.pdf import available, render_pdf
 
 requires_pdf = pytest.mark.skipif(
     not available() or importlib.util.find_spec("pypdfium2") is None,

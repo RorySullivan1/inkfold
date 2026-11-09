@@ -11,7 +11,7 @@ import re
 
 import pytest
 
-from octavo.builder import (
+from inkfold.builder import (
     Bibliography,
     ChartBlock,
     DataTable,
@@ -22,11 +22,11 @@ from octavo.builder import (
     TextBlock,
     ValidationError,
 )
-from octavo.builder.apparatus import CITATION, cited_keys, split_markers
-from octavo.builder.email import Email
-from octavo.builder.models import NumberedItem, TableRow
-from octavo.config import Config
-from octavo.document import PagedDocument
+from inkfold.builder.apparatus import CITATION, cited_keys, split_markers
+from inkfold.builder.email import Email
+from inkfold.builder.models import NumberedItem, TableRow
+from inkfold.config import Config
+from inkfold.document import PagedDocument
 
 FACTS = {"email_subject": "Subject", "firm_name": "Hermes", "campaign_name": "Review"}
 

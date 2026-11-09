@@ -13,7 +13,7 @@ contents list each at a share of the column, and a narrow measure.
 
 from __future__ import annotations
 
-from octavo.builder import (
+from inkfold.builder import (
     Button,
     Callout,
     CardGroup,
@@ -31,8 +31,8 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.images import EmailImage
-from octavo.builder.models import KpiItem, TableRow
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import KpiItem, TableRow
 
 from ._png import solid_png
 

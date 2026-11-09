@@ -11,9 +11,9 @@ they are the design system, not content.
 
 import pytest
 
-from octavo.builder import Banner, EmailBuilder, FullWidth
-from octavo.builder.images import EmailImage
-from octavo.builder.models import EmailMetadata
+from inkfold.builder import Banner, EmailBuilder, FullWidth
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import EmailMetadata
 
 LABEL_DEFAULTS = {
     "unsubscribe_label": "Unsubscribe",

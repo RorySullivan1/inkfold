@@ -12,8 +12,8 @@ import re
 
 import pytest
 
-from octavo.brochure import Brochure, Panel
-from octavo.builder import (
+from inkfold.brochure import Brochure, Panel
+from inkfold.builder import (
     Badge,
     BarList,
     Callout,
@@ -24,13 +24,13 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.exhibits import Legend, LegendEntry
-from octavo.builder.glance import BarItem
-from octavo.builder.models import Cell, TableRow
-from octavo.builder.theming import DEFAULT_THEME, Theme, chart_colors
-from octavo.deck import Deck
-from octavo.document import EmptyBackMatter, EmptyCover, PagedDocument
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.exhibits import Legend, LegendEntry
+from inkfold.builder.glance import BarItem
+from inkfold.builder.models import Cell, TableRow
+from inkfold.builder.theming import DEFAULT_THEME, Theme, chart_colors
+from inkfold.deck import Deck
+from inkfold.document import EmptyBackMatter, EmptyCover, PagedDocument
 from qa.fixtures import _paged
 
 BRAND, SKY = "#B8860B", "#0077A8"

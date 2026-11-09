@@ -11,9 +11,9 @@ ways to send it, from simplest to most automated:
 | [Send through Gmail](#how-to-send-through-gmail) | Google API credentials | Google Workspace firms |
 
 ```python
-from octavo.builder import EmailBuilder, FullWidth, TextBlock
-from octavo.builder.images import EmailImage
-from octavo.delivery import build_message, save_eml
+from inkfold.builder import EmailBuilder, FullWidth, TextBlock
+from inkfold.builder.images import EmailImage
+from inkfold.delivery import build_message, save_eml
 
 email = (
     EmailBuilder()
@@ -32,18 +32,18 @@ email = (
 
 1. **In a browser.** `email.save("rates.html")` writes the email. Open the file in any
    browser. Attached images show as broken here. That is expected, see below.
-2. **As plain text.** `print(email.text())` shows the text-only version octavo writes
+2. **As plain text.** `print(email.text())` shows the text-only version inkfold writes
    for you. Read it once: it is what a reader sees on a text-only device.
 3. **With the checker.** From any folder:
 
    ```bash
-   python -m octavo.check path/to/rates.py:build
+   python -m inkfold.check path/to/rates.py:build
    ```
 
    It saves the HTML and plain-text versions into `output/` and checks the email against
    the rules Outlook and Gmail enforce. It exits with 0 when there is nothing to fix, 1 when
    there is, and 2 when the email does not build, so a script can stop on a problem. In
-   Python, `from octavo.check import check` and `check(email)` returns the same findings.
+   Python, `from inkfold.check import check` and `check(email)` returns the same findings.
 4. **As pictures.** From the repository folder (the one holding `pyproject.toml`), with the `[qa]` extra,
    `python -m qa.preview path/to/rates.py:build --screenshot` saves desktop and phone
    pictures of it, with attached images in place, into `output/screenshots/`.
@@ -69,7 +69,7 @@ drafts, with its pictures, without saving a file or asking IT for anything.
 
 <!-- manual: skip -->
 ```python
-from octavo.outlook.desktop import create_draft
+from inkfold.outlook.desktop import create_draft
 
 message = build_message(email, sender="you@example.com", to=["reader@example.com"])
 create_draft(message)
@@ -78,7 +78,7 @@ create_draft(message)
 3. The draft opens. Check it, then click **Send**.
 
 **Result:** the draft is saved in your Drafts folder, with the pictures in place and the
-attachments listed. octavo never sends it: you do.
+attachments listed. inkfold never sends it: you do.
 
 **Notes:**
 - `create_draft(message, display=False)` saves it without opening it.
@@ -109,7 +109,7 @@ to go.
 3. Outlook opens it as a new email, ready to edit. Add or change recipients if you need to,
    then click **Send**.
 
-**Result:** your readers get the email exactly as octavo built it, with attached images
+**Result:** your readers get the email exactly as inkfold built it, with attached images
 in place and the plain-text version included.
 
 **Notes:**
@@ -137,7 +137,7 @@ message = build_message(
 **When to use this:** a spreadsheet, a CSV or a PDF the reader downloads.
 
 ```python
-from octavo.delivery import Attachment
+from inkfold.delivery import Attachment
 
 csv = "Factor,1M\nValue,0.018\n".encode()
 message = build_message(
@@ -148,7 +148,7 @@ message = build_message(
 )
 ```
 
-To attach a PDF of a report built with octavo, see
+To attach a PDF of a report built with inkfold, see
 [Reports and PDFs](07-reports-and-pdfs.md#how-to-attach-a-pdf-report-to-an-email).
 
 ## How to send through Microsoft 365 (Outlook)
@@ -156,14 +156,14 @@ To attach a PDF of a report built with octavo, see
 **When to use this:** the email goes out on a schedule, with nobody clicking **Send**.
 
 **Before you start:** ask your IT team for a way to get a Microsoft Graph access token
-with the `Mail.Send` permission. octavo never handles your password or token itself. You
+with the `Mail.Send` permission. inkfold never handles your password or token itself. You
 give it a connection that is already signed in.
 
 <!-- manual: skip -->
 ```python
 import requests                      # pip install requests
 
-from octavo.outlook import GraphApiTransport, send_message
+from inkfold.outlook import GraphApiTransport, send_message
 
 session = requests.Session()
 session.headers["Authorization"] = f"Bearer {token}"   # the token from your IT set-up
@@ -178,7 +178,7 @@ send_message(message, transport=GraphApiTransport(session))
 ```python
 from googleapiclient.discovery import build   # pip install google-api-python-client
 
-from octavo.gmail import GoogleApiTransport, send_message
+from inkfold.gmail import GoogleApiTransport, send_message
 
 service = build("gmail", "v1", credentials=creds)   # your signed-in Google credentials
 message_id = send_message(message, transport=GoogleApiTransport(service))

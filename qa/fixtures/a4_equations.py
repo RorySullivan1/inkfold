@@ -11,8 +11,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import FullWidth, MathBlock, TextBlock
-from octavo.document import (
+from inkfold.builder import FullWidth, MathBlock, TextBlock
+from inkfold.document import (
     PAGED_MEDIUM,
     EmptyBackMatter,
     EmptyContentsPage,

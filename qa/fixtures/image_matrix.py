@@ -15,7 +15,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import (
+from inkfold.builder import (
     Email,
     EmailBuilder,
     Footer,
@@ -24,9 +24,9 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.enums import ImageAlign, TwoColumnRatio
-from octavo.builder.images import EmailImage
-from octavo.builder.models import EmailMetadata
+from inkfold.builder.enums import ImageAlign, TwoColumnRatio
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import EmailMetadata
 
 from ._png import solid_png
 

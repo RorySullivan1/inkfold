@@ -13,8 +13,8 @@ import re
 
 import pytest
 
-from octavo.brochure import Brochure, Panel
-from octavo.builder import (
+from inkfold.brochure import Brochure, Panel
+from inkfold.builder import (
     Callout,
     Column,
     DataTable,
@@ -23,11 +23,11 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.models import TableRow
-from octavo.builder.theming import DEFAULT_THEME
-from octavo.deck import Deck
-from octavo.document import EmptyBackMatter, EmptyCover, PagedDocument
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.models import TableRow
+from inkfold.builder.theming import DEFAULT_THEME
+from inkfold.deck import Deck
+from inkfold.document import EmptyBackMatter, EmptyCover, PagedDocument
 from qa.fixtures import _paged
 
 FACTS = {"firm_name": "Hermes Research", "campaign_name": "Frames"}

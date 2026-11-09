@@ -13,12 +13,12 @@ from dataclasses import replace
 
 import pytest
 
-from octavo.builder.exceptions import SizeError
-from octavo.builder.images import EmailImage
-from octavo.config import Config, config_override, get_config, set_config
-from octavo.delivery.retry import retry_with_backoff
-from octavo.email.medium import validate_gmail_size
-from octavo.outlook import GraphApiTransport
+from inkfold.builder.exceptions import SizeError
+from inkfold.builder.images import EmailImage
+from inkfold.config import Config, config_override, get_config, set_config
+from inkfold.delivery.retry import retry_with_backoff
+from inkfold.email.medium import validate_gmail_size
+from inkfold.outlook import GraphApiTransport
 
 
 class TestValidation:
@@ -70,35 +70,35 @@ class TestValidation:
 
 class TestFromEnv:
     def test_unset_variables_leave_defaults_alone(self, monkeypatch):
-        monkeypatch.delenv("OCTAVO_SIZE_LIMIT_KB", raising=False)
+        monkeypatch.delenv("INKFOLD_SIZE_LIMIT_KB", raising=False)
         assert Config.from_env() == Config()
 
     def test_reads_a_prefixed_variable(self, monkeypatch):
-        monkeypatch.setenv("OCTAVO_INLINE_IMAGE_LIMIT_KB", "64")
+        monkeypatch.setenv("INKFOLD_INLINE_IMAGE_LIMIT_KB", "64")
         assert Config.from_env().inline_image_limit_kb == 64
 
     def test_an_empty_variable_means_leave_it_alone(self, monkeypatch):
-        monkeypatch.setenv("OCTAVO_INLINE_IMAGE_LIMIT_KB", "   ")
+        monkeypatch.setenv("INKFOLD_INLINE_IMAGE_LIMIT_KB", "   ")
         assert Config.from_env().inline_image_limit_kb == Config().inline_image_limit_kb
 
     def test_none_is_accepted_for_the_timeout_specifically(self, monkeypatch):
         # "no timeout" is a real setting, not an absent one.
-        monkeypatch.setenv("OCTAVO_REQUEST_TIMEOUT_SECONDS", "none")
+        monkeypatch.setenv("INKFOLD_REQUEST_TIMEOUT_SECONDS", "none")
         assert Config.from_env().request_timeout_seconds is None
 
     def test_an_unparseable_value_names_the_variable(self, monkeypatch):
         # Silently ignoring a typo is how a setting appears to do nothing.
-        monkeypatch.setenv("OCTAVO_RETRY_MAX_ATTEMPTS", "lots")
-        with pytest.raises(ValueError, match="OCTAVO_RETRY_MAX_ATTEMPTS"):
+        monkeypatch.setenv("INKFOLD_RETRY_MAX_ATTEMPTS", "lots")
+        with pytest.raises(ValueError, match="INKFOLD_RETRY_MAX_ATTEMPTS"):
             Config.from_env()
 
     def test_an_invalid_combination_still_fails_validation(self, monkeypatch):
-        monkeypatch.setenv("OCTAVO_SIZE_WARN_KB", "9999")
+        monkeypatch.setenv("INKFOLD_SIZE_WARN_KB", "9999")
         with pytest.raises(ValueError, match="size_warn_kb"):
             Config.from_env()
 
     def test_overrides_apply_on_top_of_a_supplied_base(self, monkeypatch):
-        monkeypatch.setenv("OCTAVO_SIZE_WARN_KB", "10")
+        monkeypatch.setenv("INKFOLD_SIZE_WARN_KB", "10")
         base = Config(retry_max_attempts=7)
         result = Config.from_env(base=base)
         assert result.size_warn_kb == 10
@@ -116,7 +116,7 @@ class TestTheExhibitSeparator:
             Config(exhibit_separator="   ")
 
     def test_the_environment_supplies_it_verbatim(self, monkeypatch):
-        monkeypatch.setenv("OCTAVO_EXHIBIT_SEPARATOR", " — ")
+        monkeypatch.setenv("INKFOLD_EXHIBIT_SEPARATOR", " — ")
         assert Config.from_env().exhibit_separator == " — "
 
 
@@ -141,14 +141,14 @@ class TestTheAttachmentBudget:
         assert Config(attachment_limit_kb=50, attachment_warn_kb=40).size_limit_kb == 102
 
     def test_the_environment_sets_each(self, monkeypatch):
-        monkeypatch.setenv("OCTAVO_ATTACHMENT_LIMIT_KB", "25600")
-        monkeypatch.setenv("OCTAVO_ATTACHMENT_WARN_KB", "20480")
+        monkeypatch.setenv("INKFOLD_ATTACHMENT_LIMIT_KB", "25600")
+        monkeypatch.setenv("INKFOLD_ATTACHMENT_WARN_KB", "20480")
         config = Config.from_env()
         assert (config.attachment_limit_kb, config.attachment_warn_kb) == (25600, 20480)
 
     def test_a_misspelt_value_names_its_variable(self, monkeypatch):
-        monkeypatch.setenv("OCTAVO_ATTACHMENT_LIMIT_KB", "20MB")
-        with pytest.raises(ValueError, match="OCTAVO_ATTACHMENT_LIMIT_KB"):
+        monkeypatch.setenv("INKFOLD_ATTACHMENT_LIMIT_KB", "20MB")
+        with pytest.raises(ValueError, match="INKFOLD_ATTACHMENT_LIMIT_KB"):
             Config.from_env()
 
 
@@ -192,8 +192,8 @@ class TestTheWiringIsLive:
                 validate_gmail_size(html)
 
     def test_attachment_limit_is_read_from_config(self, valid_metadata, text_block):
-        from octavo.builder import EmailBuilder, FullWidth
-        from octavo.delivery import Attachment, MessageError, build_message
+        from inkfold.builder import EmailBuilder, FullWidth
+        from inkfold.delivery import Attachment, MessageError, build_message
 
         email = EmailBuilder().metadata(valid_metadata).section(FullWidth(content=text_block))
         envelope = {"sender": "a@example.com", "to": "b@example.com"}
@@ -204,8 +204,8 @@ class TestTheWiringIsLive:
                 build_message(email.build(), **envelope, attachments=[big])
 
     def test_the_email_density_switch_is_read_from_config(self, valid_metadata):
-        from octavo.builder import Email
-        from octavo.builder.exceptions import ValidationError
+        from inkfold.builder import Email
+        from inkfold.builder.exceptions import ValidationError
 
         with pytest.raises(ValidationError, match="allow_custom_email_density"):
             Email({**valid_metadata, "size_theme": "dense"})
@@ -280,7 +280,7 @@ class TestTheWiringIsLive:
         assert session.timeouts == [None]
 
     def test_error_body_excerpt_length_is_read_from_config(self):
-        from octavo.outlook.sender import GraphApiError
+        from inkfold.outlook.sender import GraphApiError
 
         class _Session:
             def post(self, url, *, data, headers, timeout):
@@ -294,9 +294,9 @@ class TestTheWiringIsLive:
 
     def test_defaults_reproduce_the_previous_constants(self):
         # The whole change must be behaviour-preserving out of the box.
-        from octavo.builder.images import INLINE_LIMIT_KB
-        from octavo.email.medium import _SIZE_LIMIT_KB, _SIZE_WARN_KB
-        from octavo.outlook.sender import DEFAULT_TIMEOUT_SECONDS
+        from inkfold.builder.images import INLINE_LIMIT_KB
+        from inkfold.email.medium import _SIZE_LIMIT_KB, _SIZE_WARN_KB
+        from inkfold.outlook.sender import DEFAULT_TIMEOUT_SECONDS
 
         config = Config()
         assert (_SIZE_LIMIT_KB, _SIZE_WARN_KB, INLINE_LIMIT_KB) == (102, 90, 48)

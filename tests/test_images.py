@@ -12,7 +12,7 @@ import dataclasses
 
 import pytest
 
-from octavo.builder import (
+from inkfold.builder import (
     ChartBlock,
     EmailBuilder,
     EmailImage,
@@ -21,15 +21,15 @@ from octavo.builder import (
     TextBlock,
     TwoColumn,
 )
-from octavo.builder.enums import EmbedStrategy
-from octavo.builder.exceptions import SizeError, ValidationError
-from octavo.builder.images import (
+from inkfold.builder.enums import EmbedStrategy
+from inkfold.builder.exceptions import SizeError, ValidationError
+from inkfold.builder.images import (
     INLINE_LIMIT_KB,
     ImageAsset,
     dedupe_assets,
     sniff_image_type,
 )
-from octavo.builder.models import EmailMetadata
+from inkfold.builder.models import EmailMetadata
 
 
 class TestSniffing:
@@ -532,7 +532,7 @@ class TestContentIdErrorMessage:
     """The rejection must describe what really happens to a Content-ID (#73)."""
 
     def test_does_not_promise_that_delivery_adds_an_at_sign(self, png_bytes):
-        # octavo/delivery emits `Content-ID: <bare-id>` and cannot qualify it:
+        # inkfold/delivery emits `Content-ID: <bare-id>` and cannot qualify it:
         # RFC 2392 makes a cid: URL the id minus its brackets, so an "@"
         # would stop matching the src="cid:..." the builder already wrote --
         # and _CONTENT_ID_RE forbids "@" anyway.

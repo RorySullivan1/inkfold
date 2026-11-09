@@ -12,9 +12,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder.document import Document
-from octavo.builder.sizing import SLIDE_16_9
-from octavo.document import paged_medium
+from inkfold.builder.document import Document
+from inkfold.builder.sizing import SLIDE_16_9
+from inkfold.document import paged_medium
 
 from . import _paged
 

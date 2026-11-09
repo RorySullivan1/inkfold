@@ -13,12 +13,12 @@ import dataclasses
 
 import pytest
 
-from octavo.builder import Email, FullWidth, TextBlock
-from octavo.builder.engine import TemplateEngine
-from octavo.builder.exceptions import ValidationError
-from octavo.builder.images import EmailImage
-from octavo.builder.medium import DEFAULT_MEDIUM
-from octavo.document import (
+from inkfold.builder import Email, FullWidth, TextBlock
+from inkfold.builder.engine import TemplateEngine
+from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.images import EmailImage
+from inkfold.builder.medium import DEFAULT_MEDIUM
+from inkfold.document import (
     BackMatter,
     ContentsPage,
     Cover,
@@ -32,9 +32,9 @@ from octavo.document import (
     RunningFooter,
     RunningHeader,
 )
-from octavo.document.document import BACK_MATTER_FACTS, COVER_FACTS, RUNNING_FACTS
-from octavo.document.medium import PAGED_MEDIUM
-from octavo.document.regions import MARGIN_BOXES
+from inkfold.document.document import BACK_MATTER_FACTS, COVER_FACTS, RUNNING_FACTS
+from inkfold.document.medium import PAGED_MEDIUM
+from inkfold.document.regions import MARGIN_BOXES
 from qa.fixtures import _paged, all_paged_fixtures
 
 TEMPLATE_DIR = TemplateEngine().template_dir
@@ -163,7 +163,7 @@ class TestAPageProjectsAndWalksItsSections:
         assert with_break == without
 
     def test_it_walks_its_sections_for_components_images_and_assets(self, png_bytes):
-        from octavo.builder import ChartBlock
+        from inkfold.builder import ChartBlock
 
         chart = ChartBlock(EmailImage.attached(png_bytes, alt="Chart", width=100))
         page = Page([FullWidth(content=chart)])
@@ -172,7 +172,7 @@ class TestAPageProjectsAndWalksItsSections:
         assert len(page.assets()) == 1
 
     def test_a_documents_manifest_reaches_through_a_page(self, png_bytes):
-        from octavo.builder import ChartBlock
+        from inkfold.builder import ChartBlock
 
         document = PagedDocument(_paged.facts(), cover=EmptyCover())
         document.add_section(
@@ -276,7 +276,7 @@ class TestTheRunningBoxesAreCssNotMarkup:
 
     def test_distinct_boxes_both_print_on_a_sheet(self):
         """The probe of #461, read back: each label is on the sheet in its own margin."""
-        from octavo.pdf import available, render_pdf
+        from inkfold.pdf import available, render_pdf
 
         if not available():
             pytest.skip('no WeasyPrint; the PDF exporter is the optional "[pdf]" extra')

@@ -38,7 +38,7 @@ import zlib
 from collections.abc import Callable
 from pathlib import Path
 
-from octavo.builder import (
+from inkfold.builder import (
     CardGroup,
     ChartBlock,
     ContactBlock,
@@ -51,9 +51,9 @@ from octavo.builder import (
     TwoColumn,
     content_width,
 )
-from octavo.builder.enums import CardOrientation, SizeTheme, TwoColumnRatio
-from octavo.builder.images import EmailImage
-from octavo.builder.models import KpiItem, TableRow
+from inkfold.builder.enums import CardOrientation, SizeTheme, TwoColumnRatio
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import KpiItem, TableRow
 
 # Colour vocabulary is #RRGGBB everywhere — validated at construction time.
 _GAIN = "#4A7C59"

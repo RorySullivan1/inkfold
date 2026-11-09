@@ -1,19 +1,19 @@
 ---
 paths:
-  - "octavo/builder/apparatus.py"
-  - "octavo/builder/document.py"
-  - "octavo/builder/exhibits.py"
-  - "octavo/builder/templates/analysis/figure-grid.html"
-  - "octavo/builder/templates/common/source-line.html"
-  - "octavo/builder/research.py"
-  - "octavo/builder/templates/text/bibliography.html"
-  - "octavo/builder/templates/text/glossary.html"
-  - "octavo/builder/templates/common/notes.html"
-  - "octavo/builder/templates/common/endnotes.html"
-  - "octavo/builder/templates/common/contents-list.html"
-  - "octavo/builder/templates/text/contents.html"
-  - "octavo/builder/templates/document/regions/contents.html"
-  - "octavo/builder/templates/document/regions/running-box.html"
+  - "inkfold/builder/apparatus.py"
+  - "inkfold/builder/document.py"
+  - "inkfold/builder/exhibits.py"
+  - "inkfold/builder/templates/analysis/figure-grid.html"
+  - "inkfold/builder/templates/common/source-line.html"
+  - "inkfold/builder/research.py"
+  - "inkfold/builder/templates/text/bibliography.html"
+  - "inkfold/builder/templates/text/glossary.html"
+  - "inkfold/builder/templates/common/notes.html"
+  - "inkfold/builder/templates/common/endnotes.html"
+  - "inkfold/builder/templates/common/contents-list.html"
+  - "inkfold/builder/templates/text/contents.html"
+  - "inkfold/builder/templates/document/regions/contents.html"
+  - "inkfold/builder/templates/document/regions/running-box.html"
 ---
 
 # The document apparatus — numbers, notes, contents, references, sources

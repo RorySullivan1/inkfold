@@ -14,12 +14,12 @@ import httplib2
 import pytest
 import requests
 
-from octavo.builder import EmailBuilder, FullWidth, ImageBlock
-from octavo.builder.images import EmailImage
-from octavo.config import config_override
-from octavo.delivery import build_message, save_eml
-from octavo.delivery.exceptions import DeliveryError, TransportError
-from octavo.gmail import GoogleApiTransport, is_transient, send_message
+from inkfold.builder import EmailBuilder, FullWidth, ImageBlock
+from inkfold.builder.images import EmailImage
+from inkfold.config import config_override
+from inkfold.delivery import build_message, save_eml
+from inkfold.delivery.exceptions import DeliveryError, TransportError
+from inkfold.gmail import GoogleApiTransport, is_transient, send_message
 
 ENVELOPE = {
     "subject": "Weekly Market Wrap",
@@ -414,7 +414,7 @@ class TestGoogleApiTransport:
         import ast
         import pathlib
 
-        import octavo.gmail.sender as sender
+        import inkfold.gmail.sender as sender
 
         tree = ast.parse(pathlib.Path(sender.__file__).read_text(encoding="utf-8"))
         imported: list[str] = []

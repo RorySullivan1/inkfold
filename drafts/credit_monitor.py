@@ -14,7 +14,7 @@ a logo through it rather than around it.
 from __future__ import annotations
 
 from drafts._chart import bar_chart, sparkline_strip
-from octavo.builder import (
+from inkfold.builder import (
     Banner,
     BannerPalette,
     Card,
@@ -33,7 +33,7 @@ from octavo.builder import (
     TextBlock,
     ThreeColumn,
 )
-from octavo.builder.models import Cell, FooterLink, LinkRow
+from inkfold.builder.models import Cell, FooterLink, LinkRow
 
 #: Weekly OAS change in basis points by rating bucket, oldest first. The three
 #: series are plotted as small multiples and quoted in the copy.

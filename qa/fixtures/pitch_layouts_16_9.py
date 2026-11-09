@@ -12,11 +12,11 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import Bibliography, Contents, DataTable, FullWidth, HeroStat, TextBlock
-from octavo.builder.images import EmailImage
-from octavo.builder.models import TableRow
-from octavo.builder.research import Reference
-from octavo.deck import SLIDE_16_9, Deck, DeckFooter
+from inkfold.builder import Bibliography, Contents, DataTable, FullWidth, HeroStat, TextBlock
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import TableRow
+from inkfold.builder.research import Reference
+from inkfold.deck import SLIDE_16_9, Deck, DeckFooter
 
 from . import pitch_16_9
 from ._png import solid_png

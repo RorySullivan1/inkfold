@@ -10,13 +10,13 @@ from pathlib import Path
 
 import pytest
 
-import octavo.outlook.desktop as desktop
-from octavo.builder import Email, FullWidth, ImageBlock, TextBlock
-from octavo.builder.images import EmailImage
-from octavo.delivery import build_message
-from octavo.delivery.exceptions import MessageError, TransportError
-from octavo.delivery.message import Attachment
-from octavo.outlook.desktop import (
+import inkfold.outlook.desktop as desktop
+from inkfold.builder import Email, FullWidth, ImageBlock, TextBlock
+from inkfold.builder.images import EmailImage
+from inkfold.delivery import build_message
+from inkfold.delivery.exceptions import MessageError, TransportError
+from inkfold.delivery.message import Attachment
+from inkfold.outlook.desktop import (
     PR_ATTACH_CONTENT_ID,
     PR_ATTACHMENT_HIDDEN,
     BackendMissingError,

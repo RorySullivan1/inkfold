@@ -24,9 +24,9 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
-from octavo.builder.document import Document
-from octavo.check.lint import Severity, lint_document
-from octavo.data.exceptions import BackendMissingError
+from inkfold.builder.document import Document
+from inkfold.check.lint import Severity, lint_document
+from inkfold.data.exceptions import BackendMissingError
 from qa.reference import REPORTS, ROOT, build_script, load_script
 
 _SKIPPED = (
@@ -86,7 +86,7 @@ def _median_ms(action: Callable[[], object], runs: int) -> float:
 
 
 def _pdf_ms(document: Document, runs: int) -> float | None:
-    from octavo.pdf import available, render_pdf
+    from inkfold.pdf import available, render_pdf
 
     if not document.medium.paged or not available():
         return None

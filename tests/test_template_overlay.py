@@ -9,11 +9,11 @@ from typing import Any
 
 import pytest
 
-from octavo.builder import Component, Email, EmailBuilder, FullWidth, TemplateEngine
-from octavo.builder.engine import _packaged_template_dir
-from octavo.builder.exceptions import TemplateError
-from octavo.builder.medium import Medium
-from octavo.document import PagedDocument
+from inkfold.builder import Component, Email, EmailBuilder, FullWidth, TemplateEngine
+from inkfold.builder.engine import _packaged_template_dir
+from inkfold.builder.exceptions import TemplateError
+from inkfold.builder.medium import Medium
+from inkfold.document import PagedDocument
 from qa.fixtures import kitchen_sink
 
 MARKER = "<!-- house footer -->\n"

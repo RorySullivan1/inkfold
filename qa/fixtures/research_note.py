@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import Contents, Email, EmailBuilder, TwoColumn
+from inkfold.builder import Contents, Email, EmailBuilder, TwoColumn
 
 from . import _research
 

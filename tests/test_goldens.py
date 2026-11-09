@@ -23,8 +23,8 @@ from pathlib import Path
 
 import pytest
 
-from octavo.builder import AuthorBlock, Email, FullWidth, TextBlock
-from octavo.builder.engine import TemplateEngine
+from inkfold.builder import AuthorBlock, Email, FullWidth, TextBlock
+from inkfold.builder.engine import TemplateEngine
 from qa.fixtures import all_fixtures
 from qa.goldens import (
     GOLDEN_DIR,

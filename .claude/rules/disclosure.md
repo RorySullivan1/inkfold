@@ -1,9 +1,9 @@
 ---
 paths:
-  - "octavo/builder/components.py"
-  - "octavo/builder/templates/analysis/**/*"
-  - "octavo/builder/templates/media/**/*"
-  - "octavo/builder/templates/common/disclosure.html"
+  - "inkfold/builder/components.py"
+  - "inkfold/builder/templates/analysis/**/*"
+  - "inkfold/builder/templates/media/**/*"
+  - "inkfold/builder/templates/common/disclosure.html"
 ---
 
 # An exhibit's fine print — attribution, and the disclosure beneath it

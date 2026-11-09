@@ -10,8 +10,8 @@ extra. Building and checking the slides works without it. See
 [Reports and PDFs](07-reports-and-pdfs.md) for installing it.
 
 ```python
-from octavo.builder import CardGroup, DataTable, FullWidth, TextBlock, TwoColumn
-from octavo.builder.models import KpiItem, TableRow
+from inkfold.builder import CardGroup, DataTable, FullWidth, TextBlock, TwoColumn
+from inkfold.builder.models import KpiItem, TableRow
 
 facts = {
     "firm_name": "Acme Research",
@@ -25,7 +25,7 @@ facts = {
 ## How to build a deck
 
 ```python
-from octavo.deck import Deck
+from inkfold.deck import Deck
 
 deck = Deck(facts)
 deck.add_divider("Where markets stand", "Levels, curve and premium")
@@ -48,7 +48,7 @@ deck.save("deck.html")
 
 <!-- manual: needs pdf -->
 ```python
-from octavo.pdf import save_pdf
+from inkfold.pdf import save_pdf
 
 save_pdf(deck, "deck.pdf")
 ```
@@ -66,7 +66,7 @@ its footer, beside its number.
 - The closing slide shows `header_disclaimer`. To rename its heading, pass
   `closing_slide=ClosingSlide(heading="Important information")`.
 - To leave either out, pass `EmptyTitleSlide()` or `EmptyClosingSlide()`.
-- For an older projector, pass `page=SLIDE_4_3` (from `octavo.deck`).
+- For an older projector, pass `page=SLIDE_4_3` (from `inkfold.deck`).
 
 ## How to add speaker notes
 
@@ -97,7 +97,7 @@ Put a `Contents` block on a slide. It lists every titled slide and divider after
 the PDF each entry shows the slide's number.
 
 ```python
-from octavo.builder import Contents
+from inkfold.builder import Contents
 
 agenda = Deck(facts)
 agenda.add_slide([FullWidth(content=Contents())], "Agenda")
@@ -165,7 +165,7 @@ the type is set to read on it. Or pass `image=` and `image_side=` for a picture 
 the slide.
 
 ```python
-from octavo.builder.images import EmailImage
+from inkfold.builder.images import EmailImage
 
 deck.add_slide(
     [FullWidth(content=TextBlock("<p>The long end did the work.</p>"))],
@@ -198,7 +198,7 @@ text and footer in the right half.
 **When to use this:** one number deserves a slide of its own.
 
 ```python
-from octavo.builder import HeroStat
+from inkfold.builder import HeroStat
 
 deck.add_statement(
     HeroStat("38 bps", "2s10s", "The steepest curve since 2022"),
@@ -217,7 +217,7 @@ email the slide is just the figure.
 a footer that reads "4 / 12" under a confidentiality notice.
 
 ```python
-from octavo.deck import DeckFooter
+from inkfold.deck import DeckFooter
 
 banked = Deck(
     facts,
@@ -240,18 +240,18 @@ the label beside the firm's name. The title slide shows neither, as it has no fo
 
 <!-- manual: needs pdf -->
 ```python
-from octavo.pdf import save_handout
+from inkfold.pdf import save_handout
 
 save_handout(deck, "handout.pdf")
 ```
 
 **Result:** an A4 portrait PDF with one page for each slide: the slide, shrunk to the page's
 width, and its notes under it. A slide without notes still gets a page. Pass
-`page=LETTER_PORTRAIT` (from `octavo.builder.sizing`) for US Letter.
+`page=LETTER_PORTRAIT` (from `inkfold.builder.sizing`) for US Letter.
 
 A page holds the room that is left under the slide, and notes are cut off where it ends, so
 the handout never has more pages than the deck has slides and a contents slide still prints
-the right numbers. `clipped_notes(deck)` (from `octavo.deck`) names each slide whose notes
+the right numbers. `clipped_notes(deck)` (from `inkfold.deck`) names each slide whose notes
 did not fit, as `['slide 4: The term premium']`; pass the same `page=` you print with.
 
 ## How to find a slide that is too full
@@ -261,7 +261,7 @@ in the PDF. Check for it before you send:
 
 <!-- manual: needs pdf -->
 ```python
-from octavo.deck import overflowing_slides
+from inkfold.deck import overflowing_slides
 
 rows = [TableRow([f"Bond {n}", f"{n}.0"]) for n in range(40)]
 deck.add_slide([FullWidth(content=DataTable(["Issue", "Weight"], rows))], "Every holding")
@@ -269,7 +269,7 @@ print(overflowing_slides(deck))
 ```
 
 **Result:** `['slide 6: Every holding']`. Shorten the table, or split it across two slides.
-`python -m octavo.check` reports the same thing as a `slide-overflow` error.
+`python -m inkfold.check` reports the same thing as a `slide-overflow` error.
 
 ## Why a deck looks the way it does
 

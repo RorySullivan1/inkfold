@@ -11,8 +11,8 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.brochure import TRI_FOLD_LETTER, Brochure, Panel
-from octavo.builder import (
+from inkfold.brochure import TRI_FOLD_LETTER, Brochure, Panel
+from inkfold.builder import (
     Aside,
     AuthorBlock,
     CardGroup,
@@ -27,9 +27,9 @@ from octavo.builder import (
     QrCode,
     TextBlock,
 )
-from octavo.builder.enums import CardOrientation
-from octavo.builder.images import EmailImage
-from octavo.builder.models import Card, NumberedItem
+from inkfold.builder.enums import CardOrientation
+from inkfold.builder.images import EmailImage
+from inkfold.builder.models import Card, NumberedItem
 
 from . import _paged
 from ._png import solid_png

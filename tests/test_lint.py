@@ -17,8 +17,8 @@ import re
 
 import pytest
 
-from octavo.builder import Email, FullWidth, TextBlock
-from octavo.config import config_override
+from inkfold.builder import Email, FullWidth, TextBlock
+from inkfold.config import config_override
 from qa.fixtures import all_fixtures
 from qa.lint import (
     DEFERRED_RULES,

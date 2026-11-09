@@ -15,7 +15,7 @@ import zipfile
 from pathlib import Path
 
 #: The import root the wheel ships.
-PACKAGE = "octavo"
+PACKAGE = "inkfold"
 
 #: Files a wheel must carry beyond the code. ``py.typed`` is what tells a
 #: consumer's type checker to read the annotations instead of typing everything

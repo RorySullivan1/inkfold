@@ -12,16 +12,16 @@ import re
 
 import pytest
 
-from octavo.builder import Contents, FullWidth, ValidationError
-from octavo.builder.email import Email
-from octavo.document import (
+from inkfold.builder import Contents, FullWidth, ValidationError
+from inkfold.builder.email import Email
+from inkfold.document import (
     PAGED_MEDIUM,
     ContentsPage,
     EmptyExhibitsPage,
     ExhibitsPage,
     PagedDocument,
 )
-from octavo.pdf import available, render_pdf
+from inkfold.pdf import available, render_pdf
 from qa.fixtures import _paged
 
 requires_pdf = pytest.mark.skipif(
@@ -102,8 +102,8 @@ class TestTheComponent:
         )
 
     def test_a_marker_in_a_caption_is_left_out_of_the_entry(self):
-        from octavo.builder import DataTable
-        from octavo.builder.models import TableRow
+        from inkfold.builder import DataTable
+        from inkfold.builder.models import TableRow
 
         document = Email(FACTS)
         document.add_section(FullWidth(content=Contents(of="exhibits")))

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from octavo.builder import Email, EmailBuilder
+from inkfold.builder import Email, EmailBuilder
 
 from . import _labelled
 

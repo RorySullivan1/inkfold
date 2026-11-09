@@ -11,9 +11,9 @@ are, is explicitly out of scope.
 
 import pytest
 
-from octavo.builder import ChartBlock, EmailBuilder, FullWidth
-from octavo.builder.exceptions import EmailBuilderError, ValidationError
-from octavo.builder.models import EmailMetadata, _validate_url
+from inkfold.builder import ChartBlock, EmailBuilder, FullWidth
+from inkfold.builder.exceptions import EmailBuilderError, ValidationError
+from inkfold.builder.models import EmailMetadata, _validate_url
 
 METADATA_URL_FIELDS = [
     "unsubscribe_url",
@@ -94,7 +94,7 @@ class TestValidateUrlHelper:
             _validate_url(url, "field")
 
     def test_relative_urls_with_colons_reach_every_field_kind(self, valid_metadata):
-        from octavo.builder import EmailImage, ImageBlock
+        from inkfold.builder import EmailImage, ImageBlock
 
         valid_metadata["view_in_browser_url"] = "/view?at=10:30"
         EmailMetadata(**valid_metadata).validate()
