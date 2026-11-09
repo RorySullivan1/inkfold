@@ -2,12 +2,13 @@
 
 ## State            (rewrite in place — current truth only, ≤ ~10 lines)
 - inkfold (pyHermes until v0.4.0, octavo until v0.4.1) builds **documents** onto **media** (`email`,
-  `document`, `brochure`, `deck`) from the shared `inkfold/builder` kit; exporters: `delivery`+`gmail`+`outlook`, and `pdf`. Rationale: CLAUDE.md, `media.md`.
-- **Shipped through PR #475** (#474); epics #157–#442 all closed, no issues open. #219 DOCX and #300 PPTX
-  closed as not planned. #288 is the owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
-- **The roadmap is live** in `.meta/roadmap/` (5 stages, 31 epics), surfaced each session by `roadmap_status`;
-  v0.2.0 shipped (PR #477); v0.3.0 (reference reports, benchmark) shipped (PR #478); v0.4.0 (rename to octavo) shipped (PR #479); v0.4.1 (rename to inkfold) in PR #480; cursor v0.5.0. The owner's six
-  decisions are taken. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
+  `document`, `brochure`, `deck`) from the shared `inkfold/builder` kit; exporters: `delivery`+`gmail`+`outlook`,
+  and `pdf`. Rationale: CLAUDE.md, `media.md`. Repository: RorySullivan1/inkfold.
+- **Shipped through PR #480**; no issues open. #219 DOCX and #300 PPTX closed as not planned. #288 is the
+  owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
+- **The roadmap is live** in `.meta/roadmap/` (5 stages), surfaced each session by `roadmap_status`. Shipped:
+  v0.2.0 charter (#477), v0.3.0 reference reports (#478), v0.4.0 and v0.4.1 renames to inkfold (#479, #480).
+  Cursor v0.5.0, the first PyPI release. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
 
 ## Decisions        (append-only; supersede, never delete)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
@@ -73,8 +74,7 @@
 
 ## Log              (append-only pointers)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
-- [2026-10-30] octavo-rename — v0.4.0: package, import root, `OCTAVO_*` and repo links renamed; review fixed the
-  manual's checkout folder; goal-auditor PASS after the repo decision; PR #479 — sessions/2026-10-30-0900-octavo-rename.md
 - [2026-11-09] octavo-rename — PR #479 merged and the repository renamed to RorySullivan1/octavo; v0.4.0 shipped.
 - [2026-11-09] inkfold-rename — v0.4.1: PyPI prohibited octavo; renamed to inkfold, guard hardened, v0.5.0's
   publisher pinned; review no must-fix, goal-auditor PASS; PR #480 — sessions/2026-11-09-0900-inkfold-rename.md
+- [2026-11-09] inkfold-rename — PR #480 merged; v0.4.1 marked shipped.
