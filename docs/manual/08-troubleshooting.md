@@ -280,12 +280,12 @@ works from any folder. Only the screenshots need the repository folder and
 **Likely cause:** you are on a Mac or Linux, you use the new Outlook, or the
 `[outlook-desktop]` extra is not installed.
 
-**Fix:** install the extra with `pip install -e ".[outlook-desktop]"` on Windows with
+**Fix:** install the extra with `pip install "inkfold[outlook-desktop]"` on Windows with
 classic Outlook. Otherwise save the message with `save_eml` or send it through Microsoft 365.
 
 ### I get "Rendering a PDF needs WeasyPrint" or "could not load a system library"
 
-**Fix:** install the extra from the repository folder with `pip install -e ".[pdf]"`, then
+**Fix:** install the extra with `pip install "inkfold[pdf]"`, then
 the system libraries listed in [Reports and PDFs](07-reports-and-pdfs.md).
 
 ### I get "is not in this document's asset manifest" when printing

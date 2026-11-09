@@ -8,7 +8,7 @@ same. Only the object you put them in changes.
 for laying out text (Pango, Cairo and HarfBuzz):
 
 ```bash
-pip install -e ".[pdf]"
+pip install "inkfold[pdf]"
 # Debian or Ubuntu:  sudo apt install libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
 # macOS:             brew install pango harfbuzz
 ```
@@ -126,7 +126,7 @@ draft.add_page([returns], orientation="landscape")
 draft.save("draft.html")
 ```
 
-**A QR code back to the web version.** It needs the `[qr]` extra (`pip install -e ".[qr]"`).
+**A QR code back to the web version.** It needs the `[qr]` extra (`pip install "inkfold[qr]"`).
 On paper it prints at one inch with the address beneath it; in an email, where the reader is
 already online, it is a button to the same address.
 

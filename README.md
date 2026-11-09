@@ -10,8 +10,10 @@ engine, which ignores `max-width`, drops most modern CSS, and will not display a
 URI at all. The usual answers — a CSS framework, a `<div>` grid, an external stylesheet —
 all fail there.
 
-**New here?** The [user manual](docs/manual/README.md) walks through building, checking and
-sending an email, task by task, with a troubleshooting page for every error message.
+**New here?** The
+[user manual](https://github.com/RorySullivan1/inkfold/blob/main/docs/manual/README.md) walks
+through building, checking and sending an email, task by task, with a troubleshooting page for
+every error message.
 
 inkfold composes Jinja2 templates into a single inline-CSS, table-based document
 engineered for those constraints, and enforces the ones that break silently. It depends on
@@ -250,20 +252,30 @@ a report renders as its sections alone.
 
 ## Install
 
-Requires Python 3.11+. Not published to PyPI — install from a clone. The distribution and the
-import are both `inkfold` (`from inkfold.builder import EmailBuilder`). Code written against
-an earlier name needs its imports changed, and any environment variable set under an earlier
-prefix renamed to `INKFOLD_`; nothing else moved:
+Requires Python 3.11+. The distribution and the import are both `inkfold`
+(`from inkfold.builder import EmailBuilder`):
 
 ```bash
-pip install -e ".[dev]"     # editable, plus pytest / ruff / mypy
-pip install -e ".[pdf]"     # optional: WeasyPrint, to print a document
-pip install -e ".[qa]"      # optional: Playwright + pypdfium2, for screenshots
-pip install -e ".[data]"    # optional: pandas, to build a table from a DataFrame
-pip install -e ".[charts]"  # optional: matplotlib, to build a chart from a Figure
-pip install -e ".[math]"    # optional: matplotlib, to render an equation from LaTeX
-pip install -e ".[qr]"      # optional: segno, to render a QR code to a web version
+pip install inkfold               # an email needs nothing more
+pip install "inkfold[pdf]"        # WeasyPrint, to print a document
+pip install "inkfold[data]"       # pandas, to build a table from a DataFrame
+pip install "inkfold[charts]"     # matplotlib, to build a chart from a Figure
+pip install "inkfold[math]"       # matplotlib, to render an equation from LaTeX
+pip install "inkfold[qr]"         # segno, to render a QR code to a web version
+pip install "inkfold[outlook-desktop]"  # pywin32: drafts in classic Outlook, on Windows
 ```
+
+To work on inkfold itself, install a clone editable, with the test and lint tools:
+
+```bash
+git clone https://github.com/RorySullivan1/inkfold.git && cd inkfold
+pip install -e ".[dev]"           # pytest / ruff / mypy
+pip install -e ".[qa]"            # Playwright + pypdfium2, for screenshots
+```
+
+Code written against an earlier name of the project needs its imports changed, and any
+environment variable set under an earlier prefix renamed to `INKFOLD_`; nothing else moved.
+The [changelog](https://github.com/RorySullivan1/inkfold/blob/main/CHANGELOG.md) names them.
 
 **The optional extras are genuinely optional**, all six of them, and the suite proves it
 rather than claiming it: their tests *skip* when the extra is absent, so `pip install -e ".[dev]"` and
@@ -271,9 +283,23 @@ rather than claiming it: their tests *skip* when the extra is absent, so `pip in
 it is not in the floor.
 
 `python -m build` makes a wheel and an sdist, and both carry the library alone: the sdist
-holds `inkfold/`, `pyproject.toml`, this README and the [MIT licence](LICENSE), and nothing from
+holds `inkfold/`, `pyproject.toml`, this README and the
+[MIT licence](https://github.com/RorySullivan1/inkfold/blob/main/LICENSE), and nothing from
 the tests, the QA harness or the tooling. The wheel ships a `py.typed` marker, so your type
-checker reads inkfold's annotations. CI builds, checks and installs both on every change.
+checker reads inkfold's annotations. CI builds, checks and installs both on every change, and
+a version tag publishes both to PyPI through trusted publishing, with no token stored anywhere.
+
+**Licence.** The library is MIT. A render service, and any hosted product built on inkfold,
+is separate from this package and licensed separately: what `pip install inkfold` gives you
+stays MIT.
+
+**Versions and deprecation.** Versions follow [semantic versioning](https://semver.org), and
+each release is recorded in the changelog. A public name is anything importable from an
+`inkfold` package without a leading underscore. Before 1.0 a minor release may change one,
+but never silently: a deprecated public name keeps working, and warns with a
+`DeprecationWarning` naming its replacement, for **at least two minor releases and at least
+90 days**, whichever is longer, and the changelog records both its deprecation and its
+removal. From 1.0, a public name is removed only in a major release.
 
 The `dev` extra also pulls `requests` and `httplib2`. Those are the HTTP transports the send
 adapters *document*, not ones they use: the adapters import neither, and an AST-parsing test
@@ -676,7 +702,7 @@ document.add_section(Appendices([FullWidth(title="Data sources", content=coverag
 - **A glossary term is an ordinary link** to `#term-<slug>`, checked like any reference.
 - **Each titled section in `Appendices` is lettered**, its exhibits numbered A.1, A.2, and
   the heading format is `Config.appendix_heading`. The manual's
-  [Write a research note](docs/manual/10-write-a-research-note.md) walks through all four.
+  [Write a research note](https://github.com/RorySullivan1/inkfold/blob/main/docs/manual/10-write-a-research-note.md) walks through all four.
 
 ## Colour
 
@@ -1196,5 +1222,6 @@ tests/            pytest suite
 ```
 
 Design rationale, the reasoning behind each constraint, and the decisions recorded as
-non-features live in [CLAUDE.md](CLAUDE.md). Open work is tracked in
-[GitHub issues](https://github.com/RorySullivan1/inkfold/issues), organised as epics.
+non-features live in
+[CLAUDE.md](https://github.com/RorySullivan1/inkfold/blob/main/CLAUDE.md). Open work is tracked
+in [GitHub issues](https://github.com/RorySullivan1/inkfold/issues), organised as epics.

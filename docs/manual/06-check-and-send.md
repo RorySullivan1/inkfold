@@ -64,7 +64,7 @@ plain = email.text()
 drafts, with its pictures, without saving a file or asking IT for anything.
 
 **Steps:**
-1. Install the extra once, from the repository folder: `pip install -e ".[outlook-desktop]"`.
+1. Install the extra once: `pip install "inkfold[outlook-desktop]"`.
 2. With Outlook open, create the draft:
 
 <!-- manual: skip -->

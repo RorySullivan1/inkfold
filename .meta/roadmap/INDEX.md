@@ -29,7 +29,7 @@ One version is one roadmap epic and ships as one PR; the epic number from the do
 | v0.3.0  | 00 | 0.2 Reference reports and the speed benchmark | shipped (PR #478) |
 | v0.4.0  | 00 | 0.3 Rename to octavo: distribution and import root | shipped (PR #479) |
 | v0.4.1  | 00 | 0.3 Rename to inkfold: PyPI prohibits octavo | shipped (PR #480) |
-| v0.5.0  | 00 | 0.4 First public release on PyPI, by trusted publishing | planned ← cursor |
+| v0.5.0  | 00 | 0.4 First public release on PyPI, by trusted publishing | in-progress ← cursor |
 | v0.6.0  | 01 | 1.1 Report definition and the run CLI | planned |
 | v0.7.0  | 01 | 1.2 Data binding and provenance | planned |
 | v0.8.0  | 01 | 1.3 Three house email templates | planned |
