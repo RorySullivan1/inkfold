@@ -128,10 +128,19 @@ construction check. It sees vertical overflow only. The answer was also posted o
 | `PullQuote` | a tinted band with an accent rule | the same band: it needs no print feature |
 | `TextBlock(drop_cap=True)` | the first letter floated, two lines deep | nothing, byte for byte |
 | `FlowedColumns` | one passage through `column-count` columns | a `FullWidth`, byte for byte |
-| `TextBlock(figure=ImageBlock(wrap=...))` | the image floated, the prose wrapping | the image above the prose, by its `align` |
+| `TextBlock(figure=ImageBlock(wrap=...))` | the image floated, the prose wrapping | the image floated by a table's `align` and CSS `float`, the prose wrapping; above the prose on a phone (v0.9.0) |
 | `Panel(background_image=...)` | a picture to the bleed | not drawn (a panel flattens) |
 | `TextBlock(aside=Aside(...))` | a boxout floated a third of the column wide, the prose wrapping | a `Callout` above the prose (#343) |
 
+- **Superseded (owner, 2026-11-10): "in an email the wrapped image sits above the prose".** In
+  an email it set the figure above the prose, by its own `align`, which left a narrow picture
+  alone at one side with an empty area beside it. Word's engine and every browser float a
+  table that carries `align`, so `text-block.html` now emits the figure in a
+  `role="presentation"` table with `align` and a matching CSS `float` (the alignment test holds
+  the two spellings together), padded by `gutter` and `caption_gap` on the inner side. The
+  phone rule `.email-float` stacks it again; the skeleton carries it only when the email has
+  a wrapped figure (`_head_rules`' `float`). Checked in classic Outlook 16.0.0.20527 and in
+  Edge at 1000 and 375 px. A drop cap and an aside still do not float in an email.
 - **The drop cap is a real element.** A floated `::first-letter` is laid out after the first
   line in WeasyPrint, so the line ran over the letter, whether the pseudo-element sat on the
   `div` or on its first paragraph. A floated `span` wraps correctly. On paper the builder

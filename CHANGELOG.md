@@ -34,6 +34,10 @@ long a deprecated public name survives.
 
 ### Changed
 
+- **A wrapped figure floats in an email too.** `TextBlock(figure=...)` with a `wrap` side used to
+  set the figure above the prose in an email; it now floats it, through a table's `align` and a
+  CSS `float`, so the prose wraps beside it in Outlook and in browsers. On a phone it stacks above
+  the prose as before.
 - The `daily-investment-note` example is a `Report` with three declared inputs; its exhibits'
   source lines now carry their as-of date.
 

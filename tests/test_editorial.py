@@ -161,12 +161,13 @@ def figure(wrap: str = "right", **kwargs) -> ImageBlock:
 class TestTheWrappedFigure:
     PROSE = "<p>The desk keeps the steepener on.</p>"
 
-    def test_an_email_sets_it_above_the_prose_with_its_align_and_no_float(self):
+    def test_an_email_floats_it_beside_the_prose_by_a_tables_align(self):
+        # Superseded (owner, 2026-11-10): an email set the figure above the prose.
         html = email_of(FullWidth(TextBlock(self.PROSE, figure=figure()))).render()
-        at = html.index('class="wrapped-figure"')
-        assert '<div class="wrapped-figure">' in html
-        assert html.index('align="right"', at) < html.index("The desk keeps", at)
-        assert "wrap-right" not in html
+        at = html.index('class="email-float" align="right"')
+        assert 'style="float:right;' in html[at : at + 300]
+        assert at < html.index("The desk keeps", at)
+        assert "wrapped-figure" not in html and "wrap-right" not in html
 
     def test_paper_floats_it_at_its_display_width(self):
         html = paged_of(FullWidth(TextBlock(self.PROSE, figure=figure("left")))).render()
@@ -174,7 +175,8 @@ class TestTheWrappedFigure:
 
     def test_a_text_block_without_one_is_untouched_in_every_medium(self):
         for render in (email_of, paged_of):
-            assert "wrapped-figure" not in render(FullWidth(TextBlock(self.PROSE))).render()
+            html = render(FullWidth(TextBlock(self.PROSE))).render()
+            assert "wrapped-figure" not in html and "email-float" not in html
 
     def test_its_image_reaches_the_manifest(self):
         """Standing rule 7: the block that hosts an image declares it."""

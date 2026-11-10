@@ -1532,7 +1532,7 @@ class TextBlock(CopyAlignment, Component):
         The drop cap is a real element rather than ``::first-letter``: WeasyPrint
         lays out the first line before a floated pseudo-element, so the line ran
         over the letter it should have wrapped. The caller's markup is otherwise
-        untouched. A figure floats on paper and sits above the prose elsewhere.
+        untouched. A figure floats on paper by CSS and in an email by a table's align.
         """
         engine = respaced(engine, self.spacing, type(self).__name__)
         ctx = self.context()
@@ -1544,6 +1544,7 @@ class TextBlock(CopyAlignment, Component):
         if self.figure is not None:
             ctx["figure_html"] = self.figure.render(engine)
             ctx["figure_wrap"] = self.figure.wrap if paged else ""
+            ctx["figure_float"] = "" if paged else self.figure.wrap
             ctx["figure_width"] = self.figure.image.width or ""
         if self.aside is not None:
             width = cell_width_of(engine)
@@ -1597,6 +1598,7 @@ class TextBlock(CopyAlignment, Component):
             "subtitle": self.subtitle,
             "figure_html": "",
             "figure_wrap": "",
+            "figure_float": "",
             "figure_width": "",
             "aside_html": "",
             "aside_side": "",

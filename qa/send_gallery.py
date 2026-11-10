@@ -9,14 +9,10 @@ it the run lists what it would send and to whom::
     python -m qa.send_gallery you@icloud.com --from you@gmail.com --send     # by Gmail SMTP
     python -m qa.send_gallery --save output/eml                              # .eml files, no send
 
-``--via smtp``, the default, hands each message to smtp.gmail.com exactly as
-``build_message`` assembles it, signed in with a Google app password asked for at
-the prompt (or read from ``INKFOLD_SMTP_PASSWORD``) and never stored. ``--via
-outlook`` sends through classic Outlook instead, which re-encodes the HTML through
-its own editor, so the inboxes judge Outlook's rewrite rather than inkfold's email.
-``--save DIR`` sends nothing: it writes each message as a ``.eml`` file, which new
-Outlook opens by double-click, since new Outlook takes no automation. The questions
-to answer per client are in ``qa/clients/MATRIX.md``.
+``--via smtp`` (the default) sends ``build_message``'s MIME unchanged through Gmail,
+with an app password from the prompt; ``--via outlook`` uses classic Outlook, which
+rewrites the HTML. ``--save DIR`` writes ``.eml`` files for new Outlook and sends
+nothing. The why, and each client's questions: ``qa/clients/MATRIX.md``.
 """
 
 from __future__ import annotations

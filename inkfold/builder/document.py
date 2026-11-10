@@ -252,7 +252,8 @@ class Document:
     def _head_rules(self) -> frozenset[str]:
         """
         The skeleton's optional rules this document needs: ``pin`` for a pinned
-        section (#397), ``connector`` for a connector arrow (#399). A document
+        section (#397), ``connector`` for a connector arrow (#399), ``float`` for an
+        email's wrapped figure (v0.9.0). A document
         that needs neither keeps its head byte for byte.
         """
         rules = set()
@@ -262,6 +263,10 @@ class Document:
         blocks = descendants([c for section in sections for c in section.components()])
         if any(getattr(block, "separator", None) == "arrow" for block in blocks):
             rules.add("connector")
+        if not self.medium.paged and any(
+            getattr(getattr(block, "figure", None), "wrap", "") for block in blocks
+        ):
+            rules.add("float")
         return frozenset(rules)
 
     def _flat_sections(self) -> list[Container]:

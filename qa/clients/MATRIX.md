@@ -45,12 +45,13 @@ Two defects are common to most emails, so they are listed once rather than in ev
   and an empty band below it. Only `minimal_banner` is free of it.
 - **#500**: an image that does not load shows its alt text in the client's default font, which
   on kitchen_sink's masthead is dark on dark. Its masthead background, logo and footer mark are
-  hosted at `cdn.example.com`, which does not exist, so they never load in any client; that is
-  the fixture covering the hosted branch, not a missing attachment.
+  hosted; since the owner's review they are served from this repository
+  (`qa/fixtures/hosted/`, via `raw.githubusercontent.com`), so they load in a real inbox once
+  the branch is on `main`. `image_matrix` keeps `cdn.example.com` for an image that never loads.
 - **By design, though it can look wrong**: a table bar sits under its figure (`data-table.md`),
   and a sparkline's bars are a fixed 4 px each, so a three-point series is about 16 px wide.
-- **Floats stack**: a chart or equation that prose wraps round on paper sits above the prose
-  in Outlook instead. This is the intended email fallback, not a defect.
+- **Wrapped figures float in an email too** since the owner's review: the prose wraps beside
+  a wrapped image, chart or equation on a desktop, and the figure stacks above it on a phone.
 
 | Email | Classic Outlook | New Outlook | Gmail web | Gmail app | Apple Mail | Dark mode |
 |---|---|---|---|---|---|---|
