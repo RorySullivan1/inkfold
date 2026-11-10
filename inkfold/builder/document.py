@@ -39,6 +39,7 @@ from .exhibits import legends
 from .images import EmailImage, ImageAsset, dedupe_assets
 from .medium import DEFAULT_MEDIUM, Medium, walking_in
 from .models import DocumentMetadata, Footnote
+from .provenance import Provenance
 from .research import Bibliography
 from .sizing import (
     MEDIUM_DENSITIES,
@@ -527,6 +528,26 @@ class Document:
                     component.entries = self._listing(component.of, component.label, section)
 
     @_under_own_config
+    def provenance(self) -> list[Provenance]:
+        """
+        Each exhibit and section drawn from a declared input, once per dataset, in reading order.
+
+        A section's own source line follows its blocks, as it sits at its foot. A
+        holder is named as its reader sees it: an exhibit by its numbered caption,
+        a section by its heading, either by its class when it has neither.
+        """
+        self._walk()
+        found: list[Provenance] = []
+        for section in self._flat_sections():
+            holders: list[Component | Container] = [*descendants(section.components()), section]
+            for holder in holders:
+                for dataset in holder.datasets if hasattr(holder, "datasets") else ():
+                    found.append(
+                        Provenance(_where(holder), dataset.name, dataset.source, dataset.as_of)
+                    )
+        return found
+
+    @_under_own_config
     def kept_sections(self) -> dict[str, str]:
         """Each section kept together on paper, by its row's ``id`` there, to its name (#364)."""
         self._walk()
@@ -663,6 +684,15 @@ class Document:
 def _named(holder: Component | Container) -> str:
     """How a refusal names something that may cite: a block by its class, a section by its title."""
     return holder._owner() if isinstance(holder, Container) else type(holder).__name__
+
+
+def _where(holder: Component | Container) -> str:
+    """A holder as its reader finds it: a numbered caption, a heading, or its class."""
+    if isinstance(holder, Container):
+        return holder.heading() or type(holder).__name__
+    caption = getattr(holder, "caption", "") or getattr(holder, "subtitle", "") or ""
+    named = holder.numbered(caption) if isinstance(holder, Exhibit) else caption
+    return named or type(holder).__name__
 
 
 def _flatten(section: Container) -> list[Container]:

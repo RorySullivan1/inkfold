@@ -68,6 +68,7 @@ from .models import (
     trend_of,
 )
 from .prose import PROSE_TOKENS, refuse_top_headings
+from .provenance import Dataset, SourceArg, resolve_source
 from .sizing import Spacing, coerce_measure, coerce_spacing, measure_px
 from .textgen import (
     decimal_pads,
@@ -242,6 +243,9 @@ class Exhibit:
 
     #: A plain-text line under the subtitle naming the measure and window (#395).
     qualifier: str = ""
+
+    #: The declared inputs its ``source=`` named, for ``Document.provenance()`` (v0.7.0).
+    datasets: tuple[Dataset, ...] = ()
 
     def check_qualifier(self, qualifier: object) -> str:
         """``qualifier`` as stored: plain text, escaped on the way out, as ``disclosure`` is."""
@@ -679,7 +683,7 @@ class DataTable(CellShare, Exhibit, Component):
         self,
         headers: list[str | Column],
         rows: list[TableRow],
-        source: str = "",
+        source: SourceArg = "",
         as_of: str = "",
         subtitle: str | None = None,
         caption: str = "",
@@ -698,6 +702,7 @@ class DataTable(CellShare, Exhibit, Component):
         self.qualifier = self.check_qualifier(qualifier)
         self.width = self.validate_share(width)
         self.validate_exhibit(label, anchor)
+        source, as_of, self.datasets = resolve_source(source, as_of, "DataTable")
         if frame is not None:
             _validate_frame(frame, "data_table.frame")
         self.frame = frame
@@ -1095,7 +1100,7 @@ class ChartBlock(Exhibit, CopyAlignment, Component):
         self,
         image_url: str | EmailImage,
         alt_text: str = "Chart",
-        source: str = "",
+        source: SourceArg = "",
         subtitle: str | None = None,
         width: int | None = None,
         align: str | None = None,
@@ -1119,6 +1124,7 @@ class ChartBlock(Exhibit, CopyAlignment, Component):
             raise ValidationError(f"ChartBlock's legend is a Legend, got {type(legend).__name__}.")
         self.legend = legend
         self.validate_exhibit(label, anchor)
+        source, _, self.datasets = resolve_source(source, None, "ChartBlock", dated=False)
         self.notes = coerce_notes(notes, [caption, source], "ChartBlock")
         self.align = self.validate_alignment(align)
         self.image = coerce_image(

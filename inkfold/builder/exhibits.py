@@ -22,6 +22,7 @@ from .engine import Renderer, cell_width_of, respaced, scheme_of
 from .exceptions import ValidationError
 from .images import EmailImage
 from .models import Footnote, _validate_color, _validate_tone, coerce_notes
+from .provenance import SourceArg, resolve_source
 from .sizing import Spacing
 from .textgen import join_blocks, wrap
 from .theming import SERIES_TOKENS, Theme, chart_colors, resolve_theme
@@ -248,7 +249,7 @@ class FigureGrid(Exhibit, Component):
         panels: Sequence[ChartBlock | ImageBlock],
         caption: str = "",
         label: str = "Exhibit",
-        source: str = "",
+        source: SourceArg = "",
         disclosure: str = "",
         columns: int = 2,
         anchor: str = "",
@@ -272,6 +273,7 @@ class FigureGrid(Exhibit, Component):
                 f"FigureGrid's columns run 1 to its {len(held)} panels, got: {columns!r}"
             )
         self.validate_exhibit(label, anchor)
+        source, _, self.datasets = resolve_source(source, None, "FigureGrid", dated=False)
         self.notes = coerce_notes(notes, [caption, source], "FigureGrid")
         self.panels = checked
         self.columns = columns

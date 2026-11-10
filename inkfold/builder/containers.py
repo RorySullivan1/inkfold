@@ -54,6 +54,7 @@ from .models import (
     coerce_notes,
     justified,
 )
+from .provenance import Dataset, SourceArg, check_source, resolve_source
 from .sizing import (
     PHONE_FLOOR,
     STANDARD_SIZES,
@@ -134,6 +135,9 @@ class Container:
     #: The row ``id`` a kept section carries on paper, set by the document's walk (#364).
     kept_mark: str = ""
 
+    #: The declared inputs its ``source=`` named, for ``Document.provenance()`` (v0.7.0).
+    datasets: tuple[Dataset, ...] = ()
+
     #: How a citation in ``source`` is spelled, handed down by the document's walk (#338).
     citing: Citing = UNRESOLVED
 
@@ -160,7 +164,7 @@ class Container:
         break_before: bool = False,
         badge: Badge | str | None = None,
         kicker: str | None = None,
-        source: str | None = None,
+        source: SourceArg = None,
         as_of: str | None = None,
         source_notes: Sequence[Footnote | str] | None = None,
         title_size: str = "section",
@@ -205,8 +209,7 @@ class Container:
             )
         self.kicker = check_kicker(kicker, title, self._owner())
         self._check_source(source, as_of)
-        self.source = source or ""
-        self.as_of = as_of or ""
+        self.source, self.as_of, self.datasets = resolve_source(source, as_of, self._owner())
         self.source_notes = coerce_notes(source_notes, [self.source], f"{self._owner()}'s source")
         self.title_size, self.title_case = check_title_type(
             title_size, title_case, title, self._owner()
@@ -221,13 +224,13 @@ class Container:
         self.bleed = bleed
         self.pin = pin
 
-    def _check_source(self, source: str | None, as_of: str | None) -> None:
-        """Refuse a source line that is not plain text, and a date with no source to date."""
-        for name, value in (("source", source), ("as_of", as_of)):
-            if value is not None and not isinstance(value, str):
-                raise ValidationError(
-                    f"{self._owner()}'s {name} is plain text, got: {type(value).__name__}"
-                )
+    def _check_source(self, source: SourceArg, as_of: str | None) -> None:
+        """Refuse a source line that is not text or datasets, and a date with no source to date."""
+        check_source(source, self._owner())
+        if as_of is not None and not isinstance(as_of, str):
+            raise ValidationError(
+                f"{self._owner()}'s as_of is plain text, got: {type(as_of).__name__}"
+            )
         if as_of and not source:
             raise ValidationError(f"{self._owner()} has an as_of date but no source to date")
 
@@ -640,7 +643,7 @@ class FullWidth(Container):
         break_before: bool = False,
         badge: Badge | str | None = None,
         kicker: str | None = None,
-        source: str | None = None,
+        source: SourceArg = None,
         as_of: str | None = None,
         source_notes: Sequence[Footnote | str] | None = None,
         title_size: str = "section",
@@ -732,7 +735,7 @@ class FlowedColumns(FullWidth):
         break_before: bool = False,
         badge: Badge | str | None = None,
         kicker: str | None = None,
-        source: str | None = None,
+        source: SourceArg = None,
         as_of: str | None = None,
         source_notes: Sequence[Footnote | str] | None = None,
         title_size: str = "section",
@@ -839,7 +842,7 @@ class TwoColumn(_SplitContainer):
         kicker: str | None = None,
         stack: str | bool = "natural",
         valign: str | VerticalAlign = "top",
-        source: str | None = None,
+        source: SourceArg = None,
         as_of: str | None = None,
         source_notes: Sequence[Footnote | str] | None = None,
         title_size: str = "section",
@@ -947,7 +950,7 @@ class ThreeColumn(_SplitContainer):
         kicker: str | None = None,
         stack: str | bool = "natural",
         valign: str | VerticalAlign = "top",
-        source: str | None = None,
+        source: SourceArg = None,
         as_of: str | None = None,
         source_notes: Sequence[Footnote | str] | None = None,
         title_size: str = "section",
@@ -1045,7 +1048,7 @@ class FourColumn(_SplitContainer):
         kicker: str | None = None,
         stack: str | bool = "natural",
         valign: str | VerticalAlign = "top",
-        source: str | None = None,
+        source: SourceArg = None,
         as_of: str | None = None,
         source_notes: Sequence[Footnote | str] | None = None,
         title_size: str = "section",

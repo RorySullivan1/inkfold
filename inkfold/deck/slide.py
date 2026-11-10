@@ -22,6 +22,7 @@ from inkfold.builder.exceptions import ValidationError
 from inkfold.builder.glance import HeroStat
 from inkfold.builder.images import EmailImage, EmbedStrategy, ImageAsset
 from inkfold.builder.models import check_valign
+from inkfold.builder.provenance import SourceArg
 from inkfold.builder.sizing import PageMargin, SizeScheme
 from inkfold.builder.textgen import join_blocks, underline, wrap
 from inkfold.document.page import Page
@@ -279,14 +280,14 @@ class Slide(Container):
         self.image = image
         self.image_side = image_side
 
-    def _check_source(self, source: str | None, as_of: str | None) -> None:
+    def _check_source(self, source: SourceArg, as_of: str | None) -> None:
         """Refuse a source that is not text, one calling a footnote, and a date with no source."""
         for name, value in (("source", source), ("as_of", as_of)):
             if value is not None and not isinstance(value, str):
                 raise ValidationError(
                     f"{self._name()}'s {name} is plain text, got: {type(value).__name__}"
                 )
-        if source and MARKER.search(source):
+        if isinstance(source, str) and MARKER.search(source):
             raise ValidationError(
                 f"{self._name()}'s source calls a footnote, and a deck carries none: a "
                 "slide's foot is its footer band. Cite with [@key], or write the source out."

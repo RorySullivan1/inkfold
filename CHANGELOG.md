@@ -17,6 +17,19 @@ long a deprecated public name survives.
   line, writes its HTML and text parts to `output/` and runs the portability check, with
   `inkfold.check`'s exit codes. An unknown `--flag` is refused by name.
 - The daily-note reference report is ported to a `Report` (`reference/daily-note/report.py`).
+- **Declared data inputs** (`inkfold.report.data_input`): a loader returns its data `Dated`, and
+  the report reads it as a `Dataset` with a name, a source and an as-of date. An input older
+  than its `max_age` at the report's `as_of` raises `StaleDataError`, and one dated after it
+  `FutureDataError`, both before anything renders; `python -m inkfold.run` loads every input
+  before `build()` and exits 2 on either.
+- **Provenance.** `DataTable`, `ChartBlock`, `FigureGrid` and every section take a `Dataset` (or
+  several) as `source=`, printing the source line and its date from the data, and
+  `Document.provenance()` lists each exhibit and section with the inputs it was drawn from.
+
+### Changed
+
+- The `daily-investment-note` example is a `Report` with three declared inputs; its exhibits'
+  source lines now carry their as-of date.
 
 ## [0.5.0] - 2026-11-09
 

@@ -2,7 +2,8 @@
 ``python -m inkfold.run report.py --as-of 2026-10-30``: build, save and check a report.
 
 Loads a :class:`~inkfold.report.Report` subclass from the target module,
-constructs it with the CLI parameters, calls ``build()``, and writes the
+constructs it with the CLI parameters, loads its declared inputs (a stale
+one exits 2 before anything renders), calls ``build()``, and writes the
 rendered document to ``output/``. With no ``--out`` flag the default is
 ``output/<stem>.html`` (and ``.txt``).
 
@@ -16,7 +17,7 @@ import sys
 from pathlib import Path
 
 from inkfold.builder.document import Document
-from inkfold.builder.exceptions import EmailBuilderError, ValidationError
+from inkfold.builder.exceptions import EmailBuilderError
 from inkfold.check.lint import (
     Severity,
     format_findings,
@@ -78,12 +79,16 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         report = load_report(target, overrides)
+        report.load()
         result = report.build()
-    except (TargetError, ValidationError) as exc:
+    except TargetError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return EXIT_BUILD_FAILED
     except (EmailBuilderError, DataError) as exc:
         print(f"{type(exc).__name__}: {exc}", file=sys.stderr)
+        return EXIT_BUILD_FAILED
+    except Exception as exc:  # a loader's or build()'s own failure exits 2, as #466 has it
+        print(f"{type(exc).__name__} in {target}: {exc}", file=sys.stderr)
         return EXIT_BUILD_FAILED
 
     if not isinstance(result, Document):

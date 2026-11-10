@@ -16,6 +16,12 @@ and what we are doing about it, in that order.
   positive tone and losses in its negative, read off ``chart_style``.
 - **A second paragraph** — positioning and what we are watching.
 
+**A report you re-run.** ``DailyNote`` is a :class:`~inkfold.report.Report`: its
+one parameter is the as-of date, and its three data inputs each return their
+figures dated. Every exhibit takes its input as ``source=``, so its source line
+is printed from the data, and a figure older than three days is refused before
+anything renders.
+
 **Built for a phone.** Every section is ``FullWidth``, so nothing has a column
 to collapse at 375px. The table holds to four columns, which fit a phone
 without a horizontal scroll. The two charts are drawn at a 5.2 in figure width
@@ -25,9 +31,11 @@ width the type stays about 11px tall rather than shrinking to a smudge.
 **The portfolio is fictional** and every figure is illustrative sample data
 chosen to be internally consistent: each contribution is weight × return.
 
-Run it directly to (re)generate ``daily-investment-note.html`` next to this file:
+Run it directly to (re)generate ``daily-investment-note.html`` next to this file,
+or through the run command for any date its data admits:
 
     python examples/daily-investment-note/daily-investment-note.py
+    python -m inkfold.run examples/daily-investment-note/daily-investment-note.py --as-of 2026-10-08
 
 The charts are ``cid:`` images, which resolve inside a MIME message rather than
 a browser; ``python -m qa.preview examples/daily-investment-note/daily-investment-note.py:build
@@ -36,6 +44,8 @@ a browser; ``python -m qa.preview examples/daily-investment-note/daily-investmen
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -53,14 +63,22 @@ from inkfold.builder.enums import RowKind, SizeTheme
 from inkfold.builder.exhibits import Legend, LegendEntry
 from inkfold.builder.formats import number
 from inkfold.builder.models import Column, TableRow
+from inkfold.builder.provenance import format_date
 from inkfold.builder.theming import resolve_theme
 from inkfold.data.exceptions import BackendMissingError
+from inkfold.report import Dataset, Dated, Renderable, Report, data_input
 
 # --------------------------------------------------------------------------
 # The numbers, in one place: tomorrow's note is this file with new figures.
 # --------------------------------------------------------------------------
 
-AS_OF = "8 October 2026"
+#: The close the sample figures below are as of, and who supplies them.
+DATA_AS_OF = date(2026, 10, 8)
+SOURCE = "Hermes Research; illustrative sample data"
+
+#: A Monday's note reads Friday's close, so three days is as stale as a figure may be.
+MAX_AGE = timedelta(days=3)
+
 PORTFOLIO = "Hermes Global Equity"
 THEME = "classic"
 DENSITY = SizeTheme.STANDARD
@@ -165,15 +183,25 @@ def _bps_of(weight: float, ret: float) -> float:
     return round(weight * ret, 1)
 
 
-def _contribution_table() -> DataTable:
+@dataclass(frozen=True)
+class Book:
+    """The day's attribution: the largest contributors and detractors, and the return."""
+
+    contributors: list[tuple[str, float, float]]
+    detractors: list[tuple[str, float, float]]
+    portfolio_return: float
+
+
+def _contribution_table(book: Dataset[Book]) -> DataTable:
     """
     Contributors, detractors, the residual and the total, in four columns.
 
     Four is what a 375px phone holds without scrolling sideways; a fifth
     (active weight, say) belongs in the desktop-only attachment, not here.
     """
-    shown = _CONTRIBUTORS + _DETRACTORS
-    total_bps = _PORTFOLIO_RETURN * 100
+    contributors, detractors = book.value.contributors, book.value.detractors
+    shown = contributors + detractors
+    total_bps = book.value.portfolio_return * 100
     other_weight = round(100 - sum(weight for _, weight, _ in shown), 1)
     other_bps = round(total_bps - sum(_bps_of(w, r) for _, w, r in shown), 1)
     other_return = round(other_bps / other_weight, 2)
@@ -183,12 +211,12 @@ def _contribution_table() -> DataTable:
 
     rows = [
         TableRow(cells=["Top contributors"], kind=RowKind.SUBHEAD),
-        *(data(*holding) for holding in _CONTRIBUTORS),
+        *(data(*holding) for holding in contributors),
         TableRow(cells=["Top detractors"], kind=RowKind.SUBHEAD),
-        *(data(*holding) for holding in _DETRACTORS),
+        *(data(*holding) for holding in detractors),
         TableRow(cells=["Other holdings", other_weight, other_return, other_bps]),
         TableRow(
-            cells=[PORTFOLIO, 100.0, _PORTFOLIO_RETURN, total_bps],
+            cells=[PORTFOLIO, 100.0, book.value.portfolio_return, total_bps],
             kind=RowKind.TOTAL,
         ),
     ]
@@ -212,8 +240,8 @@ def _contribution_table() -> DataTable:
             ),
         ],
         rows=rows,
-        source="Hermes Research; illustrative sample data",
-        subtitle=f"Contribution to return, {AS_OF}",
+        source=book,
+        subtitle=f"Contribution to return, {format_date(book.as_of)}",
     )
 
 
@@ -237,27 +265,28 @@ def _pyplot() -> Any:
     return plt
 
 
-def _performance_chart() -> ChartBlock:
+def _performance_chart(paths: Dataset[tuple[list[float], list[float]]]) -> ChartBlock:
     """Cumulative return over twenty sessions, the key stated in HTML beneath it."""
     from inkfold.data import chart_style, image_from_figure
 
+    portfolio, benchmark = paths.value
     plt = _pyplot()
     style = chart_style(THEME)
     with plt.rc_context(style):
         figure, axes = plt.subplots(figsize=(_FIGURE_WIDTH_IN, _LINE_HEIGHT_IN))
-        axes.plot(_SESSIONS, _PORTFOLIO_PATH, color=style.series[0], linewidth=_PORTFOLIO_LINE_PT)
-        axes.plot(_SESSIONS, _BENCHMARK_PATH, color=style.series[1], linewidth=_BENCHMARK_LINE_PT)
+        axes.plot(_SESSIONS, portfolio, color=style.series[0], linewidth=_PORTFOLIO_LINE_PT)
+        axes.plot(_SESSIONS, benchmark, color=style.series[1], linewidth=_BENCHMARK_LINE_PT)
         axes.fill_between(
             _SESSIONS,
-            _PORTFOLIO_PATH,
-            _BENCHMARK_PATH,
+            portfolio,
+            benchmark,
             color=style.positive,
             alpha=_LEAD_FILL_ALPHA,
         )
         # The end values, labelled at the line ends, so the reader needs no axis.
         for path, colour in (
-            (_PORTFOLIO_PATH, style.series[0]),
-            (_BENCHMARK_PATH, style.series[1]),
+            (portfolio, style.series[0]),
+            (benchmark, style.series[1]),
         ):
             axes.annotate(
                 f"{path[-1]:+.2f}%",
@@ -274,7 +303,7 @@ def _performance_chart() -> ChartBlock:
         axes.set_xticks([_SESSIONS[0], sessions // 2, _SESSIONS[-1]])
         axes.set_xticklabels([f"-{sessions}d", f"-{sessions // 2}d", "Today"])
         axes.yaxis.set_major_formatter(plt.FuncFormatter(lambda v, _: f"{v:.0f}%"))
-        axes.set_yticks(range(int(max(_PORTFOLIO_PATH)) + 1))
+        axes.set_yticks(range(int(max(portfolio)) + 1))
         axes.tick_params(axis="both", labelsize=_LABEL_PT, length=0)
         axes.grid(axis="y", linewidth=_GRID_LINE_PT, alpha=_GRID_ALPHA)
         axes.set_axisbelow(True)
@@ -285,7 +314,7 @@ def _performance_chart() -> ChartBlock:
         figure,
         alt=(
             f"Cumulative return over the last {len(_SESSIONS)} sessions: the portfolio "
-            f"{_PORTFOLIO_PATH[-1]:+.2f}%, the benchmark {_BENCHMARK_PATH[-1]:+.2f}%"
+            f"{portfolio[-1]:+.2f}%, the benchmark {benchmark[-1]:+.2f}%"
         ),
         width=_CHART_WIDTH,
     )
@@ -293,22 +322,22 @@ def _performance_chart() -> ChartBlock:
     return ChartBlock(
         image,
         subtitle=f"Cumulative total return, last {len(_SESSIONS)} sessions",
-        source="Hermes Research; illustrative sample data",
+        source=paths,
         legend=Legend(
             [LegendEntry(PORTFOLIO, series=0), LegendEntry("Benchmark (MSCI ACWI)", series=1)]
         ),
     )
 
 
-def _sector_chart() -> ChartBlock:
+def _sector_chart(sectors: Dataset[list[tuple[str, float]]]) -> ChartBlock:
     """Today's contribution by sector, a diverging bar coloured by sign."""
     from inkfold.data import chart_from_figure, chart_style
 
     plt = _pyplot()
     style = chart_style(THEME)
     # barh draws index 0 at the bottom, so reverse: the largest gain sits on top.
-    names = [name for name, _ in reversed(_SECTORS)]
-    values = [bps for _, bps in reversed(_SECTORS)]
+    names = [name for name, _ in reversed(sectors.value)]
+    values = [bps for _, bps in reversed(sectors.value)]
     with plt.rc_context(style):
         figure, axes = plt.subplots(figsize=(_FIGURE_WIDTH_IN, _BAR_HEIGHT_IN))
         positions = list(range(len(names)))
@@ -335,10 +364,10 @@ def _sector_chart() -> ChartBlock:
     block = chart_from_figure(
         figure,
         alt="Contribution by sector in basis points: "
-        + ", ".join(f"{name} {bps:+.1f}" for name, bps in _SECTORS),
+        + ", ".join(f"{name} {bps:+.1f}" for name, bps in sectors.value),
         width=_CHART_WIDTH,
         subtitle="Contribution to return by sector, bps",
-        source="Hermes Research; illustrative sample data",
+        source=sectors,
     )
     plt.close(figure)
     return block
@@ -349,46 +378,75 @@ def _sector_chart() -> ChartBlock:
 # --------------------------------------------------------------------------
 
 
-def build(template_dir: Path | None = None) -> Email:
-    """Build the daily note. Deterministic: same bytes every call."""
-    return (
-        EmailBuilder(template_dir=template_dir)
-        .metadata(
-            {
-                "email_subject": f"Daily Note — {AS_OF}: +62 bps, 21 ahead",
-                "preheader_text": (
-                    "Chips lead for a third day; we trim NVIDIA and add JPMorgan into CPI."
-                ),
-                "firm_name": "Hermes Research",
-                "campaign_name": "Daily Investment Note",
-                "department": "Global Equity",
-                "date_range": f"Close of {AS_OF}",
-                "theme": THEME,
-                "size_theme": DENSITY,
-            }
-        )
-        .footer(
-            Footer(
-                background_color=resolve_theme(THEME).palette.wrapper_bg,
-                border=True,
-                disclaimer=(
-                    "Illustrative sample only: the portfolio is fictional and every "
-                    "figure is invented. Not investment advice. Past performance does "
-                    "not guarantee future results."
-                ),
+@dataclass(frozen=True)
+class DailyNote(Report):
+    """The daily note for one close: its as-of date in, a checked email out."""
+
+    as_of: date
+
+    @data_input(source=SOURCE, max_age=MAX_AGE)
+    def performance(self) -> Dated[tuple[list[float], list[float]]]:
+        """Cumulative return of the portfolio and its benchmark, session by session."""
+        return Dated((_PORTFOLIO_PATH, _BENCHMARK_PATH), DATA_AS_OF)
+
+    @data_input(source=SOURCE, max_age=MAX_AGE)
+    def book(self) -> Dated[Book]:
+        """The day's contributors, detractors and portfolio return."""
+        return Dated(Book(_CONTRIBUTORS, _DETRACTORS, _PORTFOLIO_RETURN), DATA_AS_OF)
+
+    @data_input(source=SOURCE, max_age=MAX_AGE)
+    def sectors(self) -> Dated[list[tuple[str, float]]]:
+        """The day's contribution by sector, in bps."""
+        return Dated(_SECTORS, DATA_AS_OF)
+
+    def build(self) -> Renderable:
+        """Build the note. Deterministic: the same date and data, the same bytes."""
+        day = format_date(self.as_of)
+        return (
+            EmailBuilder()
+            .metadata(
+                {
+                    "email_subject": f"Daily Note — {day}: +62 bps, 21 ahead",
+                    "preheader_text": (
+                        "Chips lead for a third day; we trim NVIDIA and add JPMorgan into CPI."
+                    ),
+                    "firm_name": "Hermes Research",
+                    "campaign_name": "Daily Investment Note",
+                    "department": "Global Equity",
+                    "date_range": f"Close of {day}",
+                    "theme": THEME,
+                    "size_theme": DENSITY,
+                }
             )
-        )
-        .section(FullWidth(title="The Day in Brief", content=TextBlock(_NOTE_ON_MARKETS)))
-        .section(FullWidth(title="Performance", content=_performance_chart()))
-        .section(FullWidth(title="What Drove Returns", content=_contribution_table()))
-        .section(FullWidth(title="By Sector", content=_sector_chart()))
-        .section(
-            FullWidth(
-                title="Positioning and the Day Ahead", content=TextBlock(_NOTE_ON_POSITIONING)
+            .footer(
+                Footer(
+                    background_color=resolve_theme(THEME).palette.wrapper_bg,
+                    border=True,
+                    disclaimer=(
+                        "Illustrative sample only: the portfolio is fictional and every "
+                        "figure is invented. Not investment advice. Past performance does "
+                        "not guarantee future results."
+                    ),
+                )
             )
+            .section(FullWidth(title="The Day in Brief", content=TextBlock(_NOTE_ON_MARKETS)))
+            .section(FullWidth(title="Performance", content=_performance_chart(self.performance)))
+            .section(FullWidth(title="What Drove Returns", content=_contribution_table(self.book)))
+            .section(FullWidth(title="By Sector", content=_sector_chart(self.sectors)))
+            .section(
+                FullWidth(
+                    title="Positioning and the Day Ahead", content=TextBlock(_NOTE_ON_POSITIONING)
+                )
+            )
+            .build()
         )
-        .build()
-    )
+
+
+def build() -> Email:
+    """The note for the close the sample data is as of, as the tests and preview call it."""
+    email = DailyNote(as_of=DATA_AS_OF).build()
+    assert isinstance(email, Email)
+    return email
 
 
 if __name__ == "__main__":

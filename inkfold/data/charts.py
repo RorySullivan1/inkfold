@@ -15,6 +15,7 @@ from inkfold.builder import ChartBlock
 from inkfold.builder.enums import EmbedStrategy
 from inkfold.builder.exceptions import ValidationError
 from inkfold.builder.images import EmailImage
+from inkfold.builder.provenance import SourceArg
 
 from .exceptions import BackendMissingError
 
@@ -81,7 +82,7 @@ def chart_from_figure(
     width: int,
     scale: int = 2,
     strategy: EmbedStrategy | str = EmbedStrategy.CID,
-    source: str = "",
+    source: SourceArg = "",
     subtitle: str | None = None,
     disclosure: str = "",
     align: str | None = None,

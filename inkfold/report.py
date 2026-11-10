@@ -26,6 +26,16 @@ from typing import Any, get_type_hints
 
 from inkfold.builder.document import Document
 from inkfold.builder.exceptions import ValidationError
+from inkfold.builder.provenance import Dataset
+from inkfold.inputs import (
+    Dated,
+    FreshnessError,
+    FutureDataError,
+    Input,
+    StaleDataError,
+    data_input,
+    declared_inputs,
+)
 
 #: What ``build()`` returns. Today it is ``Document``; the alias widens to
 #: ``Document | ContentModel`` when the content model arrives (Stage 2),
@@ -138,6 +148,11 @@ class Report:
 
     def __post_init__(self) -> None:
         self._validate_fields()
+        if self.inputs() and type(getattr(self, "as_of", None)) is not date:
+            raise ValidationError(
+                f"{type(self).__name__} declares data inputs, so it needs an `as_of: date` "
+                "parameter to judge their freshness against."
+            )
         self._validate()
 
     def _validate_fields(self) -> None:
@@ -174,6 +189,15 @@ class Report:
     def build(self) -> Renderable:
         """Build the report. Must be implemented by every subclass."""
         raise NotImplementedError(f"{type(self).__name__} must implement build() -> Renderable")
+
+    @classmethod
+    def inputs(cls) -> dict[str, Input[Any]]:
+        """The data inputs this report declares with ``@data_input``, by name."""
+        return declared_inputs(cls)
+
+    def load(self) -> tuple[Dataset[Any], ...]:
+        """Load every declared input, in declaration order, raising on the first stale one."""
+        return tuple(getattr(self, name) for name in self.inputs())
 
     @classmethod
     def params(cls) -> list[dataclasses.Field[Any]]:
@@ -216,3 +240,15 @@ class Report:
             names = ", ".join(f"--{name.replace('_', '-')}" for name in missing)
             raise ValidationError(f"{cls.__name__} requires {names}.")
         return cls(**kwargs)
+
+
+__all__ = [
+    "Dataset",
+    "Dated",
+    "FreshnessError",
+    "FutureDataError",
+    "Renderable",
+    "Report",
+    "StaleDataError",
+    "data_input",
+]
