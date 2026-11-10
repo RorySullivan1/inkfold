@@ -5,7 +5,7 @@ and make its email the best a Python library produces. Seven epics; 1.4 and 1.5 
 largest.
 
 **Versions:** v0.6.0 (1.1 report definition, shipped in PR #483), v0.7.0 (1.2 data binding and provenance, shipped in PR #485),
-v0.8.0 (1.3 house email templates), v0.9.0 (1.4 real-client verification), v0.10.0
+v0.8.0 (1.3 house email templates, shipped in PR #487), v0.9.0 (1.4 real-client verification), v0.10.0
 (1.5 distribution), v0.11.0 (1.6 run archive), v0.12.0 (1.7 docs for outsiders).
 
 **Order:** 1.1 first, since 1.2, 1.3 and 1.5 stand on it. 1.4 depends on nothing and may run
