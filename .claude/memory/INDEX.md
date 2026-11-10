@@ -4,7 +4,7 @@
 - inkfold (pyHermes until v0.4.0, octavo until v0.4.1) builds **documents** onto **media** (`email`,
   `document`, `brochure`, `deck`) from the shared `inkfold/builder` kit; exporters: `delivery`+`gmail`+`outlook`,
   and `pdf`. Rationale: CLAUDE.md, `media.md`. Repository: RorySullivan1/inkfold.
-- **Shipped through PR #487**; open: #489–#498 (v0.9.0's Outlook and accessibility findings). #219 DOCX and #300 PPTX closed as not planned. #288 is the
+- **Shipped through PR #487**; open: #489–#494, #496–#498, #500 (v0.9.0 client and accessibility findings). #219 DOCX and #300 PPTX closed as not planned. #288 is the
   owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
 - **The roadmap is live** in `.meta/roadmap/` (5 stages), surfaced each session by `roadmap_status`. Shipped:
   v0.2.0 charter (#477), v0.3.0 reference reports (#478), v0.4.0 and v0.4.1 renames to inkfold (#479, #480),

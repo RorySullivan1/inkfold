@@ -43,13 +43,19 @@ Two defects are common to most emails, so they are listed once rather than in ev
 
 - **#490**: every email with the default `Banner` has its masthead copy inset past the body,
   and an empty band below it. Only `minimal_banner` is free of it.
+- **#500**: an image that does not load shows its alt text in the client's default font, which
+  on kitchen_sink's masthead is dark on dark. Its masthead background, logo and footer mark are
+  hosted at `cdn.example.com`, which does not exist, so they never load in any client; that is
+  the fixture covering the hosted branch, not a missing attachment.
+- **By design, though it can look wrong**: a table bar sits under its figure (`data-table.md`),
+  and a sparkline's bars are a fixed 4 px each, so a three-point series is about 16 px wide.
 - **Floats stack**: a chart or equation that prose wraps round on paper sits above the prose
   in Outlook instead. This is the intended email fallback, not a defect.
 
 | Email | Classic Outlook | New Outlook | Gmail web | Gmail app | Apple Mail | Dark mode |
 |---|---|---|---|---|---|---|
 | minimal | OK | — | — | — | — | — |
-| kitchen_sink | **broken** #489; cosmetic #492 #493 #494 #495 #496 | — | — | — | — | — |
+| kitchen_sink | **broken** #489; cosmetic #492 #493 #494 #496 #500 | — | — | — | — | — |
 | custom_banner | OK | — | — | — | — | — |
 | custom_footer | OK | — | — | — | — | — |
 | image_matrix | OK (its two hosted images point at a host that cannot load) | — | — | — | — | — |
@@ -57,10 +63,10 @@ Two defects are common to most emails, so they are listed once rather than in ev
 | minimal_footer | OK | — | — | — | — | — |
 | no_header | OK | — | — | — | — | — |
 | slate_theme | OK | — | — | — | — | — |
-| compact_size | **broken** #489; cosmetic #492 #493 #494 #495 #496 | — | — | — | — | — |
+| compact_size | **broken** #489; cosmetic #492 #493 #494 #496 | — | — | — | — | — |
 | spacious_size | **broken** #489; cosmetic #491 #492 #493 #496 | — | — | — | — | — |
 | modern_fonts | **broken** #489; cosmetic #491 #492 #493 #496 | — | — | — | — | — |
-| rich_table | cosmetic #492 #495 | — | — | — | — | — |
+| rich_table | cosmetic #492 | — | — | — | — | — |
 | aligned_layout | OK | — | — | — | — | — |
 | composed_layout | OK | — | — | — | — | — |
 | surfaced_layout | cosmetic #494 | — | — | — | — | — |
