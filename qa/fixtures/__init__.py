@@ -39,6 +39,9 @@ from . import (
     custom_banner,
     custom_footer,
     glance_layout,
+    house_announcement,
+    house_daily_note,
+    house_weekly_wrap,
     image_matrix,
     kitchen_sink,
     labelled_layout,
@@ -125,6 +128,9 @@ def all_fixtures() -> dict[str, FixtureBuilder]:
         "toned_layout": toned_layout.build,
         "brief_layout": brief_layout.build,
         "product_brief_layout": product_brief_layout.build,
+        "house_daily_note": house_daily_note.build,
+        "house_weekly_wrap": house_weekly_wrap.build,
+        "house_announcement": house_announcement.build,
     }
 
 

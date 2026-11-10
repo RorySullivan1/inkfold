@@ -9,6 +9,12 @@ long a deprecated public name survives.
 
 ### Added
 
+- **House email templates** (`inkfold.house`): `DailyNote`, `WeeklyWrap` and
+  `ResearchAnnouncement`, reports a firm subclasses, sets `house = House(...)` on, and feeds by
+  loading each declared input. Every figure is drawn in markup, so none needs an extra.
+  `ResearchAnnouncement.message()` attaches its paper as a PDF rendered under `SCREEN`.
+- **`required_input(kind, what)`** declares an input a template reads and its subclass loads; a
+  report missing one is refused at construction, and a loader of the wrong type is named.
 - **`inkfold.report.Report`**, a parameterised report: a frozen dataclass whose fields
   (an as-of date, a universe, a client) are validated at construction, and whose `build()`
   returns a `Renderable`, today a `Document`. A wrong type, a `bool` for an `int` or a

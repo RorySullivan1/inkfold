@@ -9,7 +9,7 @@
 - **The roadmap is live** in `.meta/roadmap/` (5 stages), surfaced each session by `roadmap_status`. Shipped:
   v0.2.0 charter (#477), v0.3.0 reference reports (#478), v0.4.0 and v0.4.1 renames to inkfold (#479, #480),
   v0.5.0 first PyPI release (#481), v0.6.0 `Report` and `inkfold.run` (#483),
-  v0.7.0 data inputs and provenance (#485). Cursor v0.8.0, three house email templates. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
+  v0.7.0 data inputs and provenance (#485). Cursor v0.8.0, three house email templates, in a PR. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
 
 ## Decisions        (append-only; supersede, never delete)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
@@ -43,6 +43,8 @@
 
 - [2026-11-09] **Freshness against the report's `as_of`, not the clock; provenance per exhibit and section** — `data-layer.md`
 
+- [2026-11-09] **House templates ship in `inkfold.house`; a firm feeds one with loaders, not a file** (owner) — `house.md`
+
 ## Threads          (open items; remove when closed)
 - **The first outside user is not yet named** (a colleague or team); needed before Gate 1 — `.meta/roadmap/INDEX.md`.
 - **#394's ruling (justify on paper only) was taken under a goal**; the owner may widen it.
@@ -75,6 +77,4 @@
 
 ## Log              (append-only pointers)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
-- [2026-11-09] data-binding — v0.7.0: `@data_input`, stale and future data refused, `Document.provenance()`;
-  the daily note is a Report with three inputs — sessions/2026-11-09-1800-data-binding.md
-- [2026-11-09] data-binding — PR #485 merged; v0.7.0 marked shipped, cursor v0.8.0.
+- [2026-11-09] house-templates — v0.8.0 `inkfold.house`, three templates — sessions/2026-11-09-2000-house-templates.md

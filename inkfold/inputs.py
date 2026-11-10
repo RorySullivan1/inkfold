@@ -56,6 +56,9 @@ class Input(Generic[T]):
     caught: a failed fetch says why in its own words.
     """
 
+    #: The type a template requires the value to be, inherited from its ``required_input``.
+    kind: type | None = None
+
     def __init__(self, loader: Callable[[Any], Dated[T]], source: str, max_age: timedelta):
         self.loader = loader
         self.source = source
@@ -64,6 +67,11 @@ class Input(Generic[T]):
 
     def __set_name__(self, owner: type, name: str) -> None:
         self.name = name
+        for base in owner.__mro__[1:]:
+            required = vars(base).get(name)
+            if isinstance(required, Input) and required.kind is not None:
+                self.kind = required.kind
+                break
 
     @overload
     def __get__(self, report: None, owner: type) -> Input[T]: ...
@@ -85,6 +93,11 @@ class Input(Generic[T]):
             raise ValidationError(
                 f"input {self.name!r} returned {type(dated).__name__}; "
                 "a loader returns Dated(value, as_of)."
+            )
+        if self.kind is not None and not isinstance(dated.value, self.kind):
+            raise ValidationError(
+                f"input {self.name!r} returned {type(dated.value).__name__}; the template "
+                f"reads a {self.kind.__name__}."
             )
         dataset = Dataset(self.name, self.source, dated.as_of, dated.value)
         report_date: date = report.as_of  # type: ignore[attr-defined]
@@ -120,6 +133,42 @@ def data_input(
     return declare
 
 
+class RequiredInput(Input[T]):
+    """
+    An input a template reads and its subclass supplies, made by :func:`required_input`.
+
+    A report whose class still holds one cannot be constructed: the refusal names
+    each input missing and what it is. The subclass's ``@data_input`` of the same
+    name takes its place, and its value is held to the ``kind`` declared here.
+    """
+
+    def __init__(self, kind: type, what: str):
+        self.kind = kind
+        self.what = what
+        self.source = ""
+        self.max_age = timedelta(0)
+        self.name = ""
+
+    def load(self, report: Report) -> Dataset[T]:
+        raise ValidationError(f"{type(report).__name__} has no loader for input {self.name!r}.")
+
+
+def required_input(kind: type[T], what: str) -> RequiredInput[T]:
+    """Declare an input a template reads, of type ``kind``, that each subclass must load."""
+    if not isinstance(what, str) or not what.strip():
+        raise ValidationError(f"a required input says what it is, got: {what!r}")
+    return RequiredInput(kind, what)
+
+
+def missing_inputs(cls: type) -> dict[str, RequiredInput[Any]]:
+    """The required inputs ``cls`` has not supplied a loader for, by name."""
+    return {
+        name: value
+        for name, value in declared_inputs(cls).items()
+        if isinstance(value, RequiredInput)
+    }
+
+
 def declared_inputs(cls: type) -> dict[str, Input[Any]]:
     """Every input ``cls`` declares, base classes' first, in the order they were written."""
     found: dict[str, Input[Any]] = {}
@@ -135,7 +184,10 @@ __all__ = [
     "FreshnessError",
     "FutureDataError",
     "Input",
+    "RequiredInput",
     "StaleDataError",
     "data_input",
     "declared_inputs",
+    "missing_inputs",
+    "required_input",
 ]

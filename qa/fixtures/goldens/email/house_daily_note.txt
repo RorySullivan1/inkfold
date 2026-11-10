@@ -1,0 +1,72 @@
+Hermes Research
+===============
+
+Daily Note
+Global Equity · Close of 6 November 2026
+
+
+The Day in Brief
+----------------
+
+Hermes Global Equity: +0.62%
+MSCI ACWI: +0.41%
+Active: +21 bps
+
+Hermes Research; illustrative sample data as of 6 November 2026
+
+
+Markets
+-------
+
+Semiconductors carried the tape. Global equities rose 0.41% as the lithography
+makers lifted the chip complex for a third session.
+
+
+What Drove Returns
+------------------
+
+Contribution to return
+
+Holding               Weight  Return  Contrib.
+                           %       %       bps
+--------------------  ------  ------  --------
+Top contributors
+NVIDIA                   6.1   +2.85     +17.4
+Microsoft                5.4   +1.62      +8.7
+ASML Holding             2.3   +3.10      +7.1
+Top detractors
+Novo Nordisk             1.9   -2.64      -5.0
+Exxon Mobil              2.0   -1.35      -2.7
+Other holdings          82.3   +0.44     +36.5
+--------------------  ------  ------  --------
+Hermes Global Equity   100.0   +0.62     +62.0
+
+Hermes Research; illustrative sample data
+6 November 2026
+
+
+By Sector
+---------
+
+Contribution to return, bps
+
+Info. Tech.  +42.6
+Financials   +11.2
+Industrials   +6.4
+Energy        -3.1
+Health Care   -4.8
+
+Hermes Research; illustrative sample data as of 6 November 2026
+
+
+Positioning
+-----------
+
+We trim NVIDIA by 50 bps at the open and add to JPMorgan ahead of next week's
+bank earnings.
+
+
+Illustrative sample only: the portfolio is fictional and every figure is
+invented. Not investment advice.
+
+© 2026 Hermes Research
