@@ -15,7 +15,8 @@ the issue that carries each defect.
 | Apple Mail (macOS or iOS) | the same send, to an iCloud or other inbox opened in Apple Mail | the owner |
 | Dark mode | each of the four above with the client's dark theme on | the owner |
 
-`qa.send_gallery` sends nothing without `--send`; without it, it lists what it would send.
+Set up with the repository's `environment.yml` (`conda env create -f environment.yml`, then
+`conda activate inkfold`), from the repository root. `qa.send_gallery` sends nothing without `--send`; without it, it lists what it would send.
 Every subject starts `[inkfold gallery]`, so a filter can gather the run into one folder.
 
 ### What to answer for each email in a human-checked client

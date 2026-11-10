@@ -1,0 +1,28 @@
+# A conda environment for developing inkfold and running its QA tools on Windows.
+#
+#   conda env create -f environment.yml
+#   conda activate inkfold
+#
+# Then, from the repository root:
+#
+#   python -m qa.send_gallery you@gmail.com            # dry run: lists what it would send
+#   python -m qa.send_gallery you@gmail.com --send     # sends through classic Outlook
+#   python -m qa.outlook_render                        # renders the gallery in classic Outlook
+#   pytest                                             # the suite
+#
+# To update after a pull: conda env update -f environment.yml --prune
+#
+# inkfold itself is installed editable from this folder, with its extras for development
+# ([dev]), the QA tools ([qa]), classic Outlook through COM ([outlook-desktop]), and the
+# examples' charts and tables ([charts], [data]). [pdf] is left out: WeasyPrint needs the
+# GTK libraries, which a Windows conda environment does not have, and its tests skip.
+# The screenshot tools also need a browser: run `playwright install chromium` once.
+name: inkfold
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      - pillow
+      - -e .[dev,qa,outlook-desktop,charts,data]
