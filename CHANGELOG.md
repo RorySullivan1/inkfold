@@ -7,6 +7,17 @@ long a deprecated public name survives.
 
 ## [Unreleased]
 
+### Added
+
+- **`inkfold.report.Report`**, a parameterised report: a frozen dataclass whose fields
+  (an as-of date, a universe, a client) are validated at construction, and whose `build()`
+  returns a `Renderable`, today a `Document`. A wrong type, a `bool` for an `int` or a
+  `datetime` for a `date` raises `ValidationError` before `build()` runs.
+- **`python -m inkfold.run report.py --as-of 2026-10-30`** builds a `Report` from the command
+  line, writes its HTML and text parts to `output/` and runs the portability check, with
+  `inkfold.check`'s exit codes. An unknown `--flag` is refused by name.
+- The daily-note reference report is ported to a `Report` (`reference/daily-note/report.py`).
+
 ## [0.5.0] - 2026-11-09
 
 The first public release, published to PyPI by trusted publishing from a version tag.

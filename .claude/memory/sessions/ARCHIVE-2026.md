@@ -533,3 +533,5 @@ Decisions and Log entries folded out of `INDEX.md` on 2026-08-29 (#143), verbati
 - [2026-10-29] reference-reports — PR #478 merged; v0.3.0 marked shipped in the roadmap and `.meta/version`.
 - [2026-10-30] octavo-rename — v0.4.0: package, import root, `OCTAVO_*` and repo links renamed; review fixed the
   manual's checkout folder; goal-auditor PASS after the repo decision; PR #479 — sessions/2026-10-30-0900-octavo-rename.md
+- [2026-11-09] octavo-rename — PR #479 merged and the repository renamed to RorySullivan1/octavo; v0.4.0 shipped.
+- [2026-11-09] inkfold-rename — PR #480 merged; v0.4.1 marked shipped.

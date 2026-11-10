@@ -30,7 +30,7 @@ from .lint import (
     rules_for,
     size_report,
 )
-from .target import TargetError, as_document, load_target
+from .target import TargetError, as_document, import_module, load_target, split_target
 
 __all__ = [
     "RULE_MEDIA",
@@ -42,6 +42,7 @@ __all__ = [
     "TargetError",
     "as_document",
     "check",
+    "import_module",
     "errors",
     "format_findings",
     "layout_findings",
@@ -51,6 +52,7 @@ __all__ = [
     "render_for_check",
     "rules_for",
     "size_report",
+    "split_target",
 ]
 
 

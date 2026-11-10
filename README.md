@@ -1166,6 +1166,36 @@ The suite lints every gallery fixture. Each rule carries a citation, and the lin
 the HTML rather than grepping it — including the conditional comments, so an Outlook-specific
 rule stays quiet about markup that is hidden from Outlook.
 
+### A report with parameters
+
+A `Report` is a frozen dataclass: its fields are the report's parameters, checked when it is
+constructed, and its `build()` returns the document. `python -m inkfold.run` builds one from
+the command line, writes its two parts to `output/` and runs the check above:
+
+```python
+from dataclasses import dataclass
+from datetime import date
+
+from inkfold.report import Renderable, Report
+
+
+@dataclass(frozen=True)
+class DailyNote(Report):
+    as_of: date
+    universe: tuple[str, ...] = ("SPY",)
+
+    def build(self) -> Renderable:
+        ...  # build and return the document for self.as_of
+```
+
+```bash
+python -m inkfold.run daily_note.py --as-of 2026-10-30 --universe SPY,QQQ   # exits 0/1/2
+```
+
+A parameter is a `str`, `int`, `float`, `bool`, `date` or `tuple[X, ...]` of one of those,
+optionally `| None`. A wrong type, an unknown `--flag` or a missing required parameter raises
+`ValidationError` before `build()` runs, and exits 2 from the command line.
+
 ### One command for the whole loop
 
 `preview` builds an email, saves it, and optionally lints and screenshots it —
@@ -1214,6 +1244,7 @@ inkfold/
 ├── gmail/        Gmail send adapter
 ├── outlook/      Outlook send adapter over Microsoft Graph, and drafts in classic Outlook
 ├── check/        the portability check and `python -m inkfold.check`
+├── run/          `python -m inkfold.run`: build a Report from the command line
 ├── pdf/          the PDF exporter, on the adapters' contract — no network; profiles, attachments
 ├── data/         DataFrame -> table and Figure -> chart, each an optional extra
 ├── math/         LaTeX -> equation image, the optional [math] extra
