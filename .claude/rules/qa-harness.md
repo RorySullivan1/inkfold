@@ -1414,6 +1414,11 @@ client no session reaches. `qa/clients/MATRIX.md` holds the results, per email a
   `SendAndReceive` and waits, holding the Inbox, until no tagged message is left there (`flush`,
   3 minutes), and exits 1 naming what is still queued. It also refuses to start while tagged
   messages wait, so a second run cannot send duplicates.
+- **Gmail SMTP is the default send path (`--via smtp --from`).** The owner's classic Outlook had not
+  reached Gmail since July 2024, so the Outlook path could not send at all; and Outlook re-encodes
+  a message's HTML through its editor, so the inboxes would have judged Outlook's rewrite. SMTP
+  hands over `build_message`'s MIME unchanged. The app password comes from the prompt or
+  `INKFOLD_SMTP_PASSWORD`, never a file, and every message is built before the server is reached.
 - **`qa.send_gallery` sends nothing without `--send`**, and a dry run reaches no Outlook. It
   builds each message with `build_message`, puts it in Outlook through `create_draft(display=False)`
   and sends it from the profile's account or `--account`'s; every subject starts

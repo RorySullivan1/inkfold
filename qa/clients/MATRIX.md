@@ -9,14 +9,17 @@ the issue that carries each defect.
 | Client | How | Who |
 |---|---|---|
 | Classic Outlook (Windows) | `python -m qa.outlook_render`: each email in an unsaved message, Outlook's own Word editor exported to PDF, the message discarded. Needs Windows, classic Outlook, `[outlook-desktop]` and `[qa]` | a session on the owner's machine |
-| New Outlook (Windows) | `python -m qa.send_gallery INBOX --send`, then open each in new Outlook | the owner |
+| New Outlook (Windows) | `python -m qa.send_gallery INBOX --from YOU@gmail.com --send`, then open each in new Outlook | the owner |
 | Gmail web | the same send, to a Gmail inbox, in a desktop browser | the owner |
 | Gmail app (iOS or Android) | the same Gmail inbox, in the app | the owner |
 | Apple Mail (macOS or iOS) | the same send, to an iCloud or other inbox opened in Apple Mail | the owner |
 | Dark mode | each of the four above with the client's dark theme on | the owner |
 
 Set up with the repository's `environment.yml` (`conda env create -f environment.yml`, then
-`conda activate inkfold`), from the repository root. `qa.send_gallery` sends nothing without `--send`; without it, it lists what it would send.
+`conda activate inkfold`), from the repository root. It sends through Gmail's SMTP server from the `--from` account, signed in with a Google app
+password it asks for at the prompt and never stores. Sending through classic Outlook
+(`--via outlook`) is still there, but Outlook rewrites the HTML on the way out, so the inboxes
+would judge its rewrite rather than inkfold's email. `qa.send_gallery` sends nothing without `--send`; without it, it lists what it would send.
 Every subject starts `[inkfold gallery]`, so a filter can gather the run into one folder.
 
 ### What to answer for each email in a human-checked client

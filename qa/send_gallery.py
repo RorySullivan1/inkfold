@@ -1,25 +1,31 @@
 """
-Send the email gallery to test inboxes through classic Outlook, for the clients no session reaches.
+Send the email gallery to test inboxes, for the clients no session reaches (roadmap v0.9.0).
 
 Gmail on the web and its apps, Apple Mail, new Outlook and each one's dark mode
-can be judged only in a real inbox (roadmap v0.9.0). This builds each fixture as
-a MIME message, puts it in Outlook as a draft, and sends it from the profile's
-account, or the one ``--account`` names. **Nothing is sent without ``--send``**:
-without it the run lists what it would send and to whom::
+can be judged only in a real inbox. **Nothing is sent without ``--send``**: without
+it the run lists what it would send and to whom::
 
-    python -m qa.send_gallery you@gmail.com you@icloud.com                 # dry run
-    python -m qa.send_gallery you@gmail.com --send --fixtures house_daily_note
+    python -m qa.send_gallery you@icloud.com --from you@gmail.com            # dry run
+    python -m qa.send_gallery you@icloud.com --from you@gmail.com --send     # by Gmail SMTP
 
-Needs Windows, classic Outlook and the ``[outlook-desktop]`` extra. The questions
-to answer per client are in ``qa/clients/MATRIX.md``.
+``--via smtp``, the default, hands each message to smtp.gmail.com exactly as
+``build_message`` assembles it, signed in with a Google app password asked for at
+the prompt (or read from ``INKFOLD_SMTP_PASSWORD``) and never stored. ``--via
+outlook`` sends through classic Outlook instead, which re-encodes the HTML through
+its own editor, so the inboxes judge Outlook's rewrite rather than inkfold's email.
+The questions to answer per client are in ``qa/clients/MATRIX.md``.
 """
 
 from __future__ import annotations
 
 import argparse
+import getpass
+import os
+import smtplib
 import sys
 import time
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Iterator, Mapping, Sequence
+from email.message import EmailMessage
 from typing import Any
 
 from inkfold.builder.email import Email
@@ -35,10 +41,70 @@ OL_FOLDER_INBOX = 6
 #: Every subject opens with this, so a test inbox can filter the run into one folder.
 SUBJECT_TAG = "[inkfold gallery]"
 
+#: Gmail's submission server, over TLS from the first byte.
+GMAIL_HOST = "smtp.gmail.com"
+GMAIL_PORT = 465
+
+#: Where a run may find the app password instead of asking for it.
+PASSWORD_ENV = "INKFOLD_SMTP_PASSWORD"
+
 
 def subject_of(name: str, email: Email) -> str:
     """``[inkfold gallery] kitchen_sink: <the email's own subject>``."""
     return f"{SUBJECT_TAG} {name}: {email.metadata.email_subject}"
+
+
+def _built(
+    names: Sequence[str],
+    to: Sequence[str],
+    sender: str,
+    fixtures: Mapping[str, Callable[[], Email]] | None,
+) -> Iterator[tuple[str, Email, EmailMessage]]:
+    """Each named fixture as ``(subject, email, message)``, after checking the names and inboxes."""
+    gallery = fixtures if fixtures is not None else all_fixtures()
+    unknown = sorted(set(names) - set(gallery))
+    if unknown:
+        raise SystemExit(f"no such fixture: {', '.join(unknown)}")
+    if not to:
+        raise SystemExit("name at least one test inbox to send to.")
+    for name in names:
+        email = gallery[name]()
+        subject = subject_of(name, email)
+        yield subject, email, build_message(email, subject=subject, sender=sender, to=list(to))
+
+
+def send_via_smtp(
+    names: Sequence[str],
+    to: Sequence[str],
+    *,
+    sender: str,
+    password: str,
+    host: str = GMAIL_HOST,
+    port: int = GMAIL_PORT,
+    connect: Callable[..., Any] = smtplib.SMTP_SSL,
+    fixtures: Mapping[str, Callable[[], Email]] | None = None,
+) -> list[str]:
+    """
+    Send each named fixture to every address in ``to`` through an SMTP server.
+
+    Every message is built before the server is reached, so a fixture that fails to
+    build sends nothing. A refused sign-in stops the run with what to do about it.
+    """
+    messages = list(_built(names, to, sender, fixtures))
+    lines = []
+    with connect(host, port, timeout=60) as server:
+        try:
+            server.login(sender, password)
+        except smtplib.SMTPAuthenticationError as exc:
+            raise SystemExit(
+                f"{host} refused the sign-in for {sender}. Gmail takes an app password "
+                "(https://myaccount.google.com/apppasswords, which needs 2-Step Verification), "
+                "not the account's own password."
+            ) from exc
+        for subject, _email, message in messages:
+            server.send_message(message)
+            lines.append(f"sent: {subject} -> {', '.join(to)}")
+    return lines
 
 
 def send_gallery(
@@ -51,18 +117,12 @@ def send_gallery(
     fixtures: Mapping[str, Callable[[], Email]] | None = None,
 ) -> list[str]:
     """
-    Send, or with ``send`` false only list, each named fixture to every address in ``to``.
+    Through classic Outlook: queue, or with ``send`` false only list, each named fixture.
 
-    Returns one line per message, queued or not. A dry run touches no Outlook. A send
-    refuses to start while gallery messages already wait in the Outbox, so a second run
-    cannot queue duplicates; :func:`flush` then pushes the queue out.
+    Returns one line per message. A dry run touches no Outlook. A send refuses to start
+    while gallery messages already wait in the Outbox, so a second run cannot queue
+    duplicates; :func:`flush` then pushes the queue out.
     """
-    gallery = fixtures if fixtures is not None else all_fixtures()
-    unknown = sorted(set(names) - set(gallery))
-    if unknown:
-        raise SystemExit(f"no such fixture: {', '.join(unknown)}")
-    if not to:
-        raise SystemExit("name at least one test inbox to send to.")
     lines = []
     sender_account = None
     if send:
@@ -74,11 +134,8 @@ def send_gallery(
                 f"{waiting} gallery message(s) already wait in classic Outlook's Outbox. Open "
                 "classic Outlook to send them, or delete them there, then run again."
             )
-    for name in names:
-        email = gallery[name]()
-        subject = subject_of(name, email)
+    for subject, _email, message in _built(names, to, "gallery@localhost", fixtures):
         if send:
-            message = build_message(email, subject=subject, sender="gallery@localhost", to=list(to))
             mail = create_draft(message, display=False, outlook=outlook)
             if sender_account is not None:
                 mail.SendUsingAccount = sender_account
@@ -135,14 +192,34 @@ def _account(outlook: Any, address: str) -> Any:
     raise SystemExit(f"no Outlook account {address!r}; this profile has: {names}")
 
 
+def _password(sender: str) -> str:
+    """The app password: from the environment, or asked for without echoing it."""
+    return os.environ.get(PASSWORD_ENV) or getpass.getpass(f"Google app password for {sender}: ")
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Send the email gallery to test inboxes.")
     parser.add_argument("to", nargs="+", help="test inbox addresses")
     parser.add_argument("--fixtures", nargs="*", default=None, help="default: every email")
-    parser.add_argument("--account", default="", help="send from this Outlook account")
+    parser.add_argument("--via", choices=("smtp", "outlook"), default="smtp")
+    parser.add_argument("--from", dest="sender", default="", help="the Gmail account to send from")
+    parser.add_argument("--account", default="", help="with --via outlook: the Outlook account")
     parser.add_argument("--send", action="store_true", help="really send; otherwise a dry run")
     args = parser.parse_args(argv)
     names = args.fixtures or list(all_fixtures())
+    if args.via == "smtp":
+        if not args.sender:
+            parser.error("--via smtp needs --from, the Gmail address to send from")
+        if not args.send:
+            for line in send_gallery(names, args.to, send=False):
+                print(line)
+            print(f"Dry run: {len(names)} email(s) from {args.sender}. Add --send to send.")
+            return 0
+        lines = send_via_smtp(names, args.to, sender=args.sender, password=_password(args.sender))
+        for line in lines:
+            print(line)
+        print(f"Sent: {len(lines)} email(s) from {args.sender}; they are in its Gmail Sent folder.")
+        return 0
     outlook = outlook_application() if args.send else None
     for line in send_gallery(names, args.to, send=args.send, outlook=outlook, account=args.account):
         print(line)

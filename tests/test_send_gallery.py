@@ -137,3 +137,76 @@ class TestFlushingTheOutbox:
         outlook = FakeOutlook()
         outlook.outbox.append(SimpleNamespace(Subject="Quarterly letter"))
         assert send_gallery.queued(outlook) == 0
+
+
+class FakeSmtp:
+    """Records the sign-in and every message; refuses a password of "wrong"."""
+
+    instances: list[FakeSmtp] = []
+
+    def __init__(self, host: str, port: int, timeout: float) -> None:
+        self.host, self.port = host, port
+        self.login_as: tuple[str, str] | None = None
+        self.sent: list[Any] = []
+        FakeSmtp.instances.append(self)
+
+    def __enter__(self) -> FakeSmtp:
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        pass
+
+    def login(self, user: str, password: str) -> None:
+        if password == "wrong":
+            import smtplib
+
+            raise smtplib.SMTPAuthenticationError(535, b"Username and Password not accepted")
+        self.login_as = (user, password)
+
+    def send_message(self, message: Any) -> None:
+        self.sent.append(message)
+
+
+class TestSendingBySmtp:
+    def test_each_message_goes_to_gmail_as_inkfold_built_it(self):
+        lines = send_gallery.send_via_smtp(
+            ["minimal", "house_daily_note"],
+            ["a@x.com", "b@y.com"],
+            sender="me@gmail.com",
+            password="app-pass",
+            connect=FakeSmtp,
+        )
+        server = FakeSmtp.instances[-1]
+        assert (server.host, server.port) == ("smtp.gmail.com", 465)
+        assert server.login_as == ("me@gmail.com", "app-pass")
+        assert [m["Subject"] for m in server.sent] == [line[6:].split(" -> ")[0] for line in lines]
+        assert all(m["From"] == "me@gmail.com" and "a@x.com" in m["To"] for m in server.sent)
+        html = server.sent[1].get_body(preferencelist=("html",)).get_content()
+        assert html == send_gallery.all_fixtures()["house_daily_note"]().render()
+
+    def test_a_refused_sign_in_names_the_app_password(self):
+        with pytest.raises(SystemExit, match="app password"):
+            send_gallery.send_via_smtp(
+                ["minimal"], ["a@x.com"], sender="me@gmail.com", password="wrong", connect=FakeSmtp
+            )
+        assert FakeSmtp.instances[-1].sent == []
+
+    def test_an_unknown_fixture_reaches_no_server(self):
+        before = len(FakeSmtp.instances)
+        with pytest.raises(SystemExit, match="no such fixture"):
+            send_gallery.send_via_smtp(
+                ["nope"], ["a@x.com"], sender="me@gmail.com", password="p", connect=FakeSmtp
+            )
+        assert len(FakeSmtp.instances) == before
+
+    def test_smtp_is_the_default_and_needs_a_sender(self, capsys):
+        with pytest.raises(SystemExit):
+            send_gallery.main(["a@x.com"])
+        assert "--from" in capsys.readouterr().err
+
+    def test_a_dry_run_asks_for_no_password(self, monkeypatch, capsys):
+        monkeypatch.setattr(send_gallery, "_password", lambda s: pytest.fail("asked"))
+        assert (
+            send_gallery.main(["a@x.com", "--from", "me@gmail.com", "--fixtures", "minimal"]) == 0
+        )
+        assert "Dry run: 1 email(s) from me@gmail.com" in capsys.readouterr().out
