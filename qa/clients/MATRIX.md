@@ -9,7 +9,7 @@ the issue that carries each defect.
 | Client | How | Who |
 |---|---|---|
 | Classic Outlook (Windows) | `python -m qa.outlook_render`: each email in an unsaved message, Outlook's own Word editor exported to PDF, the message discarded. Needs Windows, classic Outlook, `[outlook-desktop]` and `[qa]` | a session on the owner's machine |
-| New Outlook (Windows) | `python -m qa.send_gallery INBOX --from YOU@gmail.com --send`, then open each in new Outlook | the owner |
+| New Outlook (Windows) | `python -m qa.send_gallery --save output/eml`, then right-click each file and choose Open with > Outlook (new); nothing is sent | the owner |
 | Gmail web | the same send, to a Gmail inbox, in a desktop browser | the owner |
 | Gmail app (iOS or Android) | the same Gmail inbox, in the app | the owner |
 | Apple Mail (macOS or iOS) | the same send, to an iCloud or other inbox opened in Apple Mail | the owner |

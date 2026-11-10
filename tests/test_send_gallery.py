@@ -210,3 +210,31 @@ class TestSendingBySmtp:
             send_gallery.main(["a@x.com", "--from", "me@gmail.com", "--fixtures", "minimal"]) == 0
         )
         assert "Dry run: 1 email(s) from me@gmail.com" in capsys.readouterr().out
+
+
+class TestSavingEml:
+    def test_each_email_is_written_as_the_message_a_send_carries(self, tmp_path):
+        import email
+
+        paths = send_gallery.save_gallery(["minimal", "image_matrix"], tmp_path)
+        assert [p.name for p in paths] == ["minimal.eml", "image_matrix.eml"]
+        message = email.message_from_bytes(paths[1].read_bytes())
+        assert message["Subject"].startswith("[inkfold gallery] image_matrix")
+        ids = {part["Content-ID"].strip("<>") for part in message.walk() if part["Content-ID"]}
+        expected = send_gallery.all_fixtures()["image_matrix"]().assets()
+        assert ids == {asset.content_id for asset in expected} and ids
+
+    def test_the_command_saves_without_an_inbox_and_sends_nothing(
+        self, tmp_path, monkeypatch, capsys
+    ):
+        monkeypatch.setattr(send_gallery, "outlook_application", lambda: pytest.fail("no Outlook"))
+        monkeypatch.setattr(send_gallery, "_password", lambda s: pytest.fail("no password"))
+        out = tmp_path / "eml"
+        assert send_gallery.main(["--save", str(out), "--fixtures", "minimal"]) == 0
+        assert (out / "minimal.eml").is_file()
+        assert "nothing was sent" in capsys.readouterr().out
+
+    def test_without_save_an_inbox_is_still_required(self, capsys):
+        with pytest.raises(SystemExit):
+            send_gallery.main(["--from", "me@gmail.com"])
+        assert "--save" in capsys.readouterr().err

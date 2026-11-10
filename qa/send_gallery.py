@@ -7,13 +7,16 @@ it the run lists what it would send and to whom::
 
     python -m qa.send_gallery you@icloud.com --from you@gmail.com            # dry run
     python -m qa.send_gallery you@icloud.com --from you@gmail.com --send     # by Gmail SMTP
+    python -m qa.send_gallery --save output/eml                              # .eml files, no send
 
 ``--via smtp``, the default, hands each message to smtp.gmail.com exactly as
 ``build_message`` assembles it, signed in with a Google app password asked for at
 the prompt (or read from ``INKFOLD_SMTP_PASSWORD``) and never stored. ``--via
 outlook`` sends through classic Outlook instead, which re-encodes the HTML through
 its own editor, so the inboxes judge Outlook's rewrite rather than inkfold's email.
-The questions to answer per client are in ``qa/clients/MATRIX.md``.
+``--save DIR`` sends nothing: it writes each message as a ``.eml`` file, which new
+Outlook opens by double-click, since new Outlook takes no automation. The questions
+to answer per client are in ``qa/clients/MATRIX.md``.
 """
 
 from __future__ import annotations
@@ -26,10 +29,11 @@ import sys
 import time
 from collections.abc import Callable, Iterator, Mapping, Sequence
 from email.message import EmailMessage
+from pathlib import Path
 from typing import Any
 
 from inkfold.builder.email import Email
-from inkfold.delivery import build_message
+from inkfold.delivery import build_message, save_eml
 from inkfold.outlook.desktop import create_draft, outlook_application
 
 from .fixtures import all_fixtures
@@ -44,6 +48,9 @@ SUBJECT_TAG = "[inkfold gallery]"
 #: Gmail's submission server, over TLS from the first byte.
 GMAIL_HOST = "smtp.gmail.com"
 GMAIL_PORT = 465
+
+#: Who a saved ``.eml`` is addressed to when no inbox is named: it is opened, not sent.
+SAVED_ADDRESS = "gallery@example.com"
 
 #: Where a run may find the app password instead of asking for it.
 PASSWORD_ENV = "INKFOLD_SMTP_PASSWORD"
@@ -71,6 +78,28 @@ def _built(
         email = gallery[name]()
         subject = subject_of(name, email)
         yield subject, email, build_message(email, subject=subject, sender=sender, to=list(to))
+
+
+def save_gallery(
+    names: Sequence[str],
+    out_dir: Path,
+    *,
+    to: Sequence[str] = (SAVED_ADDRESS,),
+    sender: str = SAVED_ADDRESS,
+    fixtures: Mapping[str, Callable[[], Email]] | None = None,
+) -> list[Path]:
+    """
+    Each named fixture as ``out_dir/NAME.eml``, the message a send would carry, sent to no one.
+
+    Opening one in a mail client shows that client's render of the email with its
+    attached images, which is how new Outlook, with no automation, is checked.
+    """
+    return [
+        save_eml(message, out_dir / f"{name}.eml")
+        for name, (_subject, _email, message) in zip(
+            names, _built(names, to, sender, fixtures), strict=True
+        )
+    ]
 
 
 def send_via_smtp(
@@ -199,14 +228,32 @@ def _password(sender: str) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Send the email gallery to test inboxes.")
-    parser.add_argument("to", nargs="+", help="test inbox addresses")
+    parser.add_argument("to", nargs="*", help="test inbox addresses")
     parser.add_argument("--fixtures", nargs="*", default=None, help="default: every email")
     parser.add_argument("--via", choices=("smtp", "outlook"), default="smtp")
     parser.add_argument("--from", dest="sender", default="", help="the Gmail account to send from")
     parser.add_argument("--account", default="", help="with --via outlook: the Outlook account")
     parser.add_argument("--send", action="store_true", help="really send; otherwise a dry run")
+    parser.add_argument("--save", type=Path, help="write .eml files to this folder; send nothing")
     args = parser.parse_args(argv)
     names = args.fixtures or list(all_fixtures())
+    if args.save is not None:
+        paths = save_gallery(
+            names,
+            args.save,
+            to=args.to or (SAVED_ADDRESS,),
+            sender=args.sender or SAVED_ADDRESS,
+        )
+        for path in paths:
+            print(f"saved: {path}")
+        print(
+            f"Saved {len(paths)} .eml file(s) to {args.save}; nothing was sent. For new Outlook, "
+            "right-click one and choose Open with > Outlook (new): a double-click may open "
+            "classic Outlook instead."
+        )
+        return 0
+    if not args.to:
+        parser.error("name at least one test inbox, or use --save DIR to write .eml files")
     if args.via == "smtp":
         if not args.sender:
             parser.error("--via smtp needs --from, the Gmail address to send from")
