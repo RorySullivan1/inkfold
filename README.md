@@ -1221,6 +1221,50 @@ class Holdings(Report):
         ...  # DataTable(..., source=self.book) prints "House PMS" as of 8 October 2026
 ```
 
+### House email templates
+
+`inkfold.house` ships three standard emails as reports you subclass and feed: `DailyNote`,
+`WeeklyWrap` and `ResearchAnnouncement`. Set `house` once, load each input the template names,
+and the template builds the whole issue. It draws every figure in markup, so it needs no extra
+and reads with images blocked.
+
+```python
+from dataclasses import dataclass
+from datetime import date, timedelta
+
+from inkfold.house import Book, Commentary, DailyNote, Holding, House, SectorMove, Sectors
+from inkfold.report import Dated, data_input
+
+FRESH = timedelta(days=3)
+
+
+@dataclass(frozen=True)
+class OurNote(DailyNote):
+    house = House(firm_name="Example Capital", department="Global Equity")
+
+    @data_input(source="Portfolio system", max_age=FRESH)
+    def book(self) -> Dated[Book]:
+        holdings = (Holding("NVIDIA", 6.1, 2.85),)
+        return Dated(Book("Global Equity", "MSCI ACWI", 0.62, 0.41, holdings), date(2026, 11, 6))
+
+    @data_input(source="Portfolio system", max_age=FRESH)
+    def sectors(self) -> Dated[Sectors]:
+        return Dated(Sectors((SectorMove("Info. Tech.", 42.6),)), date(2026, 11, 6))
+
+    @data_input(source="The desk", max_age=FRESH)
+    def commentary(self) -> Dated[Commentary]:
+        words = Commentary("+62 bps, 21 ahead", "<p>The day.</p>", "<p>What we do next.</p>")
+        return Dated(words, date(2026, 11, 6))
+
+
+email = OurNote(as_of=date(2026, 11, 9)).build()
+```
+
+`python -m inkfold.run our_note.py --as-of 2026-11-09` does the same from the command line. A
+subclass that leaves an input unloaded is refused at construction, naming each one.
+`ResearchAnnouncement.message(sender=..., to=...)` attaches its paper as a PDF rendered for the
+screen, inside the 20 MB message budget; that needs the `[pdf]` extra.
+
 ### One command for the whole loop
 
 `preview` builds an email, saves it, and optionally lints and screenshots it —
@@ -1270,6 +1314,7 @@ inkfold/
 ├── outlook/      Outlook send adapter over Microsoft Graph, and drafts in classic Outlook
 ├── check/        the portability check and `python -m inkfold.check`
 ├── run/          `python -m inkfold.run`: build a Report from the command line
+├── house/        the house email templates: DailyNote, WeeklyWrap, ResearchAnnouncement
 ├── pdf/          the PDF exporter, on the adapters' contract — no network; profiles, attachments
 ├── data/         DataFrame -> table and Figure -> chart, each an optional extra
 ├── math/         LaTeX -> equation image, the optional [math] extra

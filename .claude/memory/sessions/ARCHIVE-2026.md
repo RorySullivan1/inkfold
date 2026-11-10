@@ -542,3 +542,6 @@ Decisions and Log entries folded out of `INDEX.md` on 2026-08-29 (#143), verbati
 - [2026-11-09] report-definition — PR #483 merged; v0.6.0 marked shipped, cursor v0.7.0.
 - [2026-11-09] report-definition — v0.6.0: `Report` with exact typed parameters and `python -m inkfold.run`;
   the daily note runs from the CLI to identical bytes — sessions/2026-11-09-1600-report-definition.md
+- [2026-11-09] data-binding — v0.7.0: `@data_input`, stale and future data refused, `Document.provenance()`;
+  the daily note is a Report with three inputs — sessions/2026-11-09-1800-data-binding.md
+- [2026-11-09] data-binding — PR #485 merged; v0.7.0 marked shipped, cursor v0.8.0.

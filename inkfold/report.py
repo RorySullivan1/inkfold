@@ -35,6 +35,8 @@ from inkfold.inputs import (
     StaleDataError,
     data_input,
     declared_inputs,
+    missing_inputs,
+    required_input,
 )
 
 #: What ``build()`` returns. Today it is ``Document``; the alias widens to
@@ -147,6 +149,13 @@ class Report:
     """
 
     def __post_init__(self) -> None:
+        missing = missing_inputs(type(self))
+        if missing:
+            listed = "; ".join(f"{name} ({inp.what})" for name, inp in missing.items())
+            raise ValidationError(
+                f"{type(self).__name__} must load each input its template reads with "
+                f"@data_input: {listed}."
+            )
         self._validate_fields()
         if self.inputs() and type(getattr(self, "as_of", None)) is not date:
             raise ValidationError(
@@ -251,4 +260,5 @@ __all__ = [
     "Report",
     "StaleDataError",
     "data_input",
+    "required_input",
 ]

@@ -1,0 +1,50 @@
+Hermes Research
+===============
+
+New Research
+Global Equity · Published 6 November 2026
+
+
+Momentum After the Rate Peak
+----------------------------
+
+Momentum has historically weakened in the six months after a policy rate peak.
+We test whether that holds across regions and what it means for a factor book
+today.
+
+Hermes Research publishing as of 6 November 2026
+
+
+Key Points
+----------
+
+- Momentum's drawdown risk doubles after a rate peak, in every region tested.
+- Quality offsets most of it at a fraction of the turnover.
+- We cut the momentum tilt by a third and add to quality.
+
+
+Authors
+-------
+
+Ada Chen
+Head of Quant Research · ada.chen@example.com
+
+Tomás Ruiz
+Quantitative Strategist
+
+
+------------------------------------------------------------------------------
+
+THE FULL REPORT
+
+The full report is attached as momentum-after-the-rate-peak.pdf.
+
+Read online: https://example.com/research/momentum-after-the-rate-peak
+
+------------------------------------------------------------------------------
+
+
+Illustrative sample only: the portfolio is fictional and every figure is
+invented. Not investment advice.
+
+© 2026 Hermes Research

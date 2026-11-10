@@ -90,6 +90,7 @@ applies to and loads **only when a matching file is read** — so a session that
 | `delivery.md` | `inkfold/delivery/`, `inkfold/gmail/`, `inkfold/outlook/` | MIME assembly, the adapter contract, the deliberate non-features, drafts in classic Outlook |
 | `qa-harness.md` | `qa/**`, `tests/**`, `inkfold/check/**` | Gallery, goldens, screenshots, lint and the shipped check, the preview CLI |
 | `config.md` | `inkfold/config.py` | The one frozen dataclass of tunable numbers |
+| `house.md` | `inkfold/house/**`, `inputs.py`, `report.py`, the house fixtures | The three house email templates, required inputs, and why each looks as it does (v0.8.0) |
 
 Each also carries the post-mortem of the epic that built its area — the reasoning is what
 stops a settled question being reopened, and it belongs beside the code it settled.
