@@ -9,6 +9,7 @@ names them, and rule 14 admits a new medium or layout only for one of them.
 from __future__ import annotations
 
 import importlib.util
+import sys
 from pathlib import Path
 from types import ModuleType
 
@@ -27,6 +28,8 @@ def load_script(path: Path) -> ModuleType:
     if spec is None or spec.loader is None:
         raise ImportError(f"cannot load {path}")
     module = importlib.util.module_from_spec(spec)
+    # A dataclass resolves its annotations through sys.modules, so the script must be there.
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 

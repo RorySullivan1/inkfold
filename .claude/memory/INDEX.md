@@ -8,7 +8,7 @@
   owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
 - **The roadmap is live** in `.meta/roadmap/` (5 stages), surfaced each session by `roadmap_status`. Shipped:
   v0.2.0 charter (#477), v0.3.0 reference reports (#478), v0.4.0 and v0.4.1 renames to inkfold (#479, #480),
-  v0.5.0 first PyPI release (#481), v0.6.0 `Report` and `inkfold.run` (#483). Cursor v0.7.0, data binding and provenance. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
+  v0.5.0 first PyPI release (#481), v0.6.0 `Report` and `inkfold.run` (#483). Cursor v0.7.0, data binding and provenance, in a PR. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
 
 ## Decisions        (append-only; supersede, never delete)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
@@ -39,6 +39,8 @@
   from v0.4.0; superseded 2026-11-09 by inkfold — `.meta/roadmap/INDEX.md`
 - [2026-11-09] **The project becomes inkfold: PyPI prohibits octavo as a project name (a hidden list), and
   accepted inkfold as a pending publisher first; the repository is RorySullivan1/inkfold. v0.4.1** — `.meta/roadmap/`
+
+- [2026-11-09] **Freshness against the report's `as_of`, not the clock; provenance per exhibit and section** — `data-layer.md`
 
 ## Threads          (open items; remove when closed)
 - **The first outside user is not yet named** (a colleague or team); needed before Gate 1 — `.meta/roadmap/INDEX.md`.
@@ -72,8 +74,7 @@
 
 ## Log              (append-only pointers)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
-- [2026-11-09] inkfold-rename — v0.4.1: PyPI prohibited octavo; renamed to inkfold, guard hardened, v0.5.0's
-  publisher pinned; review no must-fix, goal-auditor PASS; PR #480 — sessions/2026-11-09-0900-inkfold-rename.md
 - [2026-11-09] report-definition — v0.6.0: `Report` with exact typed parameters and `python -m inkfold.run`;
   the daily note runs from the CLI to identical bytes — sessions/2026-11-09-1600-report-definition.md
-- [2026-11-09] report-definition — PR #483 merged; v0.6.0 marked shipped, cursor v0.7.0.
+- [2026-11-09] data-binding — v0.7.0: `@data_input`, stale and future data refused, `Document.provenance()`;
+  the daily note is a Report with three inputs — sessions/2026-11-09-1800-data-binding.md

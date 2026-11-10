@@ -537,3 +537,6 @@ Decisions and Log entries folded out of `INDEX.md` on 2026-08-29 (#143), verbati
 - [2026-11-09] inkfold-rename — PR #480 merged; v0.4.1 marked shipped.
 - [2026-11-09] first-release — tag v0.5.0 at 9f47571 published inkfold 0.5.0 to PyPI, all jobs green; v0.5.0 marked
   shipped, cursor v0.6.0 — sessions/2026-11-09-0314-first-release.md
+- [2026-11-09] inkfold-rename — v0.4.1: PyPI prohibited octavo; renamed to inkfold, guard hardened, v0.5.0's
+  publisher pinned; review no must-fix, goal-auditor PASS; PR #480 — sessions/2026-11-09-0900-inkfold-rename.md
+- [2026-11-09] report-definition — PR #483 merged; v0.6.0 marked shipped, cursor v0.7.0.

@@ -1196,6 +1196,31 @@ A parameter is a `str`, `int`, `float`, `bool`, `date` or `tuple[X, ...]` of one
 optionally `| None`. A wrong type, an unknown `--flag` or a missing required parameter raises
 `ValidationError` before `build()` runs, and exits 2 from the command line.
 
+**Data inputs are declared, dated and checked.** A method marked `@data_input` loads one input
+and returns it `Dated`; read as an attribute it is a `Dataset` with its name, source and date.
+An input older than its `max_age` at the report's `as_of`, or dated after it, raises
+`StaleDataError` or `FutureDataError` before anything renders. Give an exhibit or a section the
+dataset as its `source=` and its source line is printed from the data; `document.provenance()`
+then lists every exhibit and section with the inputs it was drawn from.
+
+```python
+from datetime import date, timedelta
+
+from inkfold.report import Dated, data_input
+
+
+@dataclass(frozen=True)
+class Holdings(Report):
+    as_of: date
+
+    @data_input(source="House PMS", max_age=timedelta(days=3))
+    def book(self) -> Dated[list[tuple[str, float]]]:
+        return Dated([("NVIDIA", 6.1), ("Microsoft", 5.4)], date(2026, 10, 8))
+
+    def build(self) -> Renderable:
+        ...  # DataTable(..., source=self.book) prints "House PMS" as of 8 October 2026
+```
+
 ### One command for the whole loop
 
 `preview` builds an email, saves it, and optionally lints and screenshots it —

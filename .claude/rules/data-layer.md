@@ -220,3 +220,32 @@ the package's own output warned. An equation renders at 4x (`DEFAULT_MATH_SCALE`
 serves paper), and the paged and brochure fixtures' pictures sit at about 3.1x, the 300 dpi
 `print_dpi` asks for. The warning names both targets, 2x for a screen and 3.125x for print.
 Every gallery renders with no `SizeWarning`, asserted.
+
+## Declared inputs and provenance (roadmap v0.7.0)
+
+A report declares its data with `@data_input(source=, max_age=)` on a loader that returns
+`Dated(value, as_of)` (`inkfold/inputs.py`); read from the report it is a `Dataset`, loaded once.
+An exhibit or a section given datasets as `source=` prints its line from them and keeps them,
+and `Document.provenance()` lists every holder with each dataset, in reading order.
+
+- **`Dataset` lives in the builder (`provenance.py`), not in `inkfold/data/`**, because exhibits
+  must recognise it and the dependency runs data to builder, never back. The loader machinery is
+  `inkfold/inputs.py`, beside `report.py`, since only a report declares inputs.
+- **Freshness is judged against the report's `as_of`, never the clock.** A rerun of an old date
+  must give the same bytes or the same refusal, which a wall-clock check cannot. So a report
+  that declares inputs must have an `as_of: date` parameter, refused at construction otherwise.
+  Data dated after the report is refused too (`FutureDataError`): a note cannot cite a close it
+  could not have seen. `max_age` is calendar days; the daily note takes three for a Monday.
+- **The source line is printed from the data, never typed beside it.** A typed `as_of` with a
+  dataset is refused, so the two cannot disagree. Several datasets of one date share it; of
+  several dates each source carries its own. A holder with no `as_of` field (`ChartBlock`,
+  `FigureGrid`) folds the date into the source.
+- **Provenance is per exhibit and section, not per number.** A figure in a table is traced
+  through its table. Numbers typed in prose are the author's until roadmap 3.4 binds them to
+  data, and the daily note's two paragraphs carry no source.
+- **A slide keeps text-only sources**: the deck takes no new feature until 2.8.
+- **A date is formatted in English whatever the locale** (`format_date`), since `%B` follows
+  `LC_TIME` and would make the bytes depend on the machine.
+- **A script loaded by path is put in `sys.modules`** (`qa.reference`, `tests/test_examples.py`).
+  `@dataclass` resolves postponed annotations through it, and the example became a dataclass.
+

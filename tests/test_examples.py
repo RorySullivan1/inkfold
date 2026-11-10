@@ -13,6 +13,7 @@ import ast
 import importlib.util
 import os
 import re
+import sys
 import tempfile
 from pathlib import Path
 
@@ -42,6 +43,8 @@ def _load(path: Path):
     spec = importlib.util.spec_from_file_location(path.stem.replace("-", "_"), path)
     assert spec and spec.loader
     module = importlib.util.module_from_spec(spec)
+    # A dataclass resolves its annotations through sys.modules, so the script must be there.
+    sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
 

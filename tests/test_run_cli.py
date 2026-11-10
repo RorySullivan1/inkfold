@@ -123,8 +123,16 @@ class TestTheReferenceDailyNote:
         for run in ("first", "second"):
             out = tmp_path / run
             code = main(
-                ["reference/daily-note/report.py", "--as-of", "2026-10-30", "--out", str(out)]
+                ["reference/daily-note/report.py", "--as-of", "2026-10-09", "--out", str(out)]
             )
             assert code == EXIT_OK
             outputs.append([(out / f"report.{suffix}").read_bytes() for suffix in ("html", "txt")])
         assert outputs[0] == outputs[1]
+
+    def test_a_close_past_its_data_is_stale(self, tmp_path: Path, monkeypatch, capsys):
+        monkeypatch.chdir(REPO)
+        code = main(
+            ["reference/daily-note/report.py", "--as-of", "2026-10-30", "--out", str(tmp_path)]
+        )
+        assert code == EXIT_BUILD_FAILED
+        assert "StaleDataError: input 'performance'" in capsys.readouterr().err
