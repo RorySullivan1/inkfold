@@ -8,6 +8,7 @@ import importlib.util
 import re
 import sys
 from pathlib import Path
+from types import ModuleType
 
 from inkfold.builder import EmailBuilder
 from inkfold.builder.document import Document
@@ -16,6 +17,43 @@ from inkfold.builder.exceptions import EmailBuilderError
 
 class TargetError(RuntimeError):
     """A target that names no file, no callable, or nothing that builds a document."""
+
+
+def split_target(target: str) -> tuple[str, str]:
+    """Split ``path/to/module.py:attribute`` into ``(path, attribute)``.
+
+    Handles Windows drive letters (``C:/`` or ``C:\\``) so a drive is never
+    the separator (#372). Returns ``("", "")`` when the form is wrong.
+    """
+    drive = target[:2] if re.match(r"[A-Za-z]:[\\/]", target) else ""
+    path_text, _, attribute = target[len(drive) :].rpartition(":")
+    path_text = drive + path_text if path_text else ""
+    return path_text, attribute
+
+
+def import_module(path: Path) -> ModuleType:
+    """Import a Python file by path, returning the module.
+
+    Raises :class:`TargetError` when the file is missing, not importable,
+    or raises during import (unless it raises :class:`EmailBuilderError`,
+    which propagates as-is).
+    """
+    if not path.is_file():
+        raise TargetError(f"No such file: {path}")
+    module_name = f"_inkfold_target_{path.stem}"
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    if spec is None or spec.loader is None:
+        raise TargetError(f"{path} is not importable as Python.")
+    module = importlib.util.module_from_spec(spec)
+    # Registered first: a dataclass in the module looks itself up by __module__.
+    sys.modules[module_name] = module
+    try:
+        spec.loader.exec_module(module)
+    except EmailBuilderError:
+        raise
+    except Exception as exc:
+        raise TargetError(f"{path} failed to import: {exc}") from exc
+    return module
 
 
 def load_target(target: str) -> tuple[str, Document]:
@@ -33,28 +71,12 @@ def load_target(target: str) -> tuple[str, Document]:
             or one that raises anything but a builder error (#466).
         EmailBuilderError: When the builder rejects the email; its message names the field.
     """
-    drive = target[:2] if re.match(r"[A-Za-z]:[\\/]", target) else ""
-    path_text, _, attribute = target[len(drive) :].rpartition(":")
-    path_text = drive + path_text if path_text else ""
+    path_text, attribute = split_target(target)
     path = Path(path_text)
     if not path_text or not attribute:
         raise TargetError(f"{target!r} names no callable. Expected path/to/module.py:callable.")
-    if not path.is_file():
-        raise TargetError(f"No such file: {path}")
 
-    module_name = f"_inkfold_target_{path.stem}"
-    spec = importlib.util.spec_from_file_location(module_name, path)
-    if spec is None or spec.loader is None:
-        raise TargetError(f"{path} is not importable as Python.")
-    module = importlib.util.module_from_spec(spec)
-    # Registered first: a dataclass in the module looks itself up by __module__.
-    sys.modules[module_name] = module
-    try:
-        spec.loader.exec_module(module)
-    except EmailBuilderError:
-        raise
-    except Exception as exc:
-        raise TargetError(f"{path} failed to import: {exc}") from exc
+    module = import_module(path)
 
     builder = getattr(module, attribute, None)
     if builder is None:
