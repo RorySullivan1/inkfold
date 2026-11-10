@@ -1,0 +1,105 @@
+{
+  "outlook": "16.0.0.20527",
+  "windows": "10.0.26100",
+  "fixtures": {
+    "minimal": [
+      "minimal-p1.png"
+    ],
+    "kitchen_sink": [
+      "kitchen_sink-p1.png",
+      "kitchen_sink-p2.png",
+      "kitchen_sink-p3.png",
+      "kitchen_sink-p4.png"
+    ],
+    "custom_banner": [
+      "custom_banner-p1.png"
+    ],
+    "custom_footer": [
+      "custom_footer-p1.png"
+    ],
+    "image_matrix": [
+      "image_matrix-p1.png"
+    ],
+    "minimal_banner": [
+      "minimal_banner-p1.png"
+    ],
+    "minimal_footer": [
+      "minimal_footer-p1.png"
+    ],
+    "no_header": [
+      "no_header-p1.png"
+    ],
+    "slate_theme": [
+      "slate_theme-p1.png"
+    ],
+    "compact_size": [
+      "compact_size-p1.png",
+      "compact_size-p2.png",
+      "compact_size-p3.png"
+    ],
+    "spacious_size": [
+      "spacious_size-p1.png",
+      "spacious_size-p2.png",
+      "spacious_size-p3.png",
+      "spacious_size-p4.png",
+      "spacious_size-p5.png"
+    ],
+    "modern_fonts": [
+      "modern_fonts-p1.png",
+      "modern_fonts-p2.png",
+      "modern_fonts-p3.png",
+      "modern_fonts-p4.png"
+    ],
+    "rich_table": [
+      "rich_table-p1.png"
+    ],
+    "aligned_layout": [
+      "aligned_layout-p1.png"
+    ],
+    "composed_layout": [
+      "composed_layout-p1.png"
+    ],
+    "surfaced_layout": [
+      "surfaced_layout-p1.png"
+    ],
+    "research_note": [
+      "research_note-p1.png",
+      "research_note-p2.png"
+    ],
+    "placed_layout": [
+      "placed_layout-p1.png",
+      "placed_layout-p2.png"
+    ],
+    "glance_layout": [
+      "glance_layout-p1.png",
+      "glance_layout-p2.png"
+    ],
+    "labelled_layout": [
+      "labelled_layout-p1.png"
+    ],
+    "organised_layout": [
+      "organised_layout-p1.png",
+      "organised_layout-p2.png"
+    ],
+    "toned_layout": [
+      "toned_layout-p1.png"
+    ],
+    "brief_layout": [
+      "brief_layout-p1.png",
+      "brief_layout-p2.png"
+    ],
+    "product_brief_layout": [
+      "product_brief_layout-p1.png",
+      "product_brief_layout-p2.png"
+    ],
+    "house_daily_note": [
+      "house_daily_note-p1.png"
+    ],
+    "house_weekly_wrap": [
+      "house_weekly_wrap-p1.png"
+    ],
+    "house_announcement": [
+      "house_announcement-p1.png"
+    ]
+  }
+}
