@@ -1408,6 +1408,12 @@ client no session reaches. `qa/clients/MATRIX.md` holds the results, per email a
   `ol` with `list-style-type:none` keeps its numbers (#492); fixed-height buttons clip a wrapped
   label (#493); some cell borders drop out (#494). The VML arrow, the connector, the rtl split
   and the `font-size:0` rule cells all hold.
+- **`Send()` only queues.** The first real run left all 27 in classic Outlook's Outbox: the
+  Outlook that automation started quit with the script, before any Send/Receive, and the owner
+  reads mail in new Outlook, which never shows classic's Outbox. So `--send` now runs
+  `SendAndReceive` and waits, holding the Inbox, until no tagged message is left there (`flush`,
+  3 minutes), and exits 1 naming what is still queued. It also refuses to start while tagged
+  messages wait, so a second run cannot send duplicates.
 - **`qa.send_gallery` sends nothing without `--send`**, and a dry run reaches no Outlook. It
   builds each message with `build_message`, puts it in Outlook through `create_draft(display=False)`
   and sends it from the profile's account or `--account`'s; every subject starts

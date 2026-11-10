@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+import time
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any
 
@@ -26,6 +27,10 @@ from inkfold.delivery import build_message
 from inkfold.outlook.desktop import create_draft, outlook_application
 
 from .fixtures import all_fixtures
+
+#: ``olFolderOutbox`` and ``olFolderInbox`` in ``GetDefaultFolder``.
+OL_FOLDER_OUTBOX = 4
+OL_FOLDER_INBOX = 6
 
 #: Every subject opens with this, so a test inbox can filter the run into one folder.
 SUBJECT_TAG = "[inkfold gallery]"
@@ -48,7 +53,9 @@ def send_gallery(
     """
     Send, or with ``send`` false only list, each named fixture to every address in ``to``.
 
-    Returns one line per message, sent or not. A dry run touches no Outlook.
+    Returns one line per message, queued or not. A dry run touches no Outlook. A send
+    refuses to start while gallery messages already wait in the Outbox, so a second run
+    cannot queue duplicates; :func:`flush` then pushes the queue out.
     """
     gallery = fixtures if fixtures is not None else all_fixtures()
     unknown = sorted(set(names) - set(gallery))
@@ -61,6 +68,12 @@ def send_gallery(
     if send:
         outlook = outlook if outlook is not None else outlook_application()
         sender_account = _account(outlook, account) if account else None
+        waiting = queued(outlook)
+        if waiting:
+            raise SystemExit(
+                f"{waiting} gallery message(s) already wait in classic Outlook's Outbox. Open "
+                "classic Outlook to send them, or delete them there, then run again."
+            )
     for name in names:
         email = gallery[name]()
         subject = subject_of(name, email)
@@ -70,8 +83,45 @@ def send_gallery(
             if sender_account is not None:
                 mail.SendUsingAccount = sender_account
             mail.Send()
-        lines.append(f"{'sent' if send else 'would send'}: {subject} -> {', '.join(to)}")
+        lines.append(f"{'queued' if send else 'would send'}: {subject} -> {', '.join(to)}")
     return lines
+
+
+def queued(outlook: Any) -> int:
+    """How many gallery messages wait in the Outbox of any store in the Outlook profile."""
+    count = 0
+    for store in outlook.GetNamespace("MAPI").Stores:
+        try:
+            outbox = store.GetDefaultFolder(OL_FOLDER_OUTBOX)
+        except Exception:  # a store with no Outbox, such as an archive
+            continue
+        count += sum(str(item.Subject).startswith(SUBJECT_TAG) for item in outbox.Items)
+    return count
+
+
+def flush(
+    outlook: Any,
+    timeout_s: float = 180.0,
+    poll_s: float = 3.0,
+    sleep: Callable[[float], None] = time.sleep,
+    clock: Callable[[], float] = time.monotonic,
+) -> int:
+    """
+    Run Send/Receive and wait for the gallery to leave the Outbox; how many are left.
+
+    An Outlook that automation started quits when the script lets go, with its Outbox
+    unsent, so the run waits here, holding the Inbox to keep Outlook up meanwhile.
+    """
+    session = outlook.GetNamespace("MAPI")
+    held = session.GetDefaultFolder(OL_FOLDER_INBOX)
+    session.SendAndReceive(False)
+    deadline = clock() + timeout_s
+    left = queued(outlook)
+    while left and clock() < deadline:
+        sleep(poll_s)
+        left = queued(outlook)
+    del held
+    return left
 
 
 def _account(outlook: Any, address: str) -> Any:
@@ -93,10 +143,21 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--send", action="store_true", help="really send; otherwise a dry run")
     args = parser.parse_args(argv)
     names = args.fixtures or list(all_fixtures())
-    for line in send_gallery(names, args.to, send=args.send, account=args.account):
+    outlook = outlook_application() if args.send else None
+    for line in send_gallery(names, args.to, send=args.send, outlook=outlook, account=args.account):
         print(line)
     if not args.send:
         print(f"Dry run: {len(names)} email(s) to {len(args.to)} inbox(es). Add --send to send.")
+        return 0
+    print("Sending: waiting for classic Outlook's Outbox to empty...")
+    left = flush(outlook)
+    if left:
+        print(
+            f"{left} message(s) are still in classic Outlook's Outbox. Open classic Outlook "
+            "(not new Outlook) and they will send; then check its Sent Items."
+        )
+        return 1
+    print(f"Sent: all {len(names)} email(s) left the Outbox. Find them in Sent Items.")
     return 0
 
 
