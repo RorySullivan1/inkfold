@@ -49,8 +49,11 @@ Two defects are common to most emails, so they are listed once rather than in ev
 - **#490, fixed**: every email with the default `Banner` had its masthead copy inset past the
   body, its rule short of the right padding, and an empty band below it; only `minimal_banner`
   was free of it. Re-rendered in classic Outlook after the fix, the copy and rule sit on the
-  body's edge and the band ends with the date line (`evidence/v0.9.0/490/`). Under a masthead
-  with no logo the department still wraps, in browsers too: a layout question of its own.
+  body's edge and the band ends with the date line (`evidence/v0.9.0/490/`).
+- **#508, fixed**: under a masthead with no logo the department wrapped at every word, in
+  browsers too: "Global Equity" in the three house emails, `rich_table` and `aligned_layout`.
+  Each now sets it on one line, in classic Outlook and in Chromium at 1000 and 375px
+  (`evidence/v0.9.0/508/`).
 - **#500**: an image that does not load shows its alt text in the client's default font, which
   on kitchen_sink's masthead is dark on dark. Its masthead background, logo and footer mark are
   hosted; since the owner's review they are served from this repository

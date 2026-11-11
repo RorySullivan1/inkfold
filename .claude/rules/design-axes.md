@@ -187,9 +187,10 @@ below the date line. Three causes, each found by rendering variants
   densities. In Chromium nothing moved: the 26 default-banner emails screenshot pixel-identical
 before and after, at 1000 and 375px.
 
-The department label still wraps under a masthead with no logo, in Chromium as in Outlook: the
-title cell's `width="100%"` gives the right column only its longest word. It is not this
-defect, and the fix touches #76's no-`nowrap` decision, so it is left to its own issue.
+The department label still wrapped under a masthead with no logo, in Chromium as in Outlook:
+the title cell's `width="100%"` gave the right column only its longest word. That was not this
+defect, and #508 fixed it by giving each of the masthead's two rows a table of its own
+(`builder-architecture.md`).
 
 **How the theme reaches every template — the mechanism epic #45 rode.** A value owned by
 the email must reach component templates several layers down. `TemplateEngine.bound(**shared)`
