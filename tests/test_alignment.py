@@ -153,6 +153,11 @@ class _AlignmentAudit(HTMLParser):
         style = attributes.get("style") or ""
         match = _TEXT_ALIGN.search(style)
         declared = match.group(1) if match else None
+        if tag == "table" and attribute:
+            # A table's align floats it (an email's wrapped figure, v0.9.0): its second
+            # spelling is CSS float, not text-align, and the two must agree.
+            floated = re.search(r"float:\s*(left|right)", style)
+            declared = floated.group(1) if floated else None
         if attribute or declared:
             self.found.append((tag, attribute, declared))
             self.classed.append(

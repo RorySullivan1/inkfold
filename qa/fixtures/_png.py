@@ -86,3 +86,22 @@ def matrix_png(
     side = width * scale
     header = struct.pack(">IIBBBBB", side, side, 8, 2, 0, 0, 0)
     return _SIGNATURE + _chunk(b"IHDR", header) + _chunk(b"IDAT", pixels) + _chunk(b"IEND", b"")
+
+
+def gradient_png(
+    width: int, height: int, left: tuple[int, int, int], right: tuple[int, int, int]
+) -> bytes:
+    """
+    A horizontal blend from ``left`` to ``right``: an image a solid fill behind it cannot fake.
+
+    Returns:
+        Complete PNG bytes — the same bytes for the same arguments, always.
+    """
+    span = max(width - 1, 1)
+    row = b"".join(
+        bytes(round(a + (b - a) * x / span) for a, b in zip(left, right, strict=True))
+        for x in range(width)
+    )
+    pixels = zlib.compress((b"\x00" + row) * height, _COMPRESSION_LEVEL)
+    header = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+    return _SIGNATURE + _chunk(b"IHDR", header) + _chunk(b"IDAT", pixels) + _chunk(b"IEND", b"")

@@ -42,6 +42,8 @@ block, so the property it lacks costs Outlook nothing. */
 alignment that is the only reason to render one — so padding is what
 gives a narrow viewport its room back. See #132. */
 .data-table th, .data-table td { padding:6px !important; }
+.email-float { float:none !important; width:100% !important; }
+.email-float td { padding-left:0 !important; padding-right:0 !important; }
 }
 /* Force light rendering in all dark mode contexts */
 :root { color-scheme: light only; }
@@ -458,7 +460,7 @@ A chart the prose wraps round
 <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF;">
 <tr>
 <td class="mobile-pad" style="padding:16px 32px 14px 32px; font-family: Arial, Helvetica, sans-serif; font-size:14px; color:#3B3B3B; line-height:172%;">
-<div class="wrapped-figure"><table class="figure" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+<table role="presentation" class="email-float" align="right" width="176" cellpadding="0" cellspacing="0" border="0" style="float:right; width:176px;"><tr><td width="176" style="padding:0 0 8px 16px;"><table class="figure" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
 <tr>
 <td style="padding: 0;">
 <img src="cid:e29e6e0bcc1dd98b" alt="Term premium"
@@ -467,7 +469,7 @@ width="160"           style="display: block; width: 100%; max-width: 160px; heig
 </tr>
 </table>
 <p class="fine-print" style="font-family: Arial, Helvetica, sans-serif; font-size: 9.5px; color: #A09E97; font-style: italic; margin: 8px 0 0 0; line-height: 172%;">Hermes Research</p>
-</div>
+</td></tr></table>
 <div class="body-text" style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; color: #3B3B3B; line-height: 172%; margin: 0 0 16px 0;"><p>The long end did the work this quarter: ten-year yields rose eighteen basis points while the two-year barely moved, and the term premium explains most of the difference. The long end did the work this quarter: ten-year yields rose eighteen basis points while the two-year barely moved, and the term premium explains most of the difference.</p></div>
 </td>
 </tr>
@@ -488,14 +490,14 @@ An equation the prose wraps round
 <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color:#FFFFFF;">
 <tr>
 <td class="mobile-pad" style="padding:16px 32px 14px 32px; font-family: Arial, Helvetica, sans-serif; font-size:14px; color:#3B3B3B; line-height:172%;">
-<div class="wrapped-figure"><table class="figure math-block" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
+<table role="presentation" class="email-float" align="left" width="196" cellpadding="0" cellspacing="0" border="0" style="float:left; width:196px;"><tr><td width="196" style="padding:0 16px 8px 0;"><table class="figure math-block" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;">
 <tr>
 <td align="center" style="padding: 0; text-align: center;">
 <div align="center" style="font-size: 0; line-height: 0; text-align: center;"><img src="cid:97d13375a5913370" alt="P = \sum_t c_t\,e^{-y t}" width="180" style="display: inline-block; vertical-align: top; border: 0; outline: none; text-decoration: none; width: 100%; max-width: 180px; height: auto;"></div>
 </td>
 </tr>
 </table>
-</div>
+</td></tr></table>
 <div class="body-text" style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; color: #3B3B3B; line-height: 172%; margin: 0 0 16px 0;"><p>The long end did the work this quarter: ten-year yields rose eighteen basis points while the two-year barely moved, and the term premium explains most of the difference. The long end did the work this quarter: ten-year yields rose eighteen basis points while the two-year barely moved, and the term premium explains most of the difference.</p></div>
 </td>
 </tr>

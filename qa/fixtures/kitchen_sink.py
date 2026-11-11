@@ -91,6 +91,7 @@ from inkfold.builder.models import (
     tone_of,
 )
 
+from ._hosted import url as hosted_url
 from ._png import solid_png
 from ._qr import URL as QR_URL
 from ._qr import qr_png
@@ -116,7 +117,7 @@ _DESK_PNG = solid_png(120, 150, (91, 138, 154))
 #: *which* branch of the resolution chain won — explicit metadata beats the
 #: image's own value, which beats the firm name and the default width.
 _LOGO = EmailImage.hosted(
-    "https://cdn.example.com/hermes-logo.png",
+    hosted_url("hermes-logo.png"),
     alt="Hermes Research logotype",
     width=110,
 )
@@ -205,7 +206,7 @@ def build(
                 # ``logo_url`` an EmailImage, ``background_image_url`` a bare
                 # URL string — so the golden covers both branches of the
                 # collapse to a ``src`` in ``Region.context()``.
-                background_image_url="https://cdn.example.com/header-bg.png",
+                background_image_url=hosted_url("header-bg.png"),
                 logo_url=_LOGO,
                 logo_alt="Hermes Research — weekly research letter",
                 logo_width=128,
@@ -246,7 +247,7 @@ def build(
                 border=True,
                 border_color="#D6D2CB",
                 image=EmailImage.hosted(
-                    "https://cdn.example.com/hermes-mark.png",
+                    hosted_url("hermes-mark.png"),
                     alt="Hermes Research mark",
                     width=80,
                 ),

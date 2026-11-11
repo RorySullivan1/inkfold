@@ -218,7 +218,7 @@ class TestTheWalkSeesAHostedFigure:
 
 class TestInAnEmail:
     @pytest.mark.parametrize("name", list(FIGURES))
-    def test_it_sits_above_the_prose_byte_for_byte_as_unwrapped(self, name):
+    def test_it_floats_before_the_prose_byte_for_byte_as_unwrapped(self, name):
         hosted = email(FullWidth(TextBlock(PROSE, figure=FIGURES[name]()))).render()
         # The figure's own markup is what it renders unhosted and unwrapped.
         engine = email(FullWidth(TextBlock("<p>x</p>")))._bound_engine()
@@ -226,8 +226,9 @@ class TestInAnEmail:
         bare = engine.medium.finish(FIGURES[name]("").render(engine))
         assert bare in hosted
         assert hosted.index(bare) < hosted.index('id="prose-start"')
-        assert '<div class="wrapped-figure">' in hosted
-        assert "wrap-" not in hosted
+        side = FIGURES[name]().wrap
+        assert hosted.index(f'class="email-float" align="{side}"') < hosted.index(bare)
+        assert "wrapped-figure" not in hosted and "wrap-" not in hosted
 
     @pytest.mark.parametrize("name", list(FIGURES))
     def test_the_text_part_is_the_figure_then_the_prose(self, name):

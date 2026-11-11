@@ -1385,3 +1385,43 @@ each spec says it goes before Gate 1. Replacing one means pointing its `build.py
   for the owner to fill when a real report replaces its stand-in.
 - **The machine is not the bottleneck**: every report reaches a checked artifact in under a second, so
   the number the roadmap has to move is the author lines, 100 to 300 a report today.
+
+## Real clients: classic Outlook's own render, and a send for the rest (roadmap v0.9.0)
+
+`python -m qa.outlook_render` renders the email gallery through classic Outlook on the owner's
+Windows machine, and `python -m qa.send_gallery INBOX --send` sends it to test inboxes for every
+client no session reaches. `qa/clients/MATRIX.md` holds the results, per email and client.
+
+- **The render is Outlook's, not Word's.** Each email goes into an unsaved `MailItem` with its
+  `cid:` images attached hidden by Content-ID, as `create_draft` attaches them. The inspector
+  opens minimised, because `Inspector.WordEditor` refuses a window that does not exist ("The
+  operation failed"). The editor's page is set to Word's tallest (1584 pt) and exported to PDF,
+  and the message closes with `olDiscard`, in a `finally`, so a failed export leaves no draft.
+  Nothing is saved or sent, and the fake-COM tests hold both.
+- **An Outlook that automation started quits when its last client lets go**, and a run begun as
+  another ends can reach one still shutting down: "The RPC server is unavailable" on the first
+  `CreateItem`. `_connect` proves a handle by creating and discarding a message and holds the
+  Inbox folder for the run; an email that still meets a gone Outlook (`-2147023174` or
+  `-2147417848`) is retried once on a fresh handle.
+- **What the render showed (2026-11-10, Outlook 16.0.0.20527)**: no content lost anywhere but
+  one masthead (#489); an 8px inline-block mark becomes a 3 px bar the line's height (#491); an
+  `ol` with `list-style-type:none` keeps its numbers (#492); fixed-height buttons clip a wrapped
+  label (#493); some cell borders drop out (#494). The VML arrow, the connector, the rtl split
+  and the `font-size:0` rule cells all hold.
+- **`Send()` only queues.** The first real run left all 27 in classic Outlook's Outbox: the
+  Outlook that automation started quit with the script, before any Send/Receive, and the owner
+  reads mail in new Outlook, which never shows classic's Outbox. So `--send` now runs
+  `SendAndReceive` and waits, holding the Inbox, until no tagged message is left there (`flush`,
+  3 minutes), and exits 1 naming what is still queued. It also refuses to start while tagged
+  messages wait, so a second run cannot send duplicates.
+- **Gmail SMTP is the default send path (`--via smtp --from`).** The owner's classic Outlook had not
+  reached Gmail since July 2024, so the Outlook path could not send at all; and Outlook re-encodes
+  a message's HTML through its editor, so the inboxes would have judged Outlook's rewrite. SMTP
+  hands over `build_message`'s MIME unchanged. The app password comes from the prompt or
+  `INKFOLD_SMTP_PASSWORD`, never a file, and every message is built before the server is reached.
+- **`qa.send_gallery` sends nothing without `--send`**, and a dry run reaches no Outlook. It
+  builds each message with `build_message`, puts it in Outlook through `create_draft(display=False)`
+  and sends it from the profile's account or `--account`'s; every subject starts
+  `[inkfold gallery]`.
+- **Evidence is committed as JPEG** at quality 50, full width, so 9.5px fine print stays
+  legible: `.claude/context/evidence/v0.9.0/outlook-classic/`, 2.2 MB for 45 pages.
