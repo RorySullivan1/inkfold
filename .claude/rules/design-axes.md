@@ -896,7 +896,7 @@ TextColors
     ``fine_print``     ``#8A8880``   1×  the footer disclaimer
     ``on_dark``        ``#FFFFFF``   2×  the firm name over navy
     ``on_dark_secondary`` ``#CFD8DC``  2×  the campaign name over navy
-    ``on_dark_muted``  ``#90A4AE``   6×  header disclaimer, date range, issue label
+    ``on_dark_muted``  ``#BECAD0``   6×  header disclaimer, date range, issue label (``#90A4AE`` until v0.9.0)
     ``on_accent``      ``#FFFFFF``   2×  the contact CTA's label, on the accent fill
 
 SemanticColors

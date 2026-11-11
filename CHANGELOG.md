@@ -35,6 +35,10 @@ long a deprecated public name survives.
 
 ### Changed
 
+- **The masthead's muted type is lighter** (`text.on_dark_muted`: classic `#90A4AE` to `#BECAD0`,
+  slate `#8FA0AE` to `#BEC8D0`), for the department, the date line and fine print on dark grounds.
+  It read 4.24:1 on the classic navy, and new Outlook's dark mode darkened it onto the band; it is
+  now 6.56:1 and as light as the type that dark mode leaves alone.
 - **A fill no theme type reads on is refused.** A section's `background_color`, with any
   `text_color` on it, and a solid `Callout`'s tone are refused when the section is added if their
   type reads under `Config.min_text_contrast`, naming the colour and both ratios (#503). It was

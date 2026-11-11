@@ -58,6 +58,9 @@ Two defects are common to most emails, so they are listed once rather than in ev
 - **#503, the gold box**: the owner found `toned_layout`'s solid gold box hard to read in both
   modes. Its type read at 3.44:1 in light mode; a fill under 4.5:1 is now refused, and the box
   fills with a deep gold that takes white at 5.3:1 in either mode.
+- **The masthead's muted line in dark mode** (owner, new Outlook): the department and date, in
+  `on_dark_muted` `#90A4AE`, darkened onto the navy band while the `#CFD8DC` subtitle stayed
+  light. The token is now `#BECAD0` (6.56:1 in light mode, was 4.24:1); to re-check.
 - **By design, though it can look wrong**: a table bar sits under its figure (`data-table.md`),
   and a sparkline's bars are a fixed 4 px each, so a three-point series is about 16 px wide.
 - **Wrapped figures float in an email too** since the owner's review: the prose wraps beside
