@@ -552,3 +552,7 @@ Decisions and Log entries folded out of `INDEX.md` on 2026-08-29 (#143), verbati
 - [2026-10-14] **`layout()` returns a `Layout` carrying its profile and document; `render_layout`/`save_layout` take
   no profile (#445); preview lays out once and hands the one layout to lint, PDF and screenshots (#446)** — `media.md`,
   `qa-harness.md`
+- [2026-10-14] **A directly built `EmailImage` is validated like a factory's, `mime_type` held to the sniffed bytes
+  (#447); the PDF exporter refuses a relative URL by name through a sentinel base URL (#463); every number a layout
+  reads is finite, a table cell's NaN still meaning missing (#450); formatters round in a context of their own (#448)**
+  — `builder-architecture.md`, `media.md`, `data-layer.md`
