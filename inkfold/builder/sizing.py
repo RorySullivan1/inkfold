@@ -128,22 +128,11 @@ class SpacingScale:
     masthead_campaign_bottom: int | float = 8
     masthead_meta_top: int | float = 10
     masthead_meta_bottom: int | float = 18
-    #: The v:rect Outlook draws in place of the CSS background image, and a
-    #: box the masthead has to *fit inside*: the textbox carries
-    #: ``mso-fit-shape-to-text:false``, so the shape does not grow with its
-    #: content, and anything past it falls onto the flat band instead of the
-    #: photograph.
-    #:
-    #: It did not fit until the masthead became a 2x2 grid. Stacked — a logo
-    #: band above the copy — the natural height was 178.6 / 207.5 / 244.6 px
-    #: against boxes of 150 / 180 / 220, overflowing by ~25-29px at every
-    #: density, and the department line took that to ~44-47. Pairing the logo
-    #: with the title and the department with the subtitle removed a whole
-    #: band: 143.0 / 163.9 / 190.6 px, inside the box everywhere, and the
-    #: department now costs nothing because it shares a row. Both figures
-    #: measured in Chromium; keep the headroom in mind before adding a line
-    #: to the masthead, since exceeding it degrades quietly rather than
-    #: loudly.
+    #: No template reads it since #490; kept so a scheme that sets it still
+    #: builds. It was the fixed height of the v:rect Outlook draws in place
+    #: of the CSS background image, a box the copy could not grow or shrink,
+    #: so classic Outlook ran the band 60 to 80px past the date line. The
+    #: rect now fits its copy (``mso-fit-shape-to-text:true``).
     masthead_vml_height: int | float = 180
 
     footer_contact_top: int | float = 8

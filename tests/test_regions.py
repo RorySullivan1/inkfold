@@ -8,6 +8,7 @@ that bar is silent about.
 
 import dataclasses
 import re
+from html.parser import HTMLParser
 
 import pytest
 
@@ -1064,6 +1065,93 @@ class TestTheVmlFillSrcIsGated:
         # Referenced four times in the markup — logo and background, each once
         # for Outlook and once for everyone else — attached exactly once.
         assert email.render().count(f"cid:{image.content_id}") == 4
+
+
+class _NestedTables(HTMLParser):
+    """Each ``table`` in a fragment, with the horizontal padding of the cell that holds it."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.cells: list[str] = []
+        self.tables = 0
+        self.found: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        style = dict(attrs).get("style") or ""
+        if tag == "table":
+            self.tables += 1
+            if self.cells:
+                self.found.append(self.cells[-1])
+        if tag == "td":
+            self.cells.append(_horizontal_padding(style))
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "td" and self.cells:
+            self.cells.pop()
+
+
+def _horizontal_padding(style: str) -> str:
+    """The right and left of a ``padding`` shorthand, as written, or ``""`` for none."""
+    match = re.search(r"padding:\s*([^;]+)", style)
+    if not match:
+        return ""
+    sides = match.group(1).split()
+    right, left = {1: (0, 0), 2: (1, 1), 3: (1, 1), 4: (1, 3)}[len(sides)]
+    return " ".join(sides[i] for i in (right, left) if sides[i] not in ("0", "0px"))
+
+
+class TestTheMastheadSitsOnTheBodysEdgeInOutlook:
+    """
+    #490 — the default banner's copy, rule and band in classic Outlook's Word engine.
+
+    **Rendered in classic Outlook 16.0.0.20527** (``qa.outlook_render``): the textbox's
+    ``pad_x`` inset sat on top of the cells' own, so the title and subtitle began one
+    ``pad_x`` further in than the body; the rect's fixed height left 60 to 80px of empty
+    band below the date line; and a table nested in a cell padded ``0 pad_x`` is set one
+    ``pad_x`` left of where that padding puts it, inside a textbox only, so the rule
+    stopped ``2 * pad_x`` short of the right padding. These pin the three fixes; the
+    render is the verdict, and its evidence is in ``evidence/v0.9.0/490/``.
+    """
+
+    @staticmethod
+    def _textbox(html: str) -> str:
+        start = html.index("-->", html.index("<v:textbox")) + len("-->")
+        return html[start : html.rindex("<!--[if mso]>", 0, html.index("</v:textbox>"))]
+
+    @pytest.mark.parametrize("density", ["compact", "standard", "spacious"])
+    @pytest.mark.parametrize("attached", [False, True])
+    def test_the_shape_fits_the_copy_and_insets_nothing(
+        self, valid_metadata, png_bytes, density, attached
+    ):
+        backdrop = EmailImage.attached(png_bytes, alt="Hero") if attached else ""
+        metadata = {**valid_metadata, "size_theme": density}
+        html = Email(metadata, banner=Banner(background_image_url=backdrop)).render()
+        rect = re.search(r"<v:rect [^>]*>", html, re.S)
+        assert rect and "height:" not in rect.group(0), "a fixed height leaves an empty band"
+        assert '<v:textbox inset="0,0,0,0" style="mso-fit-shape-to-text:true;">' in html
+
+    def test_no_table_in_the_textbox_sits_in_a_padded_cell(self, valid_metadata):
+        """
+        The Word trap, read off the markup. Fails on the template before #490: the rule's
+        and the date line's tables each sat in a cell padded ``0 pad_x``.
+        """
+        parser = _NestedTables()
+        parser.feed(self._textbox(Email({**valid_metadata, "issue_label": "Issue 1"}).render()))
+        assert parser.tables >= 3, "the copy, the rule and the date line are each a table"
+        assert not any(parser.found), (
+            f"a table nested in a horizontally padded cell inside the v:textbox is set "
+            f"one pad_x left in Outlook: {parser.found}"
+        )
+
+    @pytest.mark.parametrize("density", ["compact", "standard", "spacious"])
+    def test_the_rule_is_inset_by_a_spacer_cell_either_side(self, valid_metadata, density):
+        from inkfold.builder.sizing import resolve_size_scheme
+
+        pad_x = resolve_size_scheme(density).frame.pad_x
+        html = Email({**valid_metadata, "size_theme": density}).render()
+        rule = html[html.index("<!-- Accent rule -->") : html.index("<!-- Date / Issue bar -->")]
+        spacer = f'<td width="{pad_x}" style="font-size:0; line-height:0;">'
+        assert rule.count(spacer) == 2
 
 
 class TestTheMinimalBannerVariant:

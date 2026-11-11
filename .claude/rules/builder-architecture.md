@@ -168,13 +168,15 @@ Two boundary calls, each made for a reason rather than by shape:
 title and the department shares one with the subtitle, rather than both stacking in a band
 above the copy. Three things follow, and none of them is cosmetic:
 
-- **It fits the Outlook hero box now; stacked, it never did.** `masthead_vml_height` is a
-  `v:rect` the content cannot grow (`mso-fit-shape-to-text:false`), and the stacked masthead
-  measured 178.6 / 207.5 / 244.6px against boxes of 150 / 180 / 220 — overflowing at every
-  density, with the department taking it to ~46px over. Paired, it is 143.0 / 163.9 / 190.6px:
-  inside the box everywhere, and the department costs nothing because it shares a row. Keep
-  that headroom in mind before adding a masthead line, because exceeding it degrades quietly
-  (the photograph stops, the flat band continues).
+- **Superseded (#490): "It fits the Outlook hero box now; stacked, it never did."**
+  `masthead_vml_height` was a `v:rect` the content could not grow (`mso-fit-shape-to-text:false`),
+  and the stacked masthead measured 178.6 / 207.5 / 244.6px against boxes of 150 / 180 / 220,
+  overflowing at every density, with the department taking it to ~46px over. Paired, it was
+  143.0 / 163.9 / 190.6px, inside the box everywhere. The box failed the other way too:
+  classic Outlook drew it to its full height under shorter copy, an empty band 60 to 80px deep.
+  The rect now fits its copy, so a masthead line costs its own height and nothing overflows;
+  the token is no longer read. The pairing still saves a whole band in every client, and the
+  department still costs nothing because it shares a row.
 - **The left cell carries `width="100%"` so the right one shrinks to its content.** An explicit
   right-column width would have to be wide enough for the logo *and* the department, and
   whichever is narrower would then sit short of the frame edge.

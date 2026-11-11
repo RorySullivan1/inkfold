@@ -166,6 +166,31 @@ half reads that: an attached photograph travels in the message and cannot fail t
 the photograph everywhere else, through the CSS half. A data URI is excluded too, since the
 Word engine draws none. `TestTheVmlFillSrcIsGated` holds all three cases.
 
+**In Outlook the masthead fits its copy, and the copy sits on the body's edge (#490).** Rendered
+in classic Outlook 16.0.0.20527, the default banner's copy began one `pad_x` further in than the
+body, its rule stopped `2 * pad_x` short of the right padding, and 60 to 80px of empty band sat
+below the date line. Three causes, each found by rendering variants
+(`evidence/v0.9.0/490/`):
+
+- **The textbox's inset was added to the cells' own padding.** `inset="0,0,0,0"`: the cells
+  already carry `pad_x`, as `MinimalBanner`'s do with no textbox at all.
+- **The rect had a fixed height** (`masthead_vml_height`) and `mso-fit-shape-to-text:false`. It
+  now gives a width only and fits the text, the usual variable-height background pattern; an
+  attached gradient photograph still fills the fitted shape edge to edge.
+- **Inside a `v:textbox`, Word sets a table nested in a cell padded `0 pad_x` one `pad_x` to the
+  left** of where the padding puts it, at the right width: with the inset gone the rule and the
+  date line began at the frame's edge. The same markup outside a textbox lands correctly. So the
+  rule is inset by a spacer cell `pad_x` wide either side, and the date line's two cells carry
+  their own padding; `TestTheMastheadSitsOnTheBodysEdgeInOutlook` reads the markup for a table
+  in a padded cell. Measured after: the rule runs from x=101 to 717 and the body's card borders
+  from 100 to 716, and the band ends with the date line's own bottom padding, at all three
+  densities. In Chromium nothing moved: the 26 default-banner emails screenshot pixel-identical
+before and after, at 1000 and 375px.
+
+The department label still wraps under a masthead with no logo, in Chromium as in Outlook: the
+title cell's `width="100%"` gives the right column only its longest word. It is not this
+defect, and the fix touches #76's no-`nowrap` decision, so it is left to its own issue.
+
 **How the theme reaches every template — the mechanism epic #45 rode.** A value owned by
 the email must reach component templates several layers down. `TemplateEngine.bound(**shared)`
 returns a `BoundEngine`: a **per-render** view that merges shared values into every context
@@ -760,9 +785,10 @@ frame's horizontal padding is what makes the content 616 wide::
     masthead_campaign_bottom   8   below the subtitle/department row
     masthead_meta_top         10   date/issue bar, top
     masthead_meta_bottom      18   date/issue bar, bottom
-    masthead_vml_height      180   the v:rect box Outlook draws instead of
-                                   the CSS background image; see the note
-                                   below — it is not a bound on the content
+    masthead_vml_height      180   the v:rect box Outlook drew instead of
+                                   the CSS background image; no template
+                                   reads it since #490, when the rect began
+                                   to fit its copy
     footer_contact_top         8   contact band, top
     footer_contact_bottom     30   contact band, bottom
     footer_legal_top          20   disclaimer band, top

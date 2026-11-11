@@ -5,7 +5,7 @@
             <td style="background-color:{{ banner_palette.band }};" bgcolor="{{ banner_palette.band }}">
               <!--[if mso]>
               <v:rect xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false"
-                      style="width:{{ size.frame.width }}px;height:{{ size.space.masthead_vml_height }}px;">
+                      style="width:{{ size.frame.width }}px;">
                 {# type and src are gated TOGETHER, and the pairing is the whole
                    point (#150). Gating src alone — which is what shipped first —
                    leaves type="frame" with nothing to frame, and the Word engine
@@ -34,7 +34,12 @@
                    the photograph and a readable band, so a hosted backdrop gets
                    the flat band in Outlook and the photograph everywhere else. #}
                 <v:fill{% if vml_background_src %} type="frame" src="{{ vml_background_src | escape_html }}"{% endif %} color="{{ banner_palette.scrim.color }}" opacity="{{ banner_palette.scrim.opacity_percent }}"/>
-                <v:textbox inset="{{ size.frame.pad_x }}px,0,{{ size.frame.pad_x }}px,0" style="mso-fit-shape-to-text:false;">
+                {# The shape fits the copy, and the textbox insets nothing (#490). A fixed
+                   height left an empty band below the date line, and an inset on top of the
+                   cells' own pad_x set the copy one pad_x further in than the body's. Rendered
+                   in classic Outlook: the band ends with the date line, the copy sits level
+                   with the body, and an attached photograph still fills the fitted shape. #}
+                <v:textbox inset="0,0,0,0" style="mso-fit-shape-to-text:true;">
               <![endif]-->
               {# The background-image declaration is emitted only when there is
                  one. url('') is not inert: a client may resolve it against the
@@ -107,34 +112,32 @@
                     </td>
                   </tr>
                 </table>
+                {# The rule and the date line take pad_x from their own cells, never from a
+                   padded cell around a nested table (#490). Inside the v:textbox, Word sets a
+                   nested table one pad_x left of where its cell's padding puts it: the rule
+                   stopped short of the right padding and the date line began at the frame's
+                   edge. Spacer cells either side of the rule, and padding on the date line's
+                   own two cells, land in the same place in Word as in a browser. #}
                 <!-- Accent rule -->
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
-                    <td style="padding:0 {{ size.frame.pad_x }}px;">
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-                        <tr>
-                          <td style="border-top:2px solid {{ banner_palette.accent }}; font-size:0; line-height:0;" height="1">&nbsp;</td>
-                        </tr>
-                      </table>
-                    </td>
+                    <td width="{{ size.frame.pad_x }}" style="font-size:0; line-height:0;">&nbsp;</td>
+                    <td style="border-top:2px solid {{ banner_palette.accent }}; font-size:0; line-height:0;" height="1">&nbsp;</td>
+                    <td width="{{ size.frame.pad_x }}" style="font-size:0; line-height:0;">&nbsp;</td>
                   </tr>
                 </table>
                 <!-- Date / Issue bar -->
                 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
-                    <td style="padding:{{ size.space.masthead_meta_top }}px {{ size.frame.pad_x }}px {{ size.space.masthead_meta_bottom }}px;">
-                      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-                        <tr>
-                          <td style="font-family: {{ font.label }}; font-size:{{ size.type.small }}px;
-                                     color:{{ banner_palette.meta }}; letter-spacing:0.6px; text-transform:uppercase;">
-                            {{ date_range | escape_html }}
-                          </td>
-                          <td align="right" style="text-align:right; font-family: {{ font.label }}; font-size:{{ size.type.small }}px;
-                                                    color:{{ banner_palette.meta }}; letter-spacing:0.6px; text-transform:uppercase;">
-                            {{ issue_label | escape_html }}
-                          </td>
-                        </tr>
-                      </table>
+                    <td style="padding:{{ size.space.masthead_meta_top }}px 0 {{ size.space.masthead_meta_bottom }}px {{ size.frame.pad_x }}px;
+                               font-family: {{ font.label }}; font-size:{{ size.type.small }}px;
+                               color:{{ banner_palette.meta }}; letter-spacing:0.6px; text-transform:uppercase;">
+                      {{ date_range | escape_html }}
+                    </td>
+                    <td align="right" style="text-align:right; padding:{{ size.space.masthead_meta_top }}px {{ size.frame.pad_x }}px {{ size.space.masthead_meta_bottom }}px 0;
+                                              font-family: {{ font.label }}; font-size:{{ size.type.small }}px;
+                                              color:{{ banner_palette.meta }}; letter-spacing:0.6px; text-transform:uppercase;">
+                      {{ issue_label | escape_html }}
                     </td>
                   </tr>
                 </table>
