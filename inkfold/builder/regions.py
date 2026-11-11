@@ -384,9 +384,11 @@ class Banner(Region):
         """
         The base context, with this region's resolution chains applied.
 
-        Four keys arrive resolved rather than raw, and ``facts`` still lands
+        Five keys arrive resolved rather than raw, and ``facts`` still lands
         *last* — the ownership rule holds through the override rather than
-        being carved out of.
+        being carved out of. ``vml_background_src`` is the background only
+        when it is attached (``cid:``): a hosted one may not load, and the
+        Word engine then paints a placeholder over the masthead (#489).
 
         ``logo_alt`` and ``logo_width`` resolve in place, because no fact
         answers to either name. ``title`` and ``subtitle`` cannot: their
@@ -397,9 +399,15 @@ class Banner(Region):
         way — reading ``{{ firm_name }}`` again would work, silently, and
         make the field unreachable.
         """
+        from .images import EmailImage
+
         firm_name = str(facts.get("firm_name", ""))
         campaign_name = str(facts.get("campaign_name", ""))
+        background = self.background_image_url
+        source = background.src if isinstance(background, EmailImage) else str(background)
         resolved = {
+            # Outlook draws the photograph only when the message carries it (#489).
+            "vml_background_src": source if source.startswith("cid:") else "",
             "logo_alt": self.resolved_logo_alt(firm_name),
             "logo_width": self.resolved_logo_width(),
             "banner_title": self.resolved_title(firm_name),

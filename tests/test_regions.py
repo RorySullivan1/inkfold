@@ -1007,10 +1007,25 @@ class TestTheVmlFillSrcIsGated:
     def test_no_backdrop_emits_no_src(self, valid_metadata):
         assert "src=" not in self._fill(Email(valid_metadata).render())
 
-    def test_a_backdrop_still_emits_its_src(self, valid_metadata):
+    def test_an_attached_backdrop_is_framed(self, valid_metadata, png_bytes):
+        image = EmailImage.attached(png_bytes, alt="Hero")
+        fill = self._fill(Email(valid_metadata, banner=Banner(background_image_url=image)).render())
+        assert f'type="frame" src="cid:{image.content_id}"' in fill
+
+    def test_a_hosted_backdrop_is_not_framed_in_outlook(self, valid_metadata):
+        """
+        #489. A hosted photograph that does not load, dead, offline or blocked (Outlook's
+        default), makes the Word engine paint a placeholder over the masthead, under light
+        title type. Rendered in classic Outlook, no VML construction kept both the photograph
+        and a readable band, so Outlook draws the flat band and the scrim; every other client
+        still gets the photograph from the CSS half.
+        """
         banner = Banner(background_image_url="https://cdn.test/hero.png")
-        fill = self._fill(Email(valid_metadata, banner=banner).render())
-        assert 'src="https://cdn.test/hero.png"' in fill
+        html = Email(valid_metadata, banner=banner).render()
+        fill = self._fill(html)
+        assert "src=" not in fill and "type=" not in fill
+        assert "color=" in fill and "opacity=" in fill
+        assert "background-image:url('https://cdn.test/hero.png')" in html
 
     @pytest.mark.parametrize("backdrop", ["", "https://cdn.test/hero.png"])
     def test_the_scrim_survives_either_way(self, valid_metadata, backdrop):
@@ -1036,12 +1051,11 @@ class TestTheVmlFillSrcIsGated:
             f"broken-image placeholder instead of the band: {fill}"
         )
 
-    def test_a_backdrop_keeps_type_frame(self, valid_metadata):
-        """The gate fires only when there is no source; the photograph path
-        is byte-identical to what shipped before #150."""
-        banner = Banner(background_image_url="https://cdn.test/hero.png")
-        fill = self._fill(Email(valid_metadata, banner=banner).render())
-        assert 'type="frame"' in fill
+    def test_an_inline_backdrop_is_not_framed_either(self, valid_metadata, png_bytes):
+        """A data URI is no safer: the Word engine does not draw one."""
+        image = EmailImage.inline(png_bytes, alt="Hero")
+        fill = self._fill(Email(valid_metadata, banner=Banner(background_image_url=image)).render())
+        assert "src=" not in fill and "type=" not in fill
 
     def test_a_cid_logo_is_attached_exactly_once(self, valid_metadata, png_bytes):
         image = EmailImage.attached(png_bytes, alt="Firm logo")
