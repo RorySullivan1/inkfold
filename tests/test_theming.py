@@ -740,23 +740,23 @@ class TestThePerturbedTheme:
     def test_every_text_and_semantic_sentinel_reaches_the_html(self, sentinel):
         assert sentinel in self._themed_html()
 
-    def test_the_dark_mode_forcing_block_is_themed_too(self):
+    def test_dark_mode_is_declared_never_forced(self):
         """
-        It restates surface and text colours with ``!important``. If it kept
-        its own copies, a themed email would render half-themed in exactly
-        the clients that are hardest to test.
+        Superseded (v0.9.0): a block forced the frame and the prose back to the
+        theme's light colours with ``!important``. Outlook.com and new Outlook
+        darkened every other ground regardless, so the forced prose read dark on
+        dark (1.44:1). Light only is now a declaration a client may honour.
         """
         html = self._themed_html()
-        block = html[html.index("Force light rendering") : html.rindex("</style>")]
-        # Two [data-ogsc]/[data-ogsb] rules plus the two inside the
-        # prefers-color-scheme query — every copy reads the same token.
-        assert block.count("#123456") == 4
-        assert "#89ABCD" in block
-        assert "#FFFFFF" not in block and "#3B3B3B" not in block
+        head = html[: html.index("</head>")]
+        assert '<meta name="color-scheme" content="light only">' in head
+        assert ":root { color-scheme: light only; }" in head
+        for forcing in ("data-ogsc", "data-ogsb", "prefers-color-scheme", ".body-text", ".surface"):
+            assert forcing not in head, f"the head forces a dark-mode colour again: {forcing}"
 
     def test_the_mobile_media_block_is_themed_too(self):
         html = self._themed_html()
-        block = html[html.index("max-width:700px") : html.index("Force light rendering")]
+        block = html[html.index("max-width:700px") : html.index(":root { color-scheme")]
         assert "#56789A" in block, "the .kpi-cell rule kept its own hairline colour"
 
     def test_both_halves_of_the_scrim_move_together(self):
@@ -928,11 +928,10 @@ class TestTheSlatePreset:
         assert SLATE_THEME.shadow.scrim.css in html
         assert f'color="{SLATE_THEME.shadow.scrim.color}"' in html
 
-    def test_the_dark_mode_and_mobile_blocks_carry_slate(self):
+    def test_the_mobile_block_carries_slate(self):
         html = self._html()
         head = html[: html.rindex("</style>")]
         assert SLATE_THEME.palette.rule in head  # the .kpi-cell hairline
-        assert SLATE_THEME.text.primary in head  # the dark-mode text override
 
     def test_an_explicit_card_colour_survives_the_preset(self):
         """The semantic-vs-presentation boundary, in the shipped gallery."""

@@ -79,9 +79,6 @@ class TestADarkToneTakesTheOnDarkType:
         label = re.search(r"<div style=\"[^\"]*\">Ticker</div>", box)
         assert label and f"color: {ON_DARK};" in label.group(0)
 
-    def test_the_block_drops_the_class_dark_mode_would_repaint(self):
-        assert "body-text" not in _box(_email(FullWidth(_chip())).render())
-
     def test_a_table_inside_keeps_its_own_surface(self):
         table = DataTable(["A"], [TableRow(["1"])])
         html = _email(FullWidth(Callout(table, tone="ink", fill="solid"))).render()

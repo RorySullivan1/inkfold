@@ -58,19 +58,11 @@
       .connector-stacked { display:inline !important; }
 {% endif %}
     }
-    /* Force light rendering in all dark mode contexts */
+    {# Light only, by declaration and never by force. A client that honours color-scheme (Apple
+       Mail) keeps the email light; one that darkens anyway (Outlook.com, new Outlook, the Gmail
+       apps) recolours every ground and every ink together, which keeps them readable. Forcing
+       some colours back while the client darkened the rest is what left prose dark on dark. #}
     :root { color-scheme: light only; }
-    [data-ogsc] .email-container,
-    [data-ogsb] .email-container { background-color:{{ theme.palette.surface }} !important; }
-    [data-ogsc] .surface,
-    [data-ogsb] .surface { background-color:{{ theme.palette.surface }} !important; }
-    [data-ogsc] .body-text,
-    [data-ogsb] .body-text { color:{{ theme.text.primary }} !important; }
-    @media (prefers-color-scheme:dark) {
-      .email-container { background-color:{{ theme.palette.surface }} !important; }
-      .body-text { color:{{ theme.text.primary }} !important; }
-      .surface { background-color:{{ theme.palette.surface }} !important; }
-    }
   </style>
 </head>
 {#

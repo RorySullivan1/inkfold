@@ -400,8 +400,9 @@ class TestNoLiteralSurvives:
         else, which the literal test above already enforces.
         """
         base = (TEMPLATE_DIR / "base.html").read_text(encoding="utf-8")
-        media = base[base.index("@media only screen") : base.index("Force light rendering")]
-        dark = base[base.index("Force light rendering") : base.index("</style>")]
+        media = base[base.index("@media only screen") : base.index(":root { color-scheme")]
+        # Since v0.9.0 the dark-mode part is the colour-scheme declaration alone.
+        dark = base[base.index(":root { color-scheme") : base.index("</style>")]
         assert "font-family" not in media
         assert "font-family" not in dark
 

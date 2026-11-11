@@ -1038,8 +1038,9 @@ list above; the existing one was completed.
   are also set on `common/surface.html`, the theme's surface inset by `caption_gap`, because
   a table's caption and header and a contact card's border sit on whatever is beneath them.
   The first screenshot showed exactly that, dark on navy, with every test green.
-- **`TextBlock` drops its `body-text` class on a ground.** The dark-mode block forces that
-  class to the theme's dark type, which would undo the ground in the clients that honour it.
+- **Superseded (v0.9.0): `TextBlock` dropped its `body-text` class on a ground**, because the
+  dark-mode block forced that class to the theme's dark type. The block is gone (*Dark mode is
+  declared, never forced*), so the class is a plain hook on every ground.
 - **A border spends a pixel a side, and the band gives it back**, as `highlight` does:
   `edge_pad` loses one for each, so a bordered split still fills the frame. A highlighted
   band with a border draws all four sides in the border colour. `border_color` without
@@ -1337,8 +1338,7 @@ keeps the theme's type. Black gets white, `#B8860B` gold keeps the dark ink.
 
 - **The label reads `text.heading` on a solid box**, not the tone, which would be invisible on its
   own fill.
-- **It is `grounded`, so the rest of #266 follows with no code of its own.** A `TextBlock` inside
-  drops `body-text` (dark mode would repaint it). A table or card inside is set on
+- **It is `grounded`, so the rest of #266 follows with no code of its own.** A table or card inside is set on
   `common/surface.html`. On a dark section the box first returns to the theme's type
   (`own_surface`), then takes its own ground, so a navy band changes nothing inside a chip.
 - **A solid box needs a tone.** Without one there is no colour to fill with, and the highlight
@@ -1477,3 +1477,29 @@ weights, so equal weights give equal boxes. Each is the `connector` token wide (
   check with #319's arrow.
 - **The text part reads the slots in order**, and a separator projects to nothing.
 - A second level of nesting is still refused.
+
+## Dark mode is declared, never forced (v0.9.0)
+
+An email declares `color-scheme: light only`, in a `meta` and on `:root`, and carries no rule
+that recolours anything in dark mode. A client that honours the declaration (Apple Mail) keeps
+the email light; one that darkens anyway recolours every ground and every ink together.
+
+- **The block it replaces forced three things back to the light theme with `!important`**: the
+  frame, any `.surface` cell and `.body-text` prose, under `[data-ogsc]` / `[data-ogsb]` (the
+  attributes Outlook.com and new Outlook put on what they recolour) and
+  `prefers-color-scheme: dark`. It came with the first commit, unverified, and the owner found it
+  broken in v0.9.0's client matrix: prose dark and unreadable in dark mode.
+- **Why it failed.** No template still carried `.surface` (the overhaul removed the class and
+  left the rule), and every section sets its ground inline. So the client darkened the 34 white
+  and 20 off-white cells of the daily note, and the block forced the prose back to `#3B3B3B` on
+  them: 1.44:1. Headings and tables, which nothing forced, came through light and legible.
+- **Measured, in a model of that rewrite in Edge** (every light ground darkened and tagged, every
+  dark ink lightened and tagged, the email's own CSS still applying): 220 text runs under 3:1
+  across 25 gallery emails with the block, 3 in 2 without, and those 3 are light text on
+  mid-tone grounds (a heat-scaled cell, a toned fact box) the model leaves alone. Light mode is
+  unchanged. A model is not the client: the owner's dark-mode check is the verdict
+  (`qa/clients/MATRIX.md`).
+- **Forcing light cannot be made complete.** It would need every ground and every ink in every
+  template restated per client, and a client's rewrite reaches inline styles the block cannot
+  name. A real dark palette, chosen per theme, is the alternative if dark mode should look
+  designed rather than derived; it would be a theme axis of its own.

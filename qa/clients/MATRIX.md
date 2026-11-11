@@ -36,7 +36,9 @@ Record OK, cosmetic or broken in the client's column, and file each new defect a
 
 ## Results
 
-Classic Outlook: 16.0.0.20527 on Windows 11 (10.0.26100), 2026-11-10. Page images are in
+Classic Outlook: 16.0.0.20527 on Windows 11 (10.0.26100), 2026-11-10. New Outlook: the owner,
+from the `.eml` files, 2026-11-11: questions 1 to 5 good in every email, question 6 (dark mode)
+broken, #501. Page images are in
 `.claude/context/evidence/v0.9.0/outlook-classic/`, with `run.json`.
 
 Two defects are common to most emails, so they are listed once rather than in every row:
@@ -48,6 +50,11 @@ Two defects are common to most emails, so they are listed once rather than in ev
   hosted; since the owner's review they are served from this repository
   (`qa/fixtures/hosted/`, via `raw.githubusercontent.com`), so they load in a real inbox once
   the branch is on `main`. `image_matrix` keeps `cdn.example.com` for an image that never loads.
+- **#501, dark mode**: the prose turned dark on the grounds new Outlook darkened. The skeleton
+  forced it back to the light theme's type; the forcing is gone, and `tests/test_dark_mode.py`
+  holds prose to AA under a model of the client's dark mode. To re-check in new Outlook, with
+  an eye on `toned_layout`'s gold fact box and `rich_table`'s heat-scaled cells: mid-tone
+  grounds the model cannot judge.
 - **By design, though it can look wrong**: a table bar sits under its figure (`data-table.md`),
   and a sparkline's bars are a fixed 4 px each, so a three-point series is about 16 px wide.
 - **Wrapped figures float in an email too** since the owner's review: the prose wraps beside
@@ -55,33 +62,33 @@ Two defects are common to most emails, so they are listed once rather than in ev
 
 | Email | Classic Outlook | New Outlook | Gmail web | Gmail app | Apple Mail | Dark mode |
 |---|---|---|---|---|---|---|
-| minimal | OK | — | — | — | — | — |
-| kitchen_sink | **broken** #489; cosmetic #492 #493 #494 #496 #500 | — | — | — | — | — |
-| custom_banner | OK | — | — | — | — | — |
-| custom_footer | OK | — | — | — | — | — |
-| image_matrix | OK (its two hosted images point at a host that cannot load) | — | — | — | — | — |
-| minimal_banner | cosmetic #494 | — | — | — | — | — |
-| minimal_footer | OK | — | — | — | — | — |
-| no_header | OK | — | — | — | — | — |
-| slate_theme | OK | — | — | — | — | — |
-| compact_size | **broken** #489; cosmetic #492 #493 #494 #496 | — | — | — | — | — |
-| spacious_size | **broken** #489; cosmetic #491 #492 #493 #496 | — | — | — | — | — |
-| modern_fonts | **broken** #489; cosmetic #491 #492 #493 #496 | — | — | — | — | — |
-| rich_table | cosmetic #492 | — | — | — | — | — |
-| aligned_layout | OK | — | — | — | — | — |
-| composed_layout | OK | — | — | — | — | — |
-| surfaced_layout | cosmetic #494 | — | — | — | — | — |
-| research_note | cosmetic #491 #492 | — | — | — | — | — |
-| placed_layout | OK | — | — | — | — | — |
-| glance_layout | OK | — | — | — | — | — |
-| labelled_layout | cosmetic #491 | — | — | — | — | — |
-| organised_layout | cosmetic #494 | — | — | — | — | — |
-| toned_layout | cosmetic #491 #494 | — | — | — | — | — |
-| brief_layout | cosmetic #494 | — | — | — | — | — |
-| product_brief_layout | cosmetic #491 #494 | — | — | — | — | — |
-| house_daily_note | OK | — | — | — | — | — |
-| house_weekly_wrap | cosmetic #494 | — | — | — | — | — |
-| house_announcement | cosmetic #494 | — | — | — | — | — |
+| minimal | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| kitchen_sink | **broken** #489; cosmetic #492 #493 #494 #496 #500 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| custom_banner | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| custom_footer | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| image_matrix | OK (its two hosted images point at a host that cannot load) | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| minimal_banner | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| minimal_footer | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| no_header | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| slate_theme | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| compact_size | **broken** #489; cosmetic #492 #493 #494 #496 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| spacious_size | **broken** #489; cosmetic #491 #492 #493 #496 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| modern_fonts | **broken** #489; cosmetic #491 #492 #493 #496 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| rich_table | cosmetic #492 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| aligned_layout | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| composed_layout | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| surfaced_layout | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| research_note | cosmetic #491 #492 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| placed_layout | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| glance_layout | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| labelled_layout | cosmetic #491 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| organised_layout | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| toned_layout | cosmetic #491 #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| brief_layout | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| product_brief_layout | cosmetic #491 #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| house_daily_note | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| house_weekly_wrap | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| house_announcement | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
 
 `—` is not yet checked.
 

@@ -1536,8 +1536,6 @@ class TextBlock(CopyAlignment, Component):
         """
         engine = respaced(engine, self.spacing, type(self).__name__)
         ctx = self.context()
-        # Dark mode forces `.body-text` to the theme's dark type, lost on a section's own ground.
-        ctx["body_class"] = "" if on_ground(engine) else "body-text"
         paged = engine.medium.paged
         if self.drop_cap and paged:
             ctx["text_parts"] = split_markers(_with_drop_cap(self.content), self.notes, self.citing)

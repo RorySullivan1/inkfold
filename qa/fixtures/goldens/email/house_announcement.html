@@ -43,19 +43,7 @@ alignment that is the only reason to render one — so padding is what
 gives a narrow viewport its room back. See #132. */
 .data-table th, .data-table td { padding:6px !important; }
 }
-/* Force light rendering in all dark mode contexts */
 :root { color-scheme: light only; }
-[data-ogsc] .email-container,
-[data-ogsb] .email-container { background-color:#FFFFFF !important; }
-[data-ogsc] .surface,
-[data-ogsb] .surface { background-color:#FFFFFF !important; }
-[data-ogsc] .body-text,
-[data-ogsb] .body-text { color:#3B3B3B !important; }
-@media (prefers-color-scheme:dark) {
-.email-container { background-color:#FFFFFF !important; }
-.body-text { color:#3B3B3B !important; }
-.surface { background-color:#FFFFFF !important; }
-}
 </style>
 </head>
 <body style="margin:0; padding:0; background-color:#F2F1EE; font-family: Georgia, 'Times New Roman', serif;" bgcolor="#F2F1EE">
