@@ -88,8 +88,7 @@ class TextColors:
     fine_print: str = "#8A8880"
     on_dark: str = "#FFFFFF"
     on_dark_secondary: str = "#CFD8DC"
-    #: 78% lightness (v0.9.0): at 62% (#90A4AE) it read 4.24:1 on the navy, and new Outlook's
-    #: dark mode darkened it onto the band, while the 84% subtitle came through untouched.
+    #: 78% lightness (v0.9.0): at 62% (#90A4AE) it read 4.24:1 on the navy, under WCAG AA.
     on_dark_muted: str = "#BECAD0"
     on_accent: str = "#FFFFFF"
 
