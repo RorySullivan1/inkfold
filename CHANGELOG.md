@@ -47,6 +47,11 @@ long a deprecated public name survives.
   grounds Outlook.com and new Outlook darkened (#501). It now only declares
   `color-scheme: light only`: a client that honours it stays light, and one that darkens
   recolours everything together.
+- **Outlook draws a hosted masthead photograph as the flat band.** A `Banner`'s
+  `background_image_url` reaches classic Outlook's VML only when it is attached (`cid:`). A hosted
+  one that did not load, and Outlook blocks remote pictures by default, left a broken-image
+  placeholder over the masthead with its light title on white (#489). Every other client still
+  draws the hosted photograph.
 - **A wrapped figure floats in an email too.** `TextBlock(figure=...)` with a `wrap` side used to
   set the figure above the prose in an email; it now floats it, through a table's `align` and a
   CSS `float`, so the prose wraps beside it in Outlook and in browsers. On a phone it stacks above
