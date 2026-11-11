@@ -1266,9 +1266,12 @@ so they are not a colour exception: a badge recolours with the theme as `Card.to
   line of text is the very thing #319's arrow still waits on #288 to confirm. This is
   unverified in a real Outlook here; it joins #288's human check.
 - **The status dot is the badge's shape with no label**: a span holding one non-breaking
-  space, its background the tone's colour, `status_dot` across (a box token). A browser draws
-  a circle; the Word engine shades the space, a small square, which is the badge's decision
-  again. A VML oval was drafted and dropped for #319's reason, and for its bytes.
+  space, its background the tone's colour, `status_dot` across (a box token), which a browser
+  draws as a circle. **Superseded (#491): "the Word engine shades the space, a small square"**,
+  and the VML oval dropped "for #319's reason". Rendered in classic Outlook, the dot was a bar
+  3px wide and a line tall; #319's VML arrow had meanwhile drawn correctly there (v0.9.0), so
+  #319's reason was gone. Outlook now gets a VML oval `status_dot` across in the tone's colour,
+  about 180 bytes a dot, and every other client keeps the span.
 - **`TagRow(tags)`**: two to twelve neutral badges as inline boxes, so it wraps on a phone and
   on paper with no stacking rule. Its wrapper sets the badge type once rather than on every
   tag, and each tag keeps `caption_gap` to its right and below it. It projects as `Tags: Rates,
