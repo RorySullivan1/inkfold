@@ -14,6 +14,7 @@ import re
 import pytest
 
 from inkfold.builder import (
+    STANDARD_SIZES,
     Appendices,
     ChartBlock,
     Contents,
@@ -366,6 +367,28 @@ class TestALegend:
     def test_a_column_puts_one_entry_a_line(self):
         html = Legend(["A", "B"], layout="column").render(TemplateEngine().bound())
         assert html.count('<div style="margin: 0;">') == 2
+
+    def test_outlook_draws_each_swatch_and_its_margins_as_shapes(self):
+        """
+        #491. The Word engine ignores an inline box's size and margin: it drew each swatch as
+        a bar 3px wide and a line tall and ran the entries together. Outlook gets a VML
+        square the swatch's size in its colour, a spacer ``caption_gap`` wide after it, and
+        one ``gutter`` wide between two entries of a row; every other client keeps the span.
+        """
+        html = Legend(["A", "B", "C"]).render(TemplateEngine().bound())
+        word = "".join(re.findall(r"<!--\[if mso\]>(.*?)<!\[endif\]-->", html, re.S))
+        across = STANDARD_SIZES.component.status_dot
+        size = f'style="width:{across}px;height:{across}px;"'
+        square = rf'<v:rect [^>]*fillcolor="(#\w+)" stroked="f" {size}>'
+        assert re.findall(square, word) == list(chart_colors(DEFAULT_THEME)[:3])
+        spacer = 'filled="f" stroked="f" style="width:{}px;height:1px;"'
+        assert word.count(spacer.format(STANDARD_SIZES.space.caption_gap)) == 3
+        assert word.count(spacer.format(STANDARD_SIZES.space.gutter)) == 2
+        assert html.count('<!--[if !mso]><!--><span class="legend-swatch"') == 3
+
+    def test_a_column_keeps_no_gap_between_entries_for_outlook(self):
+        html = Legend(["A", "B"], layout="column").render(TemplateEngine().bound())
+        assert f"width:{STANDARD_SIZES.space.gutter}px;height:1px;" not in html
 
     def test_under_a_chart_it_sits_between_the_picture_and_the_source(self):
         block = ChartBlock(_image(), source="Source: BoE", legend=Legend(["10Y", "2Y"]))

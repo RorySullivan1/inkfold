@@ -208,9 +208,14 @@ construction; a caller who styles the plot by hand keeps the job of matching it.
   closed, and a theme switch that orphans a hex fails loudly rather than keying a colour the
   picture cannot contain. `series` and `tone` recolour with the theme; prefer them.
 - **No line-style or marker swatch, and nothing drawn on the image**, by the epic's decision.
-- **The Word engine shades the swatch's non-breaking space**, a square, as it does the status
-  dot (#326), and drops an inline box's margin, so a space in an mso conditional stands in for
-  the gap after the swatch; unverified in a real Outlook here, so it joins #288's check.
+- **Superseded (#491): "The Word engine shades the swatch's non-breaking space, a square."**
+  Rendered in classic Outlook it was a bar 3px wide and a line tall, since the engine ignores an
+  inline box's width and height, and with its margins dropped Winners ran into Losers. Outlook
+  now draws the swatch as a VML rect `status_dot` square, the trend arrow's route (#319), and
+  each margin as an unfilled VML rect as wide as it: `caption_gap` after the swatch, `gutter`
+  between a row's entries, none in a column. Measured on `research_note`: 8px square, 9px to
+  the label and 16px to the next swatch, against Chromium's 8, 8 and 16. It costs about 300
+  bytes an entry. Every other client and paper keep the span, byte for byte.
 
 **A picture far wider than it is shown warns (#276).** `EmailImage.__post_init__` reads the
 pixel width with `pixel_size` and raises a `SizeWarning` through `warn_caller` when it is

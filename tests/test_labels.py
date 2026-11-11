@@ -7,10 +7,12 @@ status column drawn as dots, a row of tags, and the fixtures that carry them
 from __future__ import annotations
 
 import importlib.util
+import re
 
 import pytest
 
 from inkfold.builder import (
+    STANDARD_SIZES,
     Badge,
     CardGroup,
     Column,
@@ -180,6 +182,25 @@ class TestAStatusColumn:
             [TableRow(["Rates", ""], kind="subhead"), TableRow(["Gilts", ""])],
         )
         assert "status-dot" not in table.render(ENGINE)
+
+    def test_outlook_draws_each_dot_as_an_oval(self):
+        """
+        #491. The Word engine ignores an inline box's size: it shaded the dot's one space, a
+        bar 3px wide and a line tall. Outlook gets a VML oval ``status_dot`` across in the
+        tone's colour, and every other client keeps the span.
+        """
+        table = DataTable(
+            ["Book", Column("Status", kind="status", statuses=STATUSES)],
+            [TableRow(["Gilts", "On track"]), TableRow(["Credit", "Breach"])],
+        )
+        html = table.render(ENGINE)
+        word = "".join(re.findall(r"<!--\[if mso\]>(.*?)<!\[endif\]-->", html, re.S))
+        across = STANDARD_SIZES.component.status_dot
+        size = f'style="width:{across}px;height:{across}px;"'
+        oval = rf'<v:oval [^>]*fillcolor="(#\w+)" stroked="f" {size}>'
+        semantic = DEFAULT_THEME.semantic
+        assert re.findall(oval, word) == [semantic.positive, semantic.negative]
+        assert html.count('<!--[if !mso]><!--><span class="status-dot"') == 2
 
 
 # ----------------------------------------------------------------------

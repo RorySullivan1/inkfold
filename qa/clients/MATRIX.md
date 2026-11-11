@@ -92,20 +92,20 @@ Two defects are common to most emails, so they are listed once rather than in ev
 | no_header | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | slate_theme | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | compact_size | #489 fixed; cosmetic #492 #493 #494 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| spacious_size | #489 fixed; cosmetic #491 #492 #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| modern_fonts | #489 fixed; cosmetic #491 #492 #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| spacious_size | #489 #491 fixed; cosmetic #492 #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| modern_fonts | #489 #491 fixed; cosmetic #492 #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | rich_table | cosmetic #492 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | aligned_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | composed_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | surfaced_layout | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| research_note | cosmetic #491 #492 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| research_note | #491 fixed; cosmetic #492 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | placed_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | glance_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| labelled_layout | cosmetic #491 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| labelled_layout | #491 fixed | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | organised_layout | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| toned_layout | cosmetic #491 #494 | OK; the gold box fixed, #503 | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| toned_layout | #491 fixed; cosmetic #494 | OK; the gold box fixed, #503 | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | brief_layout | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| product_brief_layout | cosmetic #491 #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| product_brief_layout | #491 fixed; cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | house_daily_note | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | house_weekly_wrap | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | house_announcement | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
@@ -120,9 +120,9 @@ Two defects are common to most emails, so they are listed once rather than in ev
 | #319's VML trend arrow | **Works**: up, down and flat, each in its tone | `glance_layout-p1.jpg`, the KPI strip and the curve table |
 | #399's connector | **Works**: a solid right-pointing arrow | `product_brief_layout-p1.jpg` |
 | #325's square badge | **Works** | `labelled_layout-p1.jpg` |
-| #325's status dot | **Fails**: a thin bar, #491 | `labelled_layout-p1.jpg`, the Status column |
+| #325's status dot | **Works since #491**: a VML oval `status_dot` across; it was a thin bar | `evidence/v0.9.0/491/after-fix.jpg`; before, `labelled_layout-p1.jpg` |
 | #331's empty rule cells (`font-size:0`) | **Works**: one continuous thin line | `organised_layout-p1.jpg`, the calendar |
-| #337's legend swatch | **Fails**: a thin bar, #491 | `research_note-p2.jpg`, Exhibit 3 |
+| #337's legend swatch | **Works since #491**: a VML square, its gaps VML spacers; it was a thin bar, the entries run together | `evidence/v0.9.0/491/after-fix.jpg`; before, `research_note-p2.jpg` |
 
 ## Accessibility pass (email medium)
 

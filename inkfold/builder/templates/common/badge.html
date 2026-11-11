@@ -12,8 +12,11 @@
   text is what #288's human check is still to confirm for #319's arrow.
 
   The dot is the badge's shape with no label: a span holding one non-breaking
-  space, its background the tone's colour. A browser draws it as a circle the
-  size of `status_dot`; the Word engine shades the space, a small square.
+  space, its background the tone's colour, which a browser draws as a circle
+  the size of `status_dot`. The Word engine ignores an inline box's size and
+  shades only the space, a bar 3px wide and a line tall (#491), so Outlook gets
+  a VML oval `status_dot` across instead, the trend arrow's route (#319), which
+  classic Outlook draws.
 
   badge(badge, gap=0) — badge is {"label", "tone"}, Badge.drawn(); a gap keeps
                         that much space to its right and below it, and means the
@@ -32,5 +35,5 @@ font-family:{{ font.label }}; font-size:{{ size.type.label }}px; line-height:{{ 
 
 {% macro dot(tone) -%}
 {%- set across = size.component.status_dot -%}
-<span class="status-dot" style="display:inline-block; vertical-align:middle; width:{{ across }}px; height:{{ across }}px; border-radius:50%; background-color:{{ theme.tone[tone] }}; font-size:{{ across }}px; line-height:{{ across }}px;">&nbsp;</span>&nbsp;
+<!--[if mso]><v:oval xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="{{ theme.tone[tone] }}" stroked="f" style="width:{{ across }}px;height:{{ across }}px;"></v:oval><![endif]--><!--[if !mso]><!--><span class="status-dot" style="display:inline-block; vertical-align:middle; width:{{ across }}px; height:{{ across }}px; border-radius:50%; background-color:{{ theme.tone[tone] }}; font-size:{{ across }}px; line-height:{{ across }}px;">&nbsp;</span><!--<![endif]-->&nbsp;
 {%- endmacro %}

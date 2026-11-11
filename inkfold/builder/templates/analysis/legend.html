@@ -3,10 +3,14 @@
 
   The swatch is the status dot's shape made square: an inline box holding one
   non-breaking space, shaded in a colour the theme gives a chart. It needs no
-  image, so the key reads with images blocked. The Word engine shades the
-  space and drops an inline box's margin, so a space inside an mso conditional
-  stands in for the gap after the swatch, and the line break between two
-  entries in a row is a real space there.
+  image, so the key reads with images blocked.
+
+  The Word engine ignores an inline box's size and margin: it shaded only the
+  space, a bar 3px wide and a line tall, and ran one entry into the next (#491).
+  So Outlook draws the swatch as a VML rect `status_dot` square, the trend
+  arrow's route (#319), and each margin as an unfilled VML rect as wide as it,
+  `caption_gap` after the swatch and `gutter` after a row's entry. Rendered in
+  classic Outlook, both gaps land within a pixel of the browser's.
 
   It keeps `caption_gap` above it, so under a chart it needs no wrapper.
 
@@ -15,8 +19,11 @@
     layout  — "row", wrapping along a line, or "column", one entry a line
 #}
 {% set across = size.component.status_dot %}
+{% macro spacer(wide) -%}
+<v:rect xmlns:v="urn:schemas-microsoft-com:vml" filled="f" stroked="f" style="width:{{ wide }}px;height:1px;"></v:rect>
+{%- endmacro %}
 <div class="legend" style="margin: {{ size.space.caption_gap }}px 0 0 0; font-family: {{ font.label }}; font-size: {{ size.type.secondary }}px; color: {{ theme.text.secondary }}; line-height: {{ size.type.body_line | percent }};">
 {% for entry in entries %}
-  {% if layout == "row" %}<span style="display: inline-block; white-space: nowrap; margin: 0 {{ size.space.gutter }}px 0 0;">{% else %}<div style="margin: 0;">{% endif %}<span class="legend-swatch" style="display: inline-block; vertical-align: middle; width: {{ across }}px; height: {{ across }}px; background-color: {{ entry.fill | validate_hex_color }}; font-size: {{ across }}px; line-height: {{ across }}px; margin: 0 {{ size.space.caption_gap }}px 0 0;">&nbsp;</span><!--[if mso]>&nbsp;<![endif]-->{{ entry.label | escape_html }}{% if layout == "row" %}</span>{% else %}</div>{% endif %}
+  {% if layout == "row" %}<span style="display: inline-block; white-space: nowrap; margin: 0 {{ size.space.gutter }}px 0 0;">{% else %}<div style="margin: 0;">{% endif %}<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" fillcolor="{{ entry.fill | validate_hex_color }}" stroked="f" style="width:{{ across }}px;height:{{ across }}px;"></v:rect>{{ spacer(size.space.caption_gap) }}<![endif]--><!--[if !mso]><!--><span class="legend-swatch" style="display: inline-block; vertical-align: middle; width: {{ across }}px; height: {{ across }}px; background-color: {{ entry.fill | validate_hex_color }}; font-size: {{ across }}px; line-height: {{ across }}px; margin: 0 {{ size.space.caption_gap }}px 0 0;">&nbsp;</span><!--<![endif]-->{{ entry.label | escape_html }}{% if layout == "row" %}</span>{% if not loop.last %}<!--[if mso]>{{ spacer(size.space.gutter) }}<![endif]-->{% endif %}{% else %}</div>{% endif %}
 {% endfor %}
 </div>
