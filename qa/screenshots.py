@@ -214,16 +214,16 @@ def _capture_one(browser: Any, name: str, html: str, out_dir: Path) -> list[Shot
                 viewport={"width": width, "height": height},
                 device_scale_factor=DEVICE_SCALE_FACTOR,
             )
-            # Hosted images point at example.com. Left alone, every run waits on
-            # DNS that will never resolve; blocked, the render shows what a
-            # reader with images off sees, which is Outlook's default state.
+            # Hosted images point at example.com or this repository. Left alone, a run
+            # waits on the network; blocked, the render shows what a reader with
+            # images off sees, which is Outlook's default state.
             context.route("http://**", lambda route: route.abort())
             context.route("https://**", lambda route: route.abort())
             try:
                 page = context.new_page()
                 page.goto(page_file.as_uri(), wait_until="load")
                 path = out_dir / f"{name}-chromium-{viewport}.png"
-                page.screenshot(path=str(path), full_page=True)
+                _screenshot(page, path, f"{name} at {viewport} width")
                 # Measured from the file rather than from the DOM: the image is
                 # the artifact, so its own header is the only dimension that
                 # cannot disagree with what a reviewer opens.
@@ -240,6 +240,24 @@ def _capture_one(browser: Any, name: str, html: str, out_dir: Path) -> list[Shot
             finally:
                 context.close()
     return shots
+
+
+#: How many times one capture is tried. Chromium's "Unable to capture screenshot" is transient
+#: on a CI machine: it failed one PR's run once on a gallery it captured whole before and after.
+CAPTURE_ATTEMPTS = 2
+
+
+def _screenshot(page: Any, path: Path, label: str) -> None:
+    """A full-page screenshot of ``page`` to ``path``, tried twice, naming ``label`` on failure."""
+    for attempt in range(1, CAPTURE_ATTEMPTS + 1):
+        try:
+            page.screenshot(path=str(path), full_page=True)
+            return
+        except Exception as exc:  # playwright raises its own Error type
+            if attempt == CAPTURE_ATTEMPTS:
+                raise ScreenshotError(
+                    f"Chromium could not capture {label} in {attempt} attempts: {exc}"
+                ) from exc
 
 
 def png_size(path: Path) -> tuple[int, int]:

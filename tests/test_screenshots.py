@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import base64
 import json
+from pathlib import Path
 
 import pytest
 
@@ -1025,3 +1026,30 @@ class TestTheSupportedViewportsAreHonoured:
             f"captured viewports {sorted(captured - set(SUPPORTED_WIDTHS))} are not in "
             "SUPPORTED_WIDTHS"
         )
+
+
+class TestACaptureNamesWhatFailed:
+    """A transient Chromium failure is retried once, and a lasting one names the email."""
+
+    class _Page:
+        def __init__(self, failures: int) -> None:
+            self.failures, self.calls = failures, 0
+
+        def screenshot(self, path: str, full_page: bool) -> None:
+            self.calls += 1
+            if self.calls <= self.failures:
+                raise RuntimeError("Protocol error (Page.captureScreenshot): Unable to capture")
+            Path(path).write_bytes(b"png")
+
+    def test_one_failure_is_retried(self, tmp_path):
+        from qa.screenshots import _screenshot
+
+        page = self._Page(failures=1)
+        _screenshot(page, tmp_path / "x.png", "minimal at desktop width")
+        assert page.calls == 2 and (tmp_path / "x.png").read_bytes() == b"png"
+
+    def test_a_lasting_failure_names_the_email_and_viewport(self, tmp_path):
+        from qa.screenshots import _screenshot
+
+        with pytest.raises(ScreenshotError, match="kitchen_sink at mobile width in 2 attempts"):
+            _screenshot(self._Page(failures=9), tmp_path / "x.png", "kitchen_sink at mobile width")
