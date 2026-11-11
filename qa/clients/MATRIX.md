@@ -58,6 +58,14 @@ Two defects are common to most emails, so they are listed once rather than in ev
 - **#503, the gold box**: the owner found `toned_layout`'s solid gold box hard to read in both
   modes. Its type read at 3.44:1 in light mode; a fill under 4.5:1 is now refused, and the box
   fills with a deep gold that takes white at 5.3:1 in either mode.
+- **New Outlook's per-message light/dark toggle restores backgrounds but not text colours**
+  (owner, 2026-11-11). After toggling, text keeps the other mode's colour: light text on a
+  restored white page, or dark text on a navy band. It broke all five masthead variants tried
+  (the current one, without its scrim, with one navy declaration, with `data-ogsc`/`data-ogsb`
+  pinning rules, and a white masthead), light and dark alike, so it is the client's, not the
+  email's. Judge dark mode by switching the app theme and opening the message afresh.
+- **The masthead's muted line** (`on_dark_muted`) read 4.24:1 on the navy, under AA; it is now
+  `#BECAD0`, 6.56:1. The dark-grey report that prompted it came from the toggle above.
 - **By design, though it can look wrong**: a table bar sits under its figure (`data-table.md`),
   and a sparkline's bars are a fixed 4 px each, so a three-point series is about 16 px wide.
 - **Wrapped figures float in an email too** since the owner's review: the prose wraps beside

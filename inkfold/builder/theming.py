@@ -88,7 +88,8 @@ class TextColors:
     fine_print: str = "#8A8880"
     on_dark: str = "#FFFFFF"
     on_dark_secondary: str = "#CFD8DC"
-    on_dark_muted: str = "#90A4AE"
+    #: 78% lightness (v0.9.0): at 62% (#90A4AE) it read 4.24:1 on the navy, under WCAG AA.
+    on_dark_muted: str = "#BECAD0"
     on_accent: str = "#FFFFFF"
 
     def __post_init__(self) -> None:
@@ -510,7 +511,7 @@ SLATE_THEME = Theme(
         fine_print="#82898F",
         on_dark="#FFFFFF",
         on_dark_secondary="#C6D2DC",
-        on_dark_muted="#8FA0AE",
+        on_dark_muted="#BEC8D0",
         on_accent="#FFFFFF",
     ),
     semantic=SemanticColors(positive="#3F7A63", negative="#A8514E", neutral="#5A6068"),
