@@ -309,11 +309,12 @@ _MASTHEAD_PROBE = """() => {
 }"""
 
 
-def _masthead_email(variant, size_theme):
+def _masthead_email(variant, size_theme, logo=True):
     """A one-section email whose only interesting feature is its masthead."""
     from inkfold.builder import Banner, EmailBuilder, FullWidth, MinimalBanner, TextBlock
 
     region = Banner if variant == "banner" else MinimalBanner
+    mark = {"logo_url": "https://cdn.example.com/logo.png", "logo_alt": "Hermes Research"}
     return (
         EmailBuilder()
         .metadata(
@@ -327,8 +328,7 @@ def _masthead_email(variant, size_theme):
         )
         .banner(
             region(
-                logo_url="https://cdn.example.com/logo.png",
-                logo_alt="Hermes Research",
+                **(mark if logo else {}),
                 title="Q3 Outlook",
                 subtitle="What the curve is pricing",
             )
@@ -336,6 +336,38 @@ def _masthead_email(variant, size_theme):
         .section(FullWidth(content=TextBlock("<p>body</p>")))
         .build()
     )
+
+
+#: How many lines the department sets on, read from its text's line boxes.
+_DEPARTMENT_LINES = """() => {
+  const p = [...document.querySelectorAll('p')]
+      .find(e => e.textContent.trim() === 'Rates Strategy');
+  if (!p) return null;
+  const range = document.createRange();
+  range.selectNodeContents(p);
+  return new Set([...range.getClientRects()].map(r => Math.round(r.top))).size;
+}"""
+
+
+@pytest.fixture(scope="module")
+def department_lines():
+    """The department's lines with no logo beside it: each variant, density and viewport."""
+    if not available():
+        pytest.skip('no browser; screenshots are the optional "[qa]" extra')
+
+    measured = {}
+    with _load_playwright()() as playwright:
+        browser = _launch(playwright)
+        for variant, size_theme in VARIANTS:
+            html = _masthead_email(variant, size_theme, logo=False).render()
+            for width in (1000, 375):
+                page = browser.new_page(viewport={"width": width, "height": 900})
+                page.route("**/*", lambda route: route.abort())
+                page.set_content(html)
+                measured[variant, size_theme, width] = page.evaluate(_DEPARTMENT_LINES)
+                page.close()
+        browser.close()
+    return measured
 
 
 @pytest.fixture(scope="module")
@@ -369,10 +401,11 @@ VARIANTS = [
 @pytest.mark.parametrize("variant,size_theme", VARIANTS)
 class TestTheMastheadPairsItsLines:
     """
-    The masthead is a 2x2 grid, and this is the claim that makes it one.
+    The masthead pairs its lines, and this is the claim that makes it do so.
 
     The logo belongs to the title's row and the department to the subtitle's,
-    rather than both stacking in a band above the copy. Nothing in the
+    rather than both stacking in a band above the copy. Each row is a table of
+    its own since #508, so the pairing is a claim about two tables. Nothing in the
     goldens can say that: the markup pins ``valign`` and ``align="right"``,
     and neither says where a box lands. So it is measured — in both variants,
     at every density, because a row that pairs correctly at ``standard`` and
@@ -401,6 +434,19 @@ class TestTheMastheadPairsItsLines:
     def test_the_right_hand_marks_share_one_edge(self, variant, size_theme, masthead_boxes):
         box = masthead_boxes[variant, size_theme]
         assert abs(box["dept_right"] - box["logo_right"]) <= 1
+
+    @pytest.mark.parametrize("width", [1000, 375])
+    def test_a_department_with_no_logo_keeps_its_line(
+        self, variant, size_theme, width, department_lines
+    ):
+        """
+        #508. When the two rows shared one 2x2 table, the title's ``width="100%"``
+        left the right-hand column only its longest word, and with no logo to hold
+        it open "Rates Strategy" set on two lines with the whole row free. Every
+        measurement here was 2 against that markup.
+        """
+        lines = department_lines[variant, size_theme, width]
+        assert lines == 1, f"{variant}/{size_theme} at {width}px: the department set on {lines}"
 
     def test_a_long_department_wraps_rather_than_scrolls(self, variant, size_theme):
         """
@@ -446,8 +492,8 @@ class TestTheMastheadPairsItsLines:
 
     def test_the_copy_starts_at_the_frame_padding(self, variant, size_theme, masthead_boxes):
         """
-        Title and subtitle are in different rows of the same table, so a
-        stray padding on one cell would stagger them.
+        Title and subtitle are in different tables since #508, so a stray
+        padding on either one's cell would stagger them.
         """
         box = masthead_boxes[variant, size_theme]
         assert box["title_left"] == box["sub_left"]

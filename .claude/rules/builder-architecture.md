@@ -164,9 +164,10 @@ Two boundary calls, each made for a reason rather than by shape:
   absence **collapses rather than blanks**: the `{% if %}` guards the element, not its text, so
   an email that sets no department leaves no empty `<p>` and reserves no height.
 
-**The masthead is a 2×2 grid, and that is what makes it fit.** The logo shares a row with the
-title and the department shares one with the subtitle, rather than both stacking in a band
-above the copy. Three things follow, and none of them is cosmetic:
+**The masthead pairs its lines.** The logo shares a row with the title and the department
+shares one with the subtitle, rather than both stacking in a band above the copy. It was one
+2×2 table until #508; each row is now a table of its own. Four things follow, and none of
+them is cosmetic:
 
 - **Superseded (#490): "It fits the Outlook hero box now; stacked, it never did."**
   `masthead_vml_height` was a `v:rect` the content could not grow (`mso-fit-shape-to-text:false`),
@@ -177,13 +178,33 @@ above the copy. Three things follow, and none of them is cosmetic:
   The rect now fits its copy, so a masthead line costs its own height and nothing overflows;
   the token is no longer read. The pairing still saves a whole band in every client, and the
   department still costs nothing because it shares a row.
-- **The left cell carries `width="100%"` so the right one shrinks to its content.** An explicit
-  right-column width would have to be wide enough for the logo *and* the department, and
-  whichever is narrower would then sit short of the frame edge.
+- **Superseded (#508): "The left cell carries `width="100%"` so the right one shrinks to its
+  content."** A percentage cell leaves the other column its *minimum* width, its longest word,
+  not its content's. The 2×2 table shared that column, so the department's column was the
+  logo's, and with no logo it broke at every word: "Global Equity" set on two lines in all
+  three house templates, `rich_table` and `aligned_layout`, in every client. Now the title's
+  row is a table whose title cell keeps `width="100%"`, so the logo's cell is the logo's width
+  and the title never gives room to the department. The subtitle's row is a table of two auto
+  cells, so the department takes its own width when the row has room. Measured: every
+  logo-less department in the gallery on one line at 1000 and 375px, in Chromium and in
+  classic Outlook. Of the gallery's 54 Chromium screenshots, 43 are pixel-identical; besides
+  those five fixtures, only `spacious_size` at 375px moved, its subtitle no longer wrapping
+  in a column the logo's width, so its masthead is 20px shorter. In Outlook the three emails
+  with a logo and a department move it by at most 1px of antialiasing.
 - **The department wraps; it must not `nowrap`.** Keeping it on one line beside the subtitle
   looked right and reproduced #76 exactly: a real desk name pushed a 375px viewport to 572px.
-  A browser test pins it, alongside the four that pin the pairing itself — the goldens can see
+  A browser test pins it, alongside the ones that pin the pairing itself — the goldens can see
   `valign` and `align="right"` in the markup, and neither says where a box lands.
+- **Since #508 a shortfall is shared.** Two auto cells split a row too narrow for both, where
+  the 2×2 table gave the subtitle its whole line and the department one word a line. For
+  "Global Macro, Rates and Cross-Asset Strategy Desk — EMEA" at 375px that was one line beside
+  four (with a logo) or nine (without); now the two set on two or three lines each. Measured in
+  Chromium, the row is 20 to 51% of its old height without a logo and 42 to 75% with one,
+  except at 375px in `standard` and `spacious`, where three subtitle lines stand 3px taller
+  than one beside four department lines. At 1000px in `spacious`, beside a logo, the subtitle
+  takes two lines where it took one. In classic Outlook's 680px frame at `standard`, both stay
+  on one line.
+  `test_a_department_with_no_logo_keeps_its_line` holds the short case at both widths.
 - **The footer's two URLs are facts**, though the header's `logo_url` is presentation. A
   logo is an image the *region* chose; an unsubscribe address is a property of the mailing,
   and `EmailMetadata.validate()` already checks both schemes. What the footer owns is

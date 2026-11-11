@@ -58,6 +58,11 @@ long a deprecated public name survives.
   its copy with no inset, and the rule and date line pad from their own cells. Browsers render it
   pixel for pixel as before. `SpacingScale.masthead_vml_height` is no longer read; a scheme that sets it still
   builds.
+- **A masthead's department keeps its line without a logo.** With no logo beside it, a
+  `department` broke at every word in every client: "Global Equity" set on two lines in the
+  house templates (#508). It now takes its own width when the row has room, in `Banner` and
+  `MinimalBanner` alike. A desk name too long for the row still wraps, and now shares the row
+  with the subtitle rather than setting one word a line beside it.
 - **A wrapped figure floats in an email too.** `TextBlock(figure=...)` with a `wrap` side used to
   set the figure above the prose in an email; it now floats it, through a table's `align` and a
   CSS `float`, so the prose wraps beside it in Outlook and in browsers. On a phone it stacks above

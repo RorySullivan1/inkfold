@@ -55,13 +55,17 @@
                      second copy of an effect it has already drawn (#78).
                      Both halves still read one Rgba, so they cannot drift. #}
                 <!--[if !mso]><!--><div style="background-color:{{ banner_palette.scrim }};"><!--<![endif]-->
-                {# One 2x2 table, not a logo row above a copy block. The logo shares a row
-                   with the title and the department shares one with the subtitle, so the
-                   two right-hand marks align with the lines they belong to instead of
-                   stacking in a band of their own. The left cell carries width="100%" so
-                   the right one shrinks to its content — an explicit right-column width
-                   would have to be wide enough for the logo *and* the department, and
-                   whichever is narrower would then sit short of the frame edge.
+                {# Two paired rows, not a logo row above a copy block: the logo shares a row
+                   with the title and the department one with the subtitle, so each
+                   right-hand mark aligns with the line it belongs to. The title's cell
+                   carries width="100%" so the logo's shrinks to the logo.
+
+                   Each row is a table of its own (#508). A percentage cell leaves the other
+                   column only its longest word, and when the two rows shared one 2x2 table
+                   the department's column was the logo's: with no logo it wrapped at every
+                   word. The subtitle row's two cells are auto, so the department takes its
+                   own width when the row has room and both share any shortfall, as a long
+                   desk name on a phone needs (#76); and the title's row never sees it.
 
                    The copy reads the *resolved* keys, never ``firm_name`` / ``campaign_name``
                    directly: those are facts, they land last in ``Banner.context()``, and
@@ -94,6 +98,8 @@
                       {% endif %}
                     </td>
                   </tr>
+                </table>
+                <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
                     <td valign="middle" style="padding:0 0 {{ size.space.masthead_campaign_bottom }}px {{ size.frame.pad_x }}px;">
                       <p style="margin:0; font-family: {{ font.label }}; font-size:{{ size.type.secondary }}px;
