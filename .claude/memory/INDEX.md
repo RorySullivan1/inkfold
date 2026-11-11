@@ -4,12 +4,12 @@
 - inkfold (pyHermes until v0.4.0, octavo until v0.4.1) builds **documents** onto **media** (`email`,
   `document`, `brochure`, `deck`) from the shared `inkfold/builder` kit; exporters: `delivery`+`gmail`+`outlook`,
   and `pdf`. Rationale: CLAUDE.md, `media.md`. Repository: RorySullivan1/inkfold.
-- **Shipped through PR #487**; open: #489–#494, #496–#498, #500 (v0.9.0 client and accessibility findings). #219 DOCX and #300 PPTX closed as not planned. #288 is the
+- **Merged through PR #499**; open: #489–#494, #496–#498, #500 (v0.9.0 client and accessibility findings). #219 DOCX and #300 PPTX closed as not planned. #288 is the
   owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
 - **The roadmap is live** in `.meta/roadmap/` (5 stages), surfaced each session by `roadmap_status`. Shipped:
   v0.2.0 charter (#477), v0.3.0 reference reports (#478), v0.4.0 and v0.4.1 renames to inkfold (#479, #480),
   v0.5.0 first PyPI release (#481), v0.6.0 `Report` and `inkfold.run` (#483),
-  v0.7.0 data inputs and provenance (#485), v0.8.0 `inkfold.house` (#487). Cursor v0.9.0, real-client checks, in a PR. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
+  v0.7.0 data inputs and provenance (#485), v0.8.0 `inkfold.house` (#487). Cursor v0.9.0: part 1 merged (#499); the owner's Gmail, Apple Mail, new Outlook and dark-mode columns remain. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
 
 ## Decisions        (append-only; supersede, never delete)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
@@ -76,5 +76,5 @@
 
 ## Log              (append-only pointers)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
-- [2026-11-10] house-templates — PR #487 merged (PDF test passed in all-extras); v0.8.0 shipped, cursor v0.9.0.
 - [2026-11-10] client-matrix — v0.9.0: classic Outlook renders, #489–#498 filed — sessions/2026-11-10-0300-client-matrix.md
+- [2026-11-11] client-matrix — PR #499 merged; hosted fixture images served from main; v0.9.0 stays in-progress.
