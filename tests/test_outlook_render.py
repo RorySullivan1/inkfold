@@ -137,3 +137,25 @@ class TestTheGallery:
     def test_an_unknown_fixture_is_named(self, tmp_path: Path):
         with pytest.raises(SystemExit, match="no such fixture: nope"):
             outlook_render.render_gallery(["nope"], tmp_path, FakeOutlook())
+
+
+class TestConnecting:
+    def test_a_one_file_viewer_is_refused_by_name_before_any_call(self, monkeypatch):
+        monkeypatch.setattr(
+            outlook_render, "outlook_application", lambda: pytest.fail("reached Outlook")
+        )
+        viewer = [(14928, r'"C:\Office16\OUTLOOK.EXE" /eml "C:\out\kitchen_sink.eml"')]
+        with pytest.raises(SystemExit, match="one-file viewer.*process 14928.*Close it"):
+            outlook_render._connect(viewers=lambda: viewer)
+
+    @pytest.mark.parametrize(
+        ("line", "single"),
+        [
+            (r'"OUTLOOK.EXE" /eml "x.eml"', True),
+            (r'"OUTLOOK.EXE" /f "x.msg"', True),
+            (r'"OUTLOOK.EXE" /recycle', False),
+            (r'"OUTLOOK.EXE"', False),
+        ],
+    )
+    def test_what_counts_as_a_one_file_viewer(self, line, single):
+        assert bool(outlook_render._SINGLE_FILE.search(line + " ")) is single

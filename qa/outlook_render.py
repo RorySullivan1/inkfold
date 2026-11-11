@@ -19,6 +19,7 @@ import argparse
 import importlib
 import json
 import platform
+import re
 import sys
 import tempfile
 import time
@@ -164,14 +165,49 @@ def _hresult(exc: BaseException) -> int | None:
     return code if isinstance(code, int) else None
 
 
-def _connect(attempts: int = 10, wait_s: float = 2.0) -> Any:
+#: How classic Outlook is started to show one file: double-clicking a .eml runs ``/eml``.
+_SINGLE_FILE = re.compile(r"\s/(?:eml|f)\s", re.IGNORECASE)
+
+
+def single_file_outlooks() -> list[tuple[int, str]]:
+    """
+    Every classic Outlook running as a one-file viewer, by process id and command line.
+
+    Such an instance outlives its window and answers COM without a mail session, so a
+    render attached to it hangs on its first call rather than failing.
+    """
+    client = importlib.import_module("win32com.client")
+    query = "SELECT ProcessId, CommandLine FROM Win32_Process WHERE Name = 'OUTLOOK.EXE'"
+    found = []
+    for process in client.GetObject("winmgmts:").ExecQuery(query):
+        line = str(process.CommandLine or "")
+        if _SINGLE_FILE.search(line + " "):
+            found.append((int(process.ProcessId), line))
+    return found
+
+
+def _connect(
+    attempts: int = 10,
+    wait_s: float = 2.0,
+    viewers: Callable[[], list[tuple[int, str]]] = single_file_outlooks,
+) -> Any:
     """
     A live Outlook, proved by creating and discarding a message.
 
     An Outlook that automation started quits when its last client lets go, so a
     run begun just after another can reach one still shutting down and be told
-    the RPC server is unavailable. Each retry takes a fresh handle.
+    the RPC server is unavailable. Each retry takes a fresh handle. A classic
+    Outlook running as a one-file viewer is refused first, by name, since every
+    call to it hangs.
     """
+    stuck = viewers()
+    if stuck:
+        pid, line = stuck[0]
+        raise SystemExit(
+            f"Classic Outlook is running as a one-file viewer (process {pid}: {line.strip()}). "
+            "It has no mail session, so a render would hang. Close it (Task Manager, "
+            "Microsoft Outlook) and run again."
+        )
     for attempt in range(attempts):
         outlook = outlook_application()
         try:

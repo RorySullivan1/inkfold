@@ -24,8 +24,16 @@
                    what VML actually honours — so the rect, its colour and its
                    opacity still reach every banner. The scrim is drawn over the
                    flat band whether or not there is a photograph, in this half
-                   and in the CSS half below alike. #}
-                <v:fill{% if background_image_url %} type="frame" src="{{ background_image_url | escape_html }}"{% endif %} color="{{ banner_palette.scrim.color }}" opacity="{{ banner_palette.scrim.opacity_percent }}"/>
+                   and in the CSS half below alike.
+
+                   Only an ATTACHED photograph is framed here (#489). A hosted
+                   one that does not load (dead, offline, or blocked, Outlook's
+                   default) makes the engine paint the same placeholder, white
+                   with a red cross, under light title type. Rendered in classic
+                   Outlook: no fill colour, tiled fill or layered image keeps both
+                   the photograph and a readable band, so a hosted backdrop gets
+                   the flat band in Outlook and the photograph everywhere else. #}
+                <v:fill{% if vml_background_src %} type="frame" src="{{ vml_background_src | escape_html }}"{% endif %} color="{{ banner_palette.scrim.color }}" opacity="{{ banner_palette.scrim.opacity_percent }}"/>
                 <v:textbox inset="{{ size.frame.pad_x }}px,0,{{ size.frame.pad_x }}px,0" style="mso-fit-shape-to-text:false;">
               <![endif]-->
               {# The background-image declaration is emitted only when there is

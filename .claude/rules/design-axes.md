@@ -151,6 +151,21 @@ particular wrong answer cannot come back quietly. Three tests hold the wiring: t
 may not read `theme.` at all, they may not name a role `FALLBACKS` does not declare, and every
 declared role must actually be drawn.
 
+**Only an attached photograph is framed in Outlook (#489).** A hosted `background_image_url`
+that does not load (dead, offline, or blocked, classic Outlook's default for remote pictures)
+made the Word engine paint the same placeholder #150 found, white with a red cross, under the
+banner's light title type: `kitchen_sink` read as cream on white. Five VML constructions were
+rendered in classic Outlook 16.0.0.20527 with the image dead and with it live
+(`evidence/v0.9.0/489/vml-variants.jpg`): the current frame fill, the same with the band as
+`fillcolor`, a tiled fill, a solid band with a separate `v:image` behind it, and no image.
+None kept the photograph when it loaded *and* a readable band when it did not: the three that
+draw the photograph all fail dead, and the layered image never showed even live. So
+`Banner.context` resolves `vml_background_src`, the source only when it is `cid:`, and the VML
+half reads that: an attached photograph travels in the message and cannot fail to load
+(`custom_banner` draws it), while a hosted one gets the flat band and its scrim in Outlook and
+the photograph everywhere else, through the CSS half. A data URI is excluded too, since the
+Word engine draws none. `TestTheVmlFillSrcIsGated` holds all three cases.
+
 **How the theme reaches every template — the mechanism epic #45 rode.** A value owned by
 the email must reach component templates several layers down. `TemplateEngine.bound(**shared)`
 returns a `BoundEngine`: a **per-render** view that merges shared values into every context

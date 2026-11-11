@@ -38,7 +38,10 @@ Record OK, cosmetic or broken in the client's column, and file each new defect a
 
 Classic Outlook: 16.0.0.20527 on Windows 11 (10.0.26100), 2026-11-10. New Outlook: the owner,
 from the `.eml` files, 2026-11-11: questions 1 to 5 good in every email, question 6 (dark mode)
-broken, #501. Page images are in
+broken, #501.
+After #501 and #503 the owner accepted new Outlook in both modes on first open, 2026-11-11.
+Its per-message light/dark toggle is a client defect (below), not counted against the email.
+Gmail on the web, the Gmail app and Apple Mail: the owner, light and dark, 2026-11-11, every email OK. Page images are in
 `.claude/context/evidence/v0.9.0/outlook-classic/`, with `run.json`.
 
 Two defects are common to most emails, so they are listed once rather than in every row:
@@ -73,33 +76,33 @@ Two defects are common to most emails, so they are listed once rather than in ev
 
 | Email | Classic Outlook | New Outlook | Gmail web | Gmail app | Apple Mail | Dark mode |
 |---|---|---|---|---|---|---|
-| minimal | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| kitchen_sink | **broken** #489; cosmetic #492 #493 #494 #496 #500 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| custom_banner | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| custom_footer | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| image_matrix | OK (its two hosted images point at a host that cannot load) | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| minimal_banner | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| minimal_footer | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| no_header | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| slate_theme | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| compact_size | **broken** #489; cosmetic #492 #493 #494 #496 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| spacious_size | **broken** #489; cosmetic #491 #492 #493 #496 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| modern_fonts | **broken** #489; cosmetic #491 #492 #493 #496 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| rich_table | cosmetic #492 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| aligned_layout | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| composed_layout | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| surfaced_layout | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| research_note | cosmetic #491 #492 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| placed_layout | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| glance_layout | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| labelled_layout | cosmetic #491 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| organised_layout | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| toned_layout | cosmetic #491 #494 | OK; the gold box hard to read light and dark, #503 | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| brief_layout | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| product_brief_layout | cosmetic #491 #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| house_daily_note | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| house_weekly_wrap | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| house_announcement | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| minimal | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| kitchen_sink | #489 fixed; cosmetic #492 #493 #494 #496 #500 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| custom_banner | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| custom_footer | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| image_matrix | OK (its two hosted images point at a host that cannot load) | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| minimal_banner | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| minimal_footer | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| no_header | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| slate_theme | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| compact_size | #489 fixed; cosmetic #492 #493 #494 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| spacious_size | #489 fixed; cosmetic #491 #492 #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| modern_fonts | #489 fixed; cosmetic #491 #492 #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| rich_table | cosmetic #492 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| aligned_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| composed_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| surfaced_layout | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| research_note | cosmetic #491 #492 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| placed_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| glance_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| labelled_layout | cosmetic #491 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| organised_layout | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| toned_layout | cosmetic #491 #494 | OK; the gold box fixed, #503 | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| brief_layout | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| product_brief_layout | cosmetic #491 #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| house_daily_note | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| house_weekly_wrap | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| house_announcement | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 
 `—` is not yet checked.
 
