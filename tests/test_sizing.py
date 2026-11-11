@@ -579,6 +579,8 @@ NEVER_RENDERED = {
     "space.footer_contact_bottom",
     # footer_legal_bottom was split into copyright_bottom in the rework.
     "space.footer_legal_bottom",
+    # The masthead's v:rect fits its copy since #490, so no height is emitted.
+    "space.masthead_vml_height",
     # An email has no sheet, so nothing in it reads a print margin. The paged
     # page sentinel in test_paged.py is what pins this token (#175).
     "frame.margin",

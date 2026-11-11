@@ -52,6 +52,12 @@ long a deprecated public name survives.
   one that did not load, and Outlook blocks remote pictures by default, left a broken-image
   placeholder over the masthead with its light title on white (#489). Every other client still
   draws the hosted photograph.
+- **In classic Outlook the default masthead sits on the body's edge and ends with its copy.** Its
+  title and subtitle began one `pad_x` further in than the body, its rule stopped short of the
+  right padding, and 60 to 80px of empty band followed the date line (#490). The VML box now fits
+  its copy with no inset, and the rule and date line pad from their own cells. Browsers render it
+  pixel for pixel as before. `SpacingScale.masthead_vml_height` is no longer read; a scheme that sets it still
+  builds.
 - **A wrapped figure floats in an email too.** `TextBlock(figure=...)` with a `wrap` side used to
   set the figure above the prose in an email; it now floats it, through a table's `align` and a
   CSS `float`, so the prose wraps beside it in Outlook and in browsers. On a phone it stacks above
