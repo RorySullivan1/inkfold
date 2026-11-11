@@ -55,6 +55,9 @@ Two defects are common to most emails, so they are listed once rather than in ev
   holds prose to AA under a model of the client's dark mode. To re-check in new Outlook, with
   an eye on `toned_layout`'s gold fact box and `rich_table`'s heat-scaled cells: mid-tone
   grounds the model cannot judge.
+- **#503, the gold box**: the owner found `toned_layout`'s solid gold box hard to read in both
+  modes. Its type read at 3.44:1 in light mode; a fill under 4.5:1 is now refused, and the box
+  fills with a deep gold that takes white at 5.3:1 in either mode.
 - **By design, though it can look wrong**: a table bar sits under its figure (`data-table.md`),
   and a sparkline's bars are a fixed 4 px each, so a three-point series is about 16 px wide.
 - **Wrapped figures float in an email too** since the owner's review: the prose wraps beside
@@ -83,7 +86,7 @@ Two defects are common to most emails, so they are listed once rather than in ev
 | glance_layout | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
 | labelled_layout | cosmetic #491 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
 | organised_layout | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
-| toned_layout | cosmetic #491 #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
+| toned_layout | cosmetic #491 #494 | OK; the gold box hard to read light and dark, #503 | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
 | brief_layout | cosmetic #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
 | product_brief_layout | cosmetic #491 #494 | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |
 | house_daily_note | OK | OK | — | — | — | new Outlook: **broken** #501, fixed; to re-check |

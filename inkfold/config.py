@@ -127,6 +127,11 @@ class Config:
     #: The longest kicker a section takes above its title (#333).
     kicker_max_chars: int = 40
 
+    #: The least contrast a filled ground's type may have, as a WCAG ratio (v0.9.0). A
+    #: section's ``background_color`` or a solid box's tone that no type in the theme reads on
+    #: at this ratio is refused when the section is added. 4.5 is WCAG AA for body text.
+    min_text_contrast: float = 4.5
+
     def __post_init__(self) -> None:
         # NaN passes every comparison below and infinity is positive, so both are
         # refused first. A field is numeric by its annotation: a new one is covered.
@@ -164,6 +169,10 @@ class Config:
             if value <= 0:
                 raise ValueError(f"{name} must be positive, got {value!r}")
 
+        if not 1 <= self.min_text_contrast <= 21:
+            raise ValueError(
+                f"min_text_contrast is a contrast ratio, 1 to 21, got {self.min_text_contrast!r}"
+            )
         if self.size_warn_kb > self.size_limit_kb:
             raise ValueError(
                 f"size_warn_kb ({self.size_warn_kb}) must not exceed size_limit_kb "

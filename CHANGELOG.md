@@ -9,6 +9,7 @@ long a deprecated public name survives.
 
 ### Added
 
+- **`Config.min_text_contrast`** (4.5, WCAG AA) and `inkfold.builder.filters.contrast_ratio`.
 - **House email templates** (`inkfold.house`): `DailyNote`, `WeeklyWrap` and
   `ResearchAnnouncement`, reports a firm subclasses, sets `house = House(...)` on, and feeds by
   loading each declared input. Every figure is drawn in markup, so none needs an extra.
@@ -34,6 +35,10 @@ long a deprecated public name survives.
 
 ### Changed
 
+- **A fill no theme type reads on is refused.** A section's `background_color`, with any
+  `text_color` on it, and a solid `Callout`'s tone are refused when the section is added if their
+  type reads under `Config.min_text_contrast`, naming the colour and both ratios (#503). It was
+  accepted before; a mid-tone gold read at 3.4:1 in light mode and about 2.7:1 in dark mode.
 - **An email no longer forces colours in dark mode.** It declared light only and also forced
   its frame and prose back to the light theme with `!important`, which left prose dark on the
   grounds Outlook.com and new Outlook darkened (#501). It now only declares

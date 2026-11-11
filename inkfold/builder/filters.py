@@ -211,6 +211,11 @@ def readable_on(background: str, dark: str, light: str) -> str:
     return max((dark, light), key=ratios.__getitem__)
 
 
+def contrast_ratio(first: str, second: str) -> float:
+    """The WCAG 2.x contrast ratio of two ``#RRGGBB`` colours, 1 to 21."""
+    return _contrast(validate_hex_color(first), validate_hex_color(second))
+
+
 def _contrast(first: str, second: str) -> float:
     lighter, darker = sorted((_luminance(first), _luminance(second)), reverse=True)
     return (lighter + 0.05) / (darker + 0.05)

@@ -32,7 +32,11 @@ from inkfold.builder.models import Cell, KpiItem, TableRow
 from inkfold.builder.theming import DEFAULT_THEME
 
 #: The classic theme with a brand's gold, sky and ink, its semantic tones untouched.
-THEME = DEFAULT_THEME.derive(tones={"brand": "#B8860B", "sky": "#0077A8", "ink": "#111111"})
+#: ``brand_deep`` is the gold a solid box fills with: #B8860B reads at 3.4:1 under either of the
+#: theme's types, and is refused as a fill (v0.9.0); this takes white type at 5.3:1.
+THEME = DEFAULT_THEME.derive(
+    tones={"brand": "#B8860B", "brand_deep": "#8B6508", "sky": "#0077A8", "ink": "#111111"}
+)
 
 #: Each sleeve a holding sits in, and the tone its dot is drawn in.
 SLEEVES = {"Core": "brand", "Satellite": "sky", "Hedge": "neutral"}
@@ -72,7 +76,10 @@ def sections() -> list[Container]:
                 fill="solid",
             ),
             right=Callout(
-                TextBlock("<p>12 March 2019</p>"), tone="brand", label="Inception", fill="solid"
+                TextBlock("<p>12 March 2019</p>"),
+                tone="brand_deep",
+                label="Inception",
+                fill="solid",
             ),
         ),
         FullWidth(
