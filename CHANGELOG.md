@@ -34,6 +34,11 @@ long a deprecated public name survives.
 
 ### Changed
 
+- **An email no longer forces colours in dark mode.** It declared light only and also forced
+  its frame and prose back to the light theme with `!important`, which left prose dark on the
+  grounds Outlook.com and new Outlook darkened (#501). It now only declares
+  `color-scheme: light only`: a client that honours it stays light, and one that darkens
+  recolours everything together.
 - **A wrapped figure floats in an email too.** `TextBlock(figure=...)` with a `wrap` side used to
   set the figure above the prose in an email; it now floats it, through a table's `align` and a
   CSS `float`, so the prose wraps beside it in Outlook and in browsers. On a phone it stacks above

@@ -927,8 +927,8 @@ inline styles a spot-check would look at.
 What this golden pins that no other one can:
 
 * the second preset renders at all, and renders *completely*: no token
-  falls back to a classic value anywhere, including inside the dark-mode
-  forcing block and the mobile media query, which used to carry their own
+  falls back to a classic value anywhere, including inside the mobile media
+  query (and, until v0.9.0 removed it, the dark-mode forcing block), which used to carry their own
   hardcoded copies of surface and text colours;
 * both halves of the Outlook scrim move together — the CSS ``rgba()`` and
   the VML ``color``/``opacity`` attribute pair;

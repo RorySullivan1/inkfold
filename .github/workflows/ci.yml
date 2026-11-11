@@ -93,7 +93,7 @@ jobs:
         # The capture half of tests/test_screenshots.py skips without a
         # browser, so this job is the only place it actually runs.
         run: >-
-          pytest tests/test_screenshots.py tests/test_image_centring.py tests/test_stacking.py
+          pytest tests/test_screenshots.py tests/test_image_centring.py tests/test_stacking.py tests/test_dark_mode.py
           tests/test_cell_share.py tests/test_organising.py tests/test_strip_indentation.py
 
       - name: Render the gallery

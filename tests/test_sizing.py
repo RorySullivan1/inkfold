@@ -713,7 +713,7 @@ class TestTheTokensAreLive:
         """
         block = perturbed_html[
             perturbed_html.index("@media only screen") : perturbed_html.index(
-                "/* Force light rendering"
+                ":root { color-scheme"
             )
         ]
         for token in ("space.mobile_pad_y", "space.mobile_pad_x", "type.title_mobile"):

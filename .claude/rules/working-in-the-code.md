@@ -177,10 +177,10 @@ These are not conventions to remember — each has teeth, and the teeth are name
    `rgba()` literal in a template is a bug — it is a colour outside the palette, which is
    the drift epic #46 exists to end. Two tests enforce it: one asserts no literal survives
    in any template, another that none survives as a default in Python. There are **no
-   documented exceptions**; the audit found none that needed one. Watch the two blocks that
-   carry their own copies of surface and text colours — the dark-mode forcing block and the
-   mobile `@media` rule — because if they stop reading the same tokens as the inline styles
-   they override, a themed email renders half-themed in exactly the clients hardest to test.
+   documented exceptions**; the audit found none that needed one. Watch the mobile
+   `@media` rule, which carries its own copies of colours: if it stops reading the same tokens as
+   the inline styles it overrides, a themed email renders half-themed in the clients hardest to
+   test. (A dark-mode forcing block did too; v0.9.0 removed it, `design-axes.md`.)
 5. **A new template takes its sizes from the `size` namespace.** The same rule as 4, for
    the other epic: a hardcoded scale-participating px is a size outside the scheme, which is
    the drift epic #45 exists to end. One test fails on any `font-size` / `line-height` /

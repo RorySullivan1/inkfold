@@ -45,19 +45,7 @@ gives a narrow viewport its room back. See #132. */
 .email-float { float:none !important; width:100% !important; }
 .email-float td { padding-left:0 !important; padding-right:0 !important; }
 }
-/* Force light rendering in all dark mode contexts */
 :root { color-scheme: light only; }
-[data-ogsc] .email-container,
-[data-ogsb] .email-container { background-color:#FFFFFF !important; }
-[data-ogsc] .surface,
-[data-ogsb] .surface { background-color:#FFFFFF !important; }
-[data-ogsc] .body-text,
-[data-ogsb] .body-text { color:#3B3B3B !important; }
-@media (prefers-color-scheme:dark) {
-.email-container { background-color:#FFFFFF !important; }
-.body-text { color:#3B3B3B !important; }
-.surface { background-color:#FFFFFF !important; }
-}
 </style>
 </head>
 <body style="margin:0; padding:0; background-color:#F2F1EE; font-family: Georgia, 'Times New Roman', serif;" bgcolor="#F2F1EE">

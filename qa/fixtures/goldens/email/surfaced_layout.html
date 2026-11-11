@@ -43,19 +43,7 @@ alignment that is the only reason to render one — so padding is what
 gives a narrow viewport its room back. See #132. */
 .data-table th, .data-table td { padding:6px !important; }
 }
-/* Force light rendering in all dark mode contexts */
 :root { color-scheme: light only; }
-[data-ogsc] .email-container,
-[data-ogsb] .email-container { background-color:#FFFFFF !important; }
-[data-ogsc] .surface,
-[data-ogsb] .surface { background-color:#FFFFFF !important; }
-[data-ogsc] .body-text,
-[data-ogsb] .body-text { color:#3B3B3B !important; }
-@media (prefers-color-scheme:dark) {
-.email-container { background-color:#FFFFFF !important; }
-.body-text { color:#3B3B3B !important; }
-.surface { background-color:#FFFFFF !important; }
-}
 </style>
 </head>
 <body style="margin:0; padding:0; background-color:#F2F1EE; font-family: Georgia, 'Times New Roman', serif;" bgcolor="#F2F1EE">
@@ -173,7 +161,7 @@ On a Dark Ground
 <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr>
 <td style="padding:0 0 16px 0;">
-<div class="" style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; color: #FFFFFF; line-height: 172%; margin: 0 0 16px 0;"><p>The title and this paragraph read light on navy.</p></div>
+<div class="body-text" style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; color: #FFFFFF; line-height: 172%; margin: 0 0 16px 0;"><p>The title and this paragraph read light on navy.</p></div>
 </td>
 </tr>
 <tr>
@@ -265,7 +253,7 @@ Framed in the Accent
 <table role="presentation" width="300" border="0" cellpadding="0" cellspacing="0" class="stack-column" style="display:inline-table; vertical-align:top; width:300px; margin-right:16px; background-color:#22313F;">
 <tr>
 <td class="mobile-pad" style="padding:2px 20px 26px 0px; font-family: Arial, Helvetica, sans-serif; font-size:14px; color:#F2E6C9; line-height:172%;">
-<div class="" style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; color: #F2E6C9; line-height: 172%; margin: 0 0 16px 0;"><p>Type in the caller's own cream.</p></div>
+<div class="body-text" style="font-family: Georgia, 'Times New Roman', serif; font-size: 14px; color: #F2E6C9; line-height: 172%; margin: 0 0 16px 0;"><p>Type in the caller's own cream.</p></div>
 </td>
 </tr>
 </table>

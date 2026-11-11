@@ -62,14 +62,15 @@ class TestADarkGroundKeepsItsTypeReadable:
         assert _heading_color(html, "Dark") == DEFAULT_THEME.text.on_dark
         assert f"color: {DEFAULT_THEME.text.on_dark};" in _prose(html, "Can you read this?")
 
-    def test_the_dark_mode_class_is_dropped_on_a_ground(self):
-        """`.body-text` is forced to the theme's dark type in dark mode, which would undo it."""
+    def test_prose_keeps_its_class_on_a_ground_now_nothing_repaints_it(self):
+        """Superseded (v0.9.0): the class was dropped on a ground while dark mode forced it dark."""
         html = _render(
             FullWidth(TextBlock("<p>On navy</p>"), background_color=NAVY),
             FullWidth(TextBlock("<p>On white</p>")),
         )
-        assert 'class=""' in _prose(html, "On navy")
+        assert 'class="body-text"' in _prose(html, "On navy")
         assert 'class="body-text"' in _prose(html, "On white")
+        assert f"color: {DEFAULT_THEME.text.on_dark};" in _prose(html, "On navy")
 
     def test_a_caller_text_color_sets_the_whole_ladder(self):
         html = _render(

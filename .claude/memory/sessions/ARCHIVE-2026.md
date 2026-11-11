@@ -547,3 +547,5 @@ Decisions and Log entries folded out of `INDEX.md` on 2026-08-29 (#143), verbati
 - [2026-11-09] data-binding — PR #485 merged; v0.7.0 marked shipped, cursor v0.8.0.
 - [2026-11-09] house-templates — v0.8.0 `inkfold.house`, three templates — sessions/2026-11-09-2000-house-templates.md
 - [2026-11-10] house-templates — PR #487 merged (PDF test passed in all-extras); v0.8.0 shipped, cursor v0.9.0.
+- [2026-10-01] **pyHermes grows by media, not by portability.** A DOCX/PPTX walk is a second render path
+  over 46 classes, and a chart is PNG bytes by the time it is in the tree; #219 and #300 closed — `media.md`
