@@ -9,14 +9,10 @@
 - **The roadmap is live** in `.meta/roadmap/` (5 stages), surfaced each session by `roadmap_status`. Shipped:
   v0.2.0 charter (#477), v0.3.0 reference reports (#478), v0.4.0 and v0.4.1 renames to inkfold (#479, #480),
   v0.5.0 first PyPI release (#481), v0.6.0 `Report` and `inkfold.run` (#483),
-  v0.7.0 data inputs and provenance (#485), v0.8.0 `inkfold.house` (#487). Cursor v0.9.0: part 1 merged (#499); the owner's Gmail, Apple Mail, new Outlook and dark-mode columns remain. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
+  v0.7.0 data inputs and provenance (#485), v0.8.0 `inkfold.house` (#487). Cursor v0.9.0: classic and new Outlook done; Gmail and Apple Mail columns remain. Mapped from the 2026-10-27 doc — sessions/2026-10-27-0312-roadmap-mapping.md
 
 ## Decisions        (append-only; supersede, never delete)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
-- [2026-10-14] **A directly built `EmailImage` is validated like a factory's, `mime_type` held to the sniffed bytes
-  (#447); the PDF exporter refuses a relative URL by name through a sentinel base URL (#463); every number a layout
-  reads is finite, a table cell's NaN still meaning missing (#450); formatters round in a context of their own (#448)**
-  — `builder-architecture.md`, `media.md`, `data-layer.md`
 - [2026-10-21] **A hosted figure joins the walk through `Component.hosted()`, not `children()` (#454); a deck refuses
   a Slide added twice (#462); a handout is one page a sheet and clipped notes are a lint warning (#459); a running
   header and footer may not share a margin box (#461); `render_math` draws under `rcdefaults()` (#467)** — `apparatus.md`,
@@ -43,6 +39,8 @@
 - [2026-11-11] **Dark mode is declared (`color-scheme: light only`), never forced; the old forcing left prose dark on dark (#501)** — `design-axes.md`
 
 - [2026-11-11] **A filled ground no theme type reads on at `Config.min_text_contrast` (4.5) is refused when added (owner, #503)** — `design-axes.md`
+
+- [2026-11-11] **new Outlook's per-message light/dark toggle restores grounds but not text colours: a client defect, not judged** — `qa/clients/MATRIX.md`
 
 ## Threads          (open items; remove when closed)
 - **The first outside user is not yet named** (a colleague or team); needed before Gate 1 — `.meta/roadmap/INDEX.md`.
