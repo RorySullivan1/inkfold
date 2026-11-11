@@ -24,7 +24,7 @@ from typing import Any, ClassVar
 
 from .enums import Tone
 from .exceptions import ValidationError
-from .filters import readable_on
+from .filters import contrast_ratio, readable_on
 from .models import TONE_NAME, _validate_color
 
 
@@ -249,6 +249,34 @@ class Theme:
             raise ValidationError(
                 f"{owner} names tone {name!r}, which this theme does not declare; its tones "
                 f"are {list(self.tone)}. Declare it as Theme(tones={{{name!r}: '#RRGGBB'}})."
+            )
+
+    def check_ground(
+        self, background: str, owner: str, minimum: float, text_color: str | None = None
+    ) -> None:
+        """
+        Refuse a ``background`` whose type reads under ``minimum`` contrast (v0.9.0).
+
+        The type is the caller's ``text_color`` when given, else the better of the theme's
+        dark and ``on_dark`` type, which is the one :meth:`on_ground` will choose.
+        """
+        if text_color:
+            ratio = contrast_ratio(background, text_color)
+            if ratio < minimum:
+                raise ValidationError(
+                    f"{owner} sets {text_color} on {background}: {ratio:.2f}:1, under the "
+                    f"{minimum:g}:1 text needs (Config.min_text_contrast). Choose a text "
+                    "colour or a background further apart."
+                )
+            return
+        dark, light = self.text.primary, self.text.on_dark
+        ratios = {ink: contrast_ratio(background, ink) for ink in (dark, light)}
+        if max(ratios.values()) < minimum:
+            raise ValidationError(
+                f"{owner} fills with {background}, on which no type in this theme reads: "
+                f"its dark type {dark} reaches {ratios[dark]:.2f}:1 and its light type {light} "
+                f"{ratios[light]:.2f}:1, under the {minimum:g}:1 text needs "
+                "(Config.min_text_contrast). Use a darker or a lighter colour."
             )
 
     def derive(self, **layers: Any) -> Theme:

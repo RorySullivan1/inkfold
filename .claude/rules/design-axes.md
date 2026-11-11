@@ -1334,7 +1334,8 @@ theme, so rule 4 holds.
 **A solid box (#388).** `Callout(fill="solid")` paints its tone's full colour, a chip such as a
 black ticker. Its type is chosen, never set: the box renders on `Theme.on_ground(tone colour)`,
 the rule a section's ground uses (#266), so a dark tone takes the `on_dark` ladder and a light one
-keeps the theme's type. Black gets white, `#B8860B` gold keeps the dark ink.
+keeps the theme's type. Black gets white. **Superseded (v0.9.0): "`#B8860B` gold keeps the dark ink"**: at 3.44:1 it is refused now (*A filled ground must be readable*), and the
+fixture's box fills with `#8B6508`, which takes white at 5.3:1.
 
 - **The label reads `text.heading` on a solid box**, not the tone, which would be invisible on its
   own fill.
@@ -1503,3 +1504,25 @@ the email light; one that darkens anyway recolours every ground and every ink to
   template restated per client, and a client's rewrite reaches inline styles the block cannot
   name. A real dark palette, chosen per theme, is the alternative if dark mode should look
   designed rather than derived; it would be a theme axis of its own.
+
+## A filled ground must be readable (v0.9.0, #503)
+
+A section's `background_color` (with any `text_color` set on it) and a solid box's tone are
+refused when the section is added if their type reads under `Config.min_text_contrast`, 4.5 by
+default, WCAG AA for body text. `Theme.check_ground` names the colour and both types' ratios;
+`_grounds` in `document.py` walks them, after `_tones`, so a tone is resolved first. A host
+relaxes it through `Config` or `INKFOLD_MIN_TEXT_CONTRAST`, as it does the size limits.
+
+- **Choosing the better type was not enough.** `readable_on` picked whichever of the dark and
+  `on_dark` types contrasts more, and nothing asked whether that one reads. On `#B8860B` gold
+  the better is 3.44:1. The owner found it hard to read in new Outlook, light and dark.
+- **The floor removes the dark-mode trap with it.** With the default theme's types, a fill
+  reaches 4.5:1 only below a luminance of about 0.18 (white type) or above about 0.37 (dark
+  type). The mid-tones between are the band a darkening client leaves alone while it lightens
+  the type on it, which is how the gold box fell to about 2.7:1 in dark mode.
+- **What it reaches today**: across the email, paged, brochure and deck galleries, only that
+  box failed, in `toned_layout` and `a4_toned_layout`. Every section ground and every caller's
+  text-colour pairing already cleared 4.5:1.
+- **A slide is not walked**: it sets its ground its own way, and the deck takes no new check
+  until roadmap 2.8. A tinted box, a badge and a table cell are not fills of this kind; their
+  type is the theme's own on a surface it curates.

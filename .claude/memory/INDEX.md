@@ -4,7 +4,7 @@
 - inkfold (pyHermes until v0.4.0, octavo until v0.4.1) builds **documents** onto **media** (`email`,
   `document`, `brochure`, `deck`) from the shared `inkfold/builder` kit; exporters: `delivery`+`gmail`+`outlook`,
   and `pdf`. Rationale: CLAUDE.md, `media.md`. Repository: RorySullivan1/inkfold.
-- **Merged through PR #499**; open: #489–#494, #496–#498, #500, #501 (v0.9.0 client findings). #219 DOCX and #300 PPTX closed as not planned. #288 is the
+- **Merged through PR #499**; open: #489–#494, #496–#498, #500 (v0.9.0 client findings). #219 DOCX and #300 PPTX closed as not planned. #288 is the
   owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
 - **The roadmap is live** in `.meta/roadmap/` (5 stages), surfaced each session by `roadmap_status`. Shipped:
   v0.2.0 charter (#477), v0.3.0 reference reports (#478), v0.4.0 and v0.4.1 renames to inkfold (#479, #480),
@@ -13,9 +13,6 @@
 
 ## Decisions        (append-only; supersede, never delete)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
-- [2026-10-14] **`layout()` returns a `Layout` carrying its profile and document; `render_layout`/`save_layout` take
-  no profile (#445); preview lays out once and hands the one layout to lint, PDF and screenshots (#446)** — `media.md`,
-  `qa-harness.md`
 - [2026-10-14] **A directly built `EmailImage` is validated like a factory's, `mime_type` held to the sniffed bytes
   (#447); the PDF exporter refuses a relative URL by name through a sentinel base URL (#463); every number a layout
   reads is finite, a table cell's NaN still meaning missing (#450); formatters round in a context of their own (#448)**
@@ -44,6 +41,8 @@
 - [2026-11-09] **House templates ship in `inkfold.house`; a firm feeds one with loaders, not a file** (owner) — `house.md`
 
 - [2026-11-11] **Dark mode is declared (`color-scheme: light only`), never forced; the old forcing left prose dark on dark (#501)** — `design-axes.md`
+
+- [2026-11-11] **A filled ground no theme type reads on at `Config.min_text_contrast` (4.5) is refused when added (owner, #503)** — `design-axes.md`
 
 ## Threads          (open items; remove when closed)
 - **The first outside user is not yet named** (a colleague or team); needed before Gate 1 — `.meta/roadmap/INDEX.md`.

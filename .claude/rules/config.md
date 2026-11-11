@@ -212,3 +212,9 @@ changes the default, which the override hides until it exits.
   document's two projections never disagree about a separator.
 - `tests/test_config_scope.py` renders in two threads at once under different limits, and
   fails when the context variable is replaced by a shared one.
+
+**`min_text_contrast` (v0.9.0, #503) is the least WCAG contrast a filled ground's type may
+have, 4.5 by default.** A section background or a solid box's tone that no theme type reads on
+at that ratio is refused when the section is added (`design-axes.md`). It is a ratio, so it is
+held to 1 to 21. A firm whose established brand colour cannot reach it lowers it here, on
+purpose, rather than the check being skipped; `INKFOLD_MIN_TEXT_CONTRAST` sets it.

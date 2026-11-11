@@ -233,6 +233,9 @@ class Document:
         theme = resolve_theme(self._metadata.theme)
         for owner, tone in _tones(container):
             theme.check_tone(tone, owner)
+        minimum = get_config().min_text_contrast
+        for owner, ground, ink in _grounds(container):
+            theme.check_ground(theme.tone.get(ground, ground), owner, minimum, ink)
         if isinstance(container, Appendices) and any(
             isinstance(section, Appendices) for section in self._sections
         ):
@@ -799,6 +802,31 @@ def _tones(root: object) -> list[tuple[str, str]]:
                     found.extend((f"{owner} status {word!r}", tone) for word, tone in value.items())
                 else:
                     stack.append(value)
+    return found
+
+
+def _grounds(container: Container) -> list[tuple[str, str, str | None]]:
+    """
+    Every filled ground in one section's subtree: ``(owner, colour or tone, text colour)``.
+
+    A section's own ``background_color``, with the ``text_color`` set on it, and a solid
+    box's tone. A page's or a panel's sections are walked; a slide sets its ground its own
+    way, and the deck takes no new check until roadmap 2.8.
+    """
+    found: list[tuple[str, str, str | None]] = []
+    inner = getattr(container, "sections", None)
+    if isinstance(inner, list):
+        if type(container).__name__ in {"Slide", "DividerSlide", "StatementSlide"}:
+            return found
+        for section in inner:
+            found.extend(_grounds(section))
+        return found
+    if container.background_color:
+        found.append((container._owner(), container.background_color, container.text_color))
+    for block in descendants(container.components()):
+        tone = getattr(block, "tone", None)
+        if getattr(block, "fill", None) == "solid" and tone:
+            found.append((type(block).__name__, str(tone), None))
     return found
 
 
