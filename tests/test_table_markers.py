@@ -65,7 +65,8 @@ class TestEachSiteIsAMarker:
         html = _email(_table()).render()
         assert 'class="footnote"' not in html
         for number, note in ((2, "Launched 3 March"), (3, "Annualised; the class")):
-            assert re.search(rf'<li id="note-{number}"[^>]*>.*?{number}\.</a> {note}', html)
+            item = rf'<div role="listitem" id="note-{number}"[^>]*>.*?{number}\.</a> {note}'
+            assert re.search(item, html)
 
     def test_a_page_floats_each_note_from_its_marker(self):
         html = _paged(_table()).render()
