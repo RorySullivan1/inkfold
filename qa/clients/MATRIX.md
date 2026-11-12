@@ -83,7 +83,7 @@ Two defects are common to most emails, so they are listed once rather than in ev
 | Email | Classic Outlook | New Outlook | Gmail web | Gmail app | Apple Mail | Dark mode |
 |---|---|---|---|---|---|---|
 | minimal | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| kitchen_sink | #489 fixed; cosmetic #492 #493 #494 #496 #500 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| kitchen_sink | #489 #492 fixed; cosmetic #493 #494 #496 #500 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | custom_banner | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | custom_footer | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | image_matrix | OK (its two hosted images point at a host that cannot load) | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
@@ -91,14 +91,14 @@ Two defects are common to most emails, so they are listed once rather than in ev
 | minimal_footer | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | no_header | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | slate_theme | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| compact_size | #489 fixed; cosmetic #492 #493 #494 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| spacious_size | #489 #491 fixed; cosmetic #492 #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| modern_fonts | #489 #491 fixed; cosmetic #492 #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| rich_table | cosmetic #492 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| compact_size | #489 #492 fixed; cosmetic #493 #494 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| spacious_size | #489 #491 #492 fixed; cosmetic #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| modern_fonts | #489 #491 #492 fixed; cosmetic #493 #496 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| rich_table | #492 fixed | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | aligned_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | composed_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | surfaced_layout | cosmetic #494 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
-| research_note | #491 fixed; cosmetic #492 | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
+| research_note | #491 #492 fixed | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | placed_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | glance_layout | OK | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |
 | labelled_layout | #491 fixed | OK | OK | OK | OK | OK: new Outlook (first open), Gmail, Apple Mail |

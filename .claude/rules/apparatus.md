@@ -133,6 +133,13 @@ risk the epic named. The design keeps the set closed at five:
   an `Endnotes` block after the last section, each note carrying the `id` its marker links to
   and a link back. The text part prints `[7]` at the marker and a Notes block in every
   medium.
+- **The endnotes are `div`s with list roles, not an `ol` (#492).** Each note's number is
+  typed, being the document's and the link back to its marker, so the list numbers nothing
+  itself. The Word engine ignores `list-style-type: none` and numbers an `ol` anyway, so every
+  note read "1. 1." in classic Outlook. A `div` is numbered by no engine, and `role="list"` and
+  `role="listitem"` keep a screen reader announcing a list: the bibliography's reason for a
+  hung `p` (#310). Measured: one number a note in all six emails with notes, the gallery
+  pixel-identical in Chromium, and the text part untouched.
 - **The marker takes the UA's `smaller`, not a size token.** Pinned to `size.type.micro`, a
   marker in 9.5px fine print was as large as the line it sat in. A relative size is right in
   every line, and `line-height: 0` stops it opening the line box.
