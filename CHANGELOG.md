@@ -58,6 +58,10 @@ long a deprecated public name survives.
   its copy with no inset, and the rule and date line pad from their own cells. Browsers render it
   pixel for pixel as before. `SpacingScale.masthead_vml_height` is no longer read; a scheme that sets it still
   builds.
+- **In classic Outlook each endnote has one number.** Outlook ignored the notes list's
+  `list-style-type: none` and numbered it, so every note read "1. 1." (#492). The endnotes are
+  now listed in `div`s with `role="list"`, which no client numbers. Browsers and the text part
+  are unchanged.
 - **In classic Outlook a status dot is a dot and a legend swatch a square.** Both drew as a bar
   3px wide and a line tall, and a legend's entries ran together (#491). Outlook now draws each
   as a VML shape the `status_dot` size, and a legend's gaps as VML spacers the `caption_gap`

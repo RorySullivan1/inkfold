@@ -436,8 +436,24 @@ class TestFootnotesAcrossTheDocument:
         html = email(*sections).render()
         assert 'class="notes-heading"' in html and 'class="footnote"' not in html
         assert re.search(
-            r'<li id="note-2"[^>]*><a href="#note-ref-2"[^>]*>2\.</a> Close to close\.', html
+            r'<div role="listitem" id="note-2"[^>]*><a href="#note-ref-2"[^>]*>2\.</a> '
+            r"Close to close\.",
+            html,
         )
+
+    def test_the_endnotes_number_each_note_once_in_outlook(self, sections):
+        """
+        #492. Each note's number is typed, the document's and a link back to its marker. As
+        an ``ol`` the list was numbered again by the Word engine, which ignores
+        ``list-style-type: none``, so a note read "1. 1." in classic Outlook. The list is
+        ``div``s with ARIA roles, which no engine numbers, and a screen reader still hears a
+        list.
+        """
+        html = email(*sections).render()
+        notes = html[html.index('class="notes-heading"') :]
+        assert "<ol" not in notes and "<li" not in notes
+        assert '<div class="notes" role="list"' in notes
+        assert notes.count('role="listitem"') == 3
 
     def test_a_page_floats_each_note_at_its_marker_and_gathers_none(self, sections):
         document = PagedDocument(PAPER_FACTS)

@@ -4,11 +4,11 @@
 - inkfold (pyHermes until v0.4.0, octavo until v0.4.1) builds **documents** onto **media** (`email`,
   `document`, `brochure`, `deck`) from the shared `inkfold/builder` kit; exporters: `delivery`+`gmail`+`outlook`,
   and `pdf`. Rationale: CLAUDE.md, `media.md`. Repository: RorySullivan1/inkfold.
-- **Merged through PR #510**; open v0.9.0 findings #492–#494, #496–#498, #500; #492 in PR #511, #493 in PR #512. #219 DOCX, #300 PPTX not planned. #288 is the
+- **Merged through PR #511**; open v0.9.0 findings #493 (PR #512), #494, #496–#498, #500. #219 DOCX, #300 PPTX not planned. #288 is the
   owner's Outlook-desktop check. The prose baseline is 43, may only shrink.
 - **The roadmap is live** in `.meta/roadmap/` (5 stages), surfaced by `roadmap_status`; mapped in sessions/2026-10-27-0312-roadmap-mapping.md.
   Shipped: v0.2.0–v0.4.1 charter, reference reports, renames (#477–#480); v0.5.0 on PyPI (#481); v0.6.0 `Report`, `inkfold.run` (#483);
-  v0.7.0 inputs, provenance (#485); v0.8.0 `inkfold.house` (#487). Cursor v0.9.0: #489–#491, #508 done; #493's fix awaits the owner's Outlook render.
+  v0.7.0 inputs, provenance (#485); v0.8.0 `inkfold.house` (#487). Cursor v0.9.0: #489–#492, #508 done; #493's fix awaits the owner's Outlook render.
 
 ## Decisions        (append-only; supersede, never delete)
 - Older entries, and epic #157's, are in sessions/ARCHIVE-2026.md.
