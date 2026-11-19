@@ -273,6 +273,38 @@ class TestAButtonAndADivider:
         assert "v:roundrect" in _render(section)
 
 
+def _vml_button(html: str) -> str:
+    return html[html.index("<v:roundrect") : html.index("</v:roundrect>")]
+
+
+class TestTheOutlookButtonFitsItsLabel:
+    """#493: classic Outlook cut a wrapped label's second line inside a fixed-height shape."""
+
+    @pytest.mark.parametrize("density", ["compact", "standard", "spacious"])
+    def test_the_shape_fits_its_text_and_one_line_keeps_the_height(self, density):
+        from inkfold.builder.sizing import resolve_size_scheme
+
+        size = resolve_size_scheme(density)
+        vml = _vml_button(
+            _render(FullWidth(Button("Go", "https://example.com")), size_theme=density)
+        )
+        shape = re.search(r'style="([^"]*)"', vml).group(1)
+        assert "height" not in shape and f"width:{size.component.cta_width}px" in shape
+        inset = re.search(r'<v:textbox inset="0,(\d+)px,0,(\d+)px" style="([^"]*)"', vml)
+        assert inset and "mso-fit-shape-to-text:true" in inset.group(3)
+        line = int(re.search(r"mso-line-height-rule:exactly;line-height:(\d+)px", vml).group(1))
+        one_line = int(inset.group(1)) + line + int(inset.group(2))
+        assert abs(one_line - size.component.cta_height) <= 1
+
+    def test_a_line_taller_than_the_button_insets_nothing(self):
+        from inkfold.config import config_override
+
+        tall = STANDARD_SIZES.derive(component={"cta_height": 10})
+        with config_override(allow_custom_email_density=True):
+            vml = _vml_button(_render(FullWidth(Button("Go", "https://e.com")), size_theme=tall))
+        assert '<v:textbox inset="0,0px,0,0px"' in vml
+
+
 requires_pdf = pytest.mark.skipif(
     not pdf_available() or importlib.util.find_spec("pypdfium2") is None,
     reason='reading a sheet back needs the "[pdf]" and "[qa]" extras',

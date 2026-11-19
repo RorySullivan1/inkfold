@@ -66,6 +66,10 @@ long a deprecated public name survives.
   3px wide and a line tall, and a legend's entries ran together (#491). Outlook now draws each
   as a VML shape the `status_dot` size, and a legend's gaps as VML spacers the `caption_gap`
   and `gutter` wide. Browsers and paper render them as before.
+- **In classic Outlook a button's whole label shows.** A label that wrapped inside the button's
+  fixed-height shape lost half its second line (#493). The shape now grows with its label, so a
+  one-line button is as tall as before and each further line adds one line. `Button`,
+  `ContactBlock` and an email's `QrCode` share the markup. Other clients render it as before.
 - **A masthead's department keeps its line without a logo.** With no logo beside it, a
   `department` broke at every word in every client: "Global Equity" set on two lines in the
   house templates (#508). It now takes its own width when the row has room, in `Banner` and
