@@ -7,13 +7,19 @@
   float to the foot of the sheet their marker is on. The note text is plain
   text, escaped, for `disclosure`'s reason.
 
+  The list is `div`s with ARIA roles, not an `ol` (#492). Each note's number is
+  typed, the document's own and a link back to its marker, so the list numbers
+  nothing itself; but the Word engine ignores `list-style-type: none` and
+  numbers an `ol` anyway, so every note read "1. 1." in classic Outlook.
+  `role="list"` and `role="listitem"` keep a screen reader announcing a list.
+
   Context:
     notes_heading — the block's label
     notes         — list of dicts with keys: number, text, anchor, ref_anchor
 #}
 <p class="notes-heading" style="font-family: {{ font.label }}; font-size: {{ size.type.label }}px; font-weight: bold; color: {{ theme.text.heading }}; letter-spacing: 0.5px; margin: 0 0 {{ size.space.caption_gap }}px 0; line-height: {{ size.type.body_line | percent }};">{{ notes_heading | escape_html }}</p>
-<ol class="notes" style="margin: 0; padding: 0; list-style-type: none;">
+<div class="notes" role="list" style="margin: 0; padding: 0;">
 {% for note in notes %}
-  <li id="{{ note.anchor }}" style="font-family: {{ font.label }}; font-size: {{ size.type.small }}px; color: {{ theme.text.secondary }}; line-height: {{ size.type.secondary_line | percent }}; margin: 0 0 {{ size.space.caption_gap }}px 0;"><a href="#{{ note.ref_anchor }}" style="color: {{ theme.palette.accent }}; text-decoration: none;">{{ note.number }}.</a> {{ note.text | escape_html }}</li>
+  <div role="listitem" id="{{ note.anchor }}" style="font-family: {{ font.label }}; font-size: {{ size.type.small }}px; color: {{ theme.text.secondary }}; line-height: {{ size.type.secondary_line | percent }}; margin: 0 0 {{ size.space.caption_gap }}px 0;"><a href="#{{ note.ref_anchor }}" style="color: {{ theme.palette.accent }}; text-decoration: none;">{{ note.number }}.</a> {{ note.text | escape_html }}</div>
 {% endfor %}
-</ol>
+</div>

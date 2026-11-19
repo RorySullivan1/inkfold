@@ -1406,8 +1406,10 @@ client no session reaches. `qa/clients/MATRIX.md` holds the results, per email a
 - **What the render showed (2026-11-10, Outlook 16.0.0.20527)**: no content lost anywhere but
   one masthead (#489); an 8px inline-block mark becomes a 3 px bar the line's height (#491,
   fixed by drawing it in VML for Outlook); an `ol` with `list-style-type:none` keeps its
-  numbers (#492); fixed-height buttons clip a wrapped label (#493); some cell borders drop out
-  (#494). The VML arrow, the connector, the rtl split and the `font-size:0` rule cells all hold.
+  numbers (#492, fixed for the endnotes by listing them in `div`s; the contents list keeps its
+  `ol`, so Outlook still numbers it); fixed-height buttons clip a wrapped label (#493); some
+  cell borders drop out (#494). The VML arrow, the connector, the rtl split and the
+  `font-size:0` rule cells all hold.
 - **`Send()` only queues.** The first real run left all 27 in classic Outlook's Outbox: the
   Outlook that automation started quit with the script, before any Send/Receive, and the owner
   reads mail in new Outlook, which never shows classic's Outbox. So `--send` now runs
