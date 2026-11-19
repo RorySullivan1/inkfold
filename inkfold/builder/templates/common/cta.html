@@ -2,19 +2,29 @@
   BUTTON — the Outlook v:roundrect and the styled link every other client
   draws, as one markup for ContactBlock and Button (#269).
 
-  The indentation is ContactBlock's, so it renders byte for byte as before.
+  The indentation is ContactBlock's.
 
   Context: button_url, button_label — plain text, escaped here.
 #}
+      {# The shape fits its label (#493). A fixed height cut a wrapped label's second
+         line in half in classic Outlook. The label's leading is exact and the textbox
+         pads it top and bottom, so one line is cta_height tall and each further line
+         adds one line's height. No side inset: the label wraps at cta_width, as the
+         link below does in every other client. #}
+      {% set cta_line = (size.type.secondary * size.type.secondary_line) | round | int %}
+      {% set cta_inset = [((size.component.cta_height - cta_line) / 2) | round | int, 0] | max %}
       <!--[if mso]>
       <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" href="{{ button_url | escape_html }}"
-        style="height:{{ size.component.cta_height }}px;v-text-anchor:middle;width:{{ size.component.cta_width }}px;" arcsize="8%"
+        style="v-text-anchor:middle;width:{{ size.component.cta_width }}px;" arcsize="8%"
         strokecolor="{{ theme.palette.accent }}" fillcolor="{{ theme.palette.accent }}">
         <w:anchorlock/>
-        <center style="color:{{ theme.text.on_dark }};font-family: {{ font.label }};
-                       font-size:{{ size.type.secondary }}px;font-weight:bold;">
-          {{ button_label | escape_html }}
-        </center>
+        <v:textbox inset="0,{{ cta_inset }}px,0,{{ cta_inset }}px" style="mso-fit-shape-to-text:true;">
+          <center style="color:{{ theme.text.on_dark }};font-family: {{ font.label }};
+                         font-size:{{ size.type.secondary }}px;font-weight:bold;
+                         mso-line-height-rule:exactly;line-height:{{ cta_line }}px;">
+            {{ button_label | escape_html }}
+          </center>
+        </v:textbox>
       </v:roundrect>
       <![endif]-->
       <!--[if !mso]><!-->

@@ -820,7 +820,7 @@ frame's horizontal padding is what makes the content 616 wide::
     author_sep_gap         4    around the middot between title and email
     author_rule_gap       14    above the byline, both halves of the rule
     cta_width            150    contact button, VML and CSS alike
-    cta_height            38    ditto (VML height == CSS line-height)
+    cta_height            38    ditto (one VML line == CSS line-height, #493)
     contact_pad_y / _x  22/24   inside the contact card
     contact_heading_gap    6    below the contact heading
     contact_cta_gap       16    above the contact button
@@ -1107,6 +1107,19 @@ head. Judged against the screenshot and kept.
 every golden byte-identical. The engine strips whitespace before a block tag, so the
 indentation lives in the partial, not on the include line. `Divider` is the accent rule's
 shape: a bordered cell with zero type, one pixel tall, rather than an `hr`.
+
+**In classic Outlook the button fits its label (#493).** The `v:roundrect` had a fixed
+`cta_height`, so a label that wrapped (`kitchen_sink`'s "Read the folded edition" at every
+density) lost half its second line. The shape now gives a width only, and the label sits in a
+`v:textbox` with `mso-fit-shape-to-text:true`, the pattern #490 proved on the masthead in the same
+Outlook build. The label's leading is exact (`secondary` × `secondary_line`, in px) and the
+textbox insets it top and bottom by what is left of `cta_height`, so one line is `cta_height`
+tall to the pixel at compact and standard and 1px over at spacious, from rounding; a further line
+adds one line's height. An inset that would go negative is 0. The textbox has no side inset,
+where Word's default for a bare `center` was 0.1in each side, so the label wraps at `cta_width`
+as the link does in every other client. Only the `[if mso]` half moved: with it stripped, every
+changed golden is byte-identical to the one before, so no other client renders anything new.
+`TestTheOutlookButtonFitsItsLabel` holds the shape, the textbox and the one-line height.
 
 `surfaced_layout` is the gallery fixture for all of it, and `tests/test_surfaces.py` holds the
 claims. In stacked columns on a phone a callout fills its column, since #282.
